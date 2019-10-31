@@ -8,6 +8,7 @@ RVX mobile wallet using `react-native@0.59.10`
  - Support OTP 
  - Support Google Authenticator (TOTP)
  - Touch ID
+ - PinCode
 
 ## Support Language
 - English
