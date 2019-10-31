@@ -1,0 +1,72 @@
+[{
+    "title":"",
+    "list":[{
+        "name":"PersonalProfile",
+        "type":"arrow",
+        "Route":"PersonalProfile"
+    },{
+        "name":"ManageWallets",
+        "type":"arrow",
+        "Route":"ManageWallet"
+    },{
+        "name":"Network",
+        "type":"custom"
+    },{
+        "key":"notification",
+        "name":"Notification",
+        "type":"toggle"
+    },{
+        "name":"Currency",
+        "type":"custom"
+    },{
+        "name":"Language",
+        "type":"custom"
+    }
+    // ,{
+    //     "name":"Restore Wallet",
+    //     "type":"arrow",
+    //     "Route":"RestoreWallet"
+    // }
+]
+},{
+    "title":"Security",
+    "list":[
+    //     {
+    //     "name":"2FA",
+    //     "type":"arrow"
+    // },
+    // {
+    //     "key":"pincode",
+    //     "name":"Pincode",
+    //     "type":"arrow"
+    // }
+    // ,{
+    //     "key":"touchid",
+    //     "name":"Touch ID",
+    //     "type":"toggle"
+    // }
+    {
+        "name":"TransactionVerification",
+        "type":"arrow",
+        "Route":"Security"
+    }
+]
+},{
+    "title":"About",
+    "list":[{
+        "name":"AboutUs",
+        "type":"content",
+        "key":"about"
+    },{
+        "name":"FeedbackSupport",
+        "type":"content",
+        "key":"support"
+    },{
+        "name":"TermsConditions",
+        "type":"content",
+        "key":"terms"
+    }]
+},{
+    "title":"Logout",
+    "list":[]
+}]

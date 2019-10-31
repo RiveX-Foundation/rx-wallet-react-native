@@ -1,0 +1,969 @@
+[{
+    "country": "阿富汗",
+    "calling_code": "93"
+},
+{
+    "country": "阿尔巴尼亚",
+    "calling_code": "355"
+},
+{
+    "country": "阿尔及利亚",
+    "calling_code": "213"
+},
+{
+    "country": "美属萨摩亚",
+    "calling_code": "1684"
+},
+{
+    "country": "安道尔",
+    "calling_code": "376"
+},
+{
+    "country": "安哥拉",
+    "calling_code": "244"
+},
+{
+    "country": "安圭拉",
+    "calling_code": "1264"
+},
+{
+    "country": "南极洲",
+    "calling_code": null
+},
+{
+    "country": "安提瓜和巴布达",
+    "calling_code": "1268"
+},
+{
+    "country": "阿根廷",
+    "calling_code": "54"
+},
+{
+    "country": "亚美尼亚",
+    "calling_code": "374"
+},
+{
+    "country": "阿鲁巴",
+    "calling_code": "297"
+},
+{
+    "country": "澳大利亚",
+    "calling_code": "61"
+},
+{
+    "country": "奥地利",
+    "calling_code": "43"
+},
+{
+    "country": "阿塞拜疆",
+    "calling_code": "994"
+},
+{
+    "country": "巴哈马",
+    "calling_code": "1242"
+},
+{
+    "country": "巴林",
+    "calling_code": "973"
+},
+{
+    "country": "孟加拉国",
+    "calling_code": "880"
+},
+{
+    "country": "巴巴多斯",
+    "calling_code": "1246"
+},
+{
+    "country": "白俄罗斯",
+    "calling_code": "375"
+},
+{
+    "country": "比利时",
+    "calling_code": "32"
+},
+{
+    "country": "伯利兹",
+    "calling_code": "501"
+},
+{
+    "country": "贝宁",
+    "calling_code": "229"
+},
+{
+    "country": "百慕大",
+    "calling_code": "1441"
+},
+{
+    "country": "不丹",
+    "calling_code": "975"
+},
+{
+    "country": "玻利维亚",
+    "calling_code": "591"
+},
+{
+    "country": "波斯尼亚和黑塞哥维那",
+    "calling_code": "387"
+},
+{
+    "country": "博茨瓦纳",
+    "calling_code": "267"
+},
+{
+    "country": "布维岛",
+    "calling_code": null
+},
+{
+    "country": "巴西",
+    "calling_code": "55"
+},
+{
+    "country": "英属印度洋领地",
+    "calling_code": "246"
+},
+{
+    "country": "文莱",
+    "calling_code": null
+},
+{
+    "country": "保加利亚",
+    "calling_code": "359"
+},
+{
+    "country": "布基纳法索",
+    "calling_code": "226"
+},
+{
+    "country": "布隆迪",
+    "calling_code": "257"
+},
+{
+    "country": "柬埔寨",
+    "calling_code": "855"
+},
+{
+    "country": "喀麦隆",
+    "calling_code": "237"
+},
+{
+    "country": "加拿大",
+    "calling_code": "1"
+},
+{
+    "country": "佛得角",
+    "calling_code": null
+},
+{
+    "country": "开曼群岛",
+    "calling_code": "1345"
+},
+{
+    "country": "中非共和国",
+    "calling_code": "236"
+},
+{
+    "country": "乍得",
+    "calling_code": "235"
+},
+{
+    "country": "智利",
+    "calling_code": "56"
+},
+{
+    "country": "中国",
+    "calling_code": "86"
+},
+{
+    "country": "圣诞岛",
+    "calling_code": "61"
+},
+{
+    "country": "科科斯（基林）群岛",
+    "calling_code": "61"
+},
+{
+    "country": "哥伦比亚",
+    "calling_code": "57"
+},
+{
+    "country": "科摩罗",
+    "calling_code": "269"
+},
+{
+    "country": "刚果",
+    "calling_code": "242"
+},
+{
+    "country": "库克群岛",
+    "calling_code": "682"
+},
+{
+    "country": "哥斯达黎加",
+    "calling_code": "506"
+},
+{
+    "country": "克罗地亚",
+    "calling_code": "385"
+},
+{
+    "country": "古巴",
+    "calling_code": "53"
+},
+{
+    "country": "塞浦路斯",
+    "calling_code": "357"
+},
+{
+    "country": "捷克共和国",
+    "calling_code": "420"
+},
+{
+    "country": "丹麦",
+    "calling_code": "45"
+},
+{
+    "country": "吉布提",
+    "calling_code": "253"
+},
+{
+    "country": "多米尼克",
+    "calling_code": "1767"
+},
+{
+    "country": "多米尼加共和国",
+    "calling_code": "1849"
+},
+{
+    "country": "东帝汶",
+    "calling_code": "670"
+},
+{
+    "country": "厄瓜多尔",
+    "calling_code": "593"
+},
+{
+    "country": "埃及",
+    "calling_code": "20"
+},
+{
+    "country": "萨尔瓦多",
+    "calling_code": "503"
+},
+{
+    "country": "英格兰",
+    "calling_code": null
+},
+{
+    "country": "赤道几内亚",
+    "calling_code": "240"
+},
+{
+    "country": "厄立特里亚",
+    "calling_code": "291"
+},
+{
+    "country": "爱沙尼亚",
+    "calling_code": "372"
+},
+{
+    "country": "埃塞俄比亚",
+    "calling_code": "251"
+},
+{
+    "country": "福克兰群岛",
+    "calling_code": "500"
+},
+{
+    "country": "法罗群岛",
+    "calling_code": "298"
+},
+{
+    "country": "斐济群岛",
+    "calling_code": null
+},
+{
+    "country": "芬兰",
+    "calling_code": "358"
+},
+{
+    "country": "法国",
+    "calling_code": "33"
+},
+{
+    "country": "法属圭亚那",
+    "calling_code": "594"
+},
+{
+    "country": "法属波利尼西亚",
+    "calling_code": "689"
+},
+{
+    "country": "法属南部地区",
+    "calling_code": null
+},
+{
+    "country": "加蓬",
+    "calling_code": "241"
+},
+{
+    "country": "冈比亚",
+    "calling_code": "220"
+},
+{
+    "country": "格鲁吉亚",
+    "calling_code": "995"
+},
+{
+    "country": "德国",
+    "calling_code": "49"
+},
+{
+    "country": "加纳",
+    "calling_code": "233"
+},
+{
+    "country": "直布罗陀",
+    "calling_code": "350"
+},
+{
+    "country": "希腊",
+    "calling_code": "30"
+},
+{
+    "country": "格陵兰岛",
+    "calling_code": "299"
+},
+{
+    "country": "格林纳达",
+    "calling_code": "1473"
+},
+{
+    "country": "瓜德罗普岛",
+    "calling_code": "590"
+},
+{
+    "country": "关岛",
+    "calling_code": "1671"
+},
+{
+    "country": "危地马拉",
+    "calling_code": "502"
+},
+{
+    "country": "几内亚",
+    "calling_code": "224"
+},
+{
+    "country": "几内亚比绍",
+    "calling_code": "245"
+},
+{
+    "country": "圭亚那",
+    "calling_code": "592"
+},
+{
+    "country": "海地",
+    "calling_code": "509"
+},
+{
+    "country": "赫德岛和麦当劳群岛",
+    "calling_code": null
+},
+{
+    "country": "罗马教廷（梵蒂冈城国）",
+    "calling_code": null
+},
+{
+    "country": "洪都拉斯",
+    "calling_code": "504"
+},
+{
+    "country": "香港",
+    "calling_code": "852"
+},
+{
+    "country": "匈牙利",
+    "calling_code": "36"
+},
+{
+    "country": "冰岛",
+    "calling_code": "354"
+},
+{
+    "country": "印度",
+    "calling_code": "91"
+},
+{
+    "country": "印度尼西亚",
+    "calling_code": "62"
+},
+{
+    "country": "伊朗",
+    "calling_code": "98"
+},
+{
+    "country": "伊拉克",
+    "calling_code": "964"
+},
+{
+    "country": "爱尔兰",
+    "calling_code": "353"
+},
+{
+    "country": "以色列",
+    "calling_code": "972"
+},
+{
+    "country": "意大利",
+    "calling_code": "39"
+},
+{
+    "country": "象牙海岸",
+    "calling_code": "225"
+},
+{
+    "country": "牙买加",
+    "calling_code": "1876"
+},
+{
+    "country": "日本",
+    "calling_code": "81"
+},
+{
+    "country": "乔丹",
+    "calling_code": "962"
+},
+{
+    "country": "哈萨克斯坦",
+    "calling_code": "7"
+},
+{
+    "country": "肯尼亚",
+    "calling_code": "254"
+},
+{
+    "country": "基里巴斯",
+    "calling_code": "686"
+},
+{
+    "country": "科威特",
+    "calling_code": "965"
+},
+{
+    "country": "吉尔吉斯斯坦",
+    "calling_code": "996"
+},
+{
+    "country": "老挝",
+    "calling_code": "856"
+},
+{
+    "country": "拉脱维亚",
+    "calling_code": "371"
+},
+{
+    "country": "黎巴嫩",
+    "calling_code": "961"
+},
+{
+    "country": "莱索托",
+    "calling_code": "266"
+},
+{
+    "country": "利比里亚",
+    "calling_code": "231"
+},
+{
+    "country": "阿拉伯利比亚民众国",
+    "calling_code": null
+},
+{
+    "country": "列支敦士登",
+    "calling_code": "423"
+},
+{
+    "country": "立陶宛",
+    "calling_code": "370"
+},
+{
+    "country": "卢森堡",
+    "calling_code": "352"
+},
+{
+    "country": "澳门",
+    "calling_code": null
+},
+{
+    "country": "北马其顿",
+    "calling_code": "389"
+},
+{
+    "country": "马达加斯加",
+    "calling_code": "261"
+},
+{
+    "country": "马拉维",
+    "calling_code": "265"
+},
+{
+    "country": "马尔代夫",
+    "calling_code": "960"
+},
+{
+    "country": "马里",
+    "calling_code": "223"
+},
+{
+    "country": "马耳他",
+    "calling_code": "356"
+},
+{
+    "country": "马绍尔群岛",
+    "calling_code": "692"
+},
+{
+    "country": "马提尼克岛",
+    "calling_code": "596"
+},
+{
+    "country": "毛里塔尼亚",
+    "calling_code": "222"
+},
+{
+    "country": "毛里求斯",
+    "calling_code": "230"
+},
+{
+    "country": "马约特",
+    "calling_code": "262"
+},
+{
+    "country": "墨西哥",
+    "calling_code": "52"
+},
+{
+    "country": "密克罗尼西亚联邦",
+    "calling_code": "691"
+},
+{
+    "country": "摩尔多瓦",
+    "calling_code": "373"
+},
+{
+    "country": "摩纳哥",
+    "calling_code": "377"
+},
+{
+    "country": "蒙古",
+    "calling_code": "976"
+},
+{
+    "country": "蒙特塞拉特",
+    "calling_code": "1664"
+},
+{
+    "country": "摩洛哥",
+    "calling_code": "212"
+},
+{
+    "country": "莫桑比克",
+    "calling_code": "258"
+},
+{
+    "country": "缅甸",
+    "calling_code": "95"
+},
+{
+    "country": "纳米比亚",
+    "calling_code": "264"
+},
+{
+    "country": "瑙鲁",
+    "calling_code": "674"
+},
+{
+    "country": "尼泊尔",
+    "calling_code": "977"
+},
+{
+    "country": "荷兰",
+    "calling_code": "31"
+},
+{
+    "country": "荷属安的列斯群岛",
+    "calling_code": null
+},
+{
+    "country": "新喀里多尼亚",
+    "calling_code": "687"
+},
+{
+    "country": "新西兰",
+    "calling_code": "64"
+},
+{
+    "country": "尼加拉瓜",
+    "calling_code": "505"
+},
+{
+    "country": "尼日尔",
+    "calling_code": "227"
+},
+{
+    "country": "尼日利亚",
+    "calling_code": "234"
+},
+{
+    "country": "纽埃",
+    "calling_code": "683"
+},
+{
+    "country": "诺福克岛",
+    "calling_code": "672"
+},
+{
+    "country": "朝鲜",
+    "calling_code": null
+},
+{
+    "country": "北爱尔兰",
+    "calling_code": null
+},
+{
+    "country": "北马里亚纳群岛",
+    "calling_code": "1670"
+},
+{
+    "country": "挪威",
+    "calling_code": "47"
+},
+{
+    "country": "阿曼",
+    "calling_code": "968"
+},
+{
+    "country": "巴基斯坦",
+    "calling_code": "92"
+},
+{
+    "country": "帕劳",
+    "calling_code": "680"
+},
+{
+    "country": "巴勒斯坦",
+    "calling_code": null
+},
+{
+    "country": "巴拿马",
+    "calling_code": "507"
+},
+{
+    "country": "巴布亚新几内亚",
+    "calling_code": "675"
+},
+{
+    "country": "巴拉圭",
+    "calling_code": "595"
+},
+{
+    "country": "秘鲁",
+    "calling_code": "51"
+},
+{
+    "country": "菲律宾",
+    "calling_code": "63"
+},
+{
+    "country": "皮特凯恩",
+    "calling_code": null
+},
+{
+    "country": "波兰",
+    "calling_code": "48"
+},
+{
+    "country": "葡萄牙",
+    "calling_code": "351"
+},
+{
+    "country": "波多黎各",
+    "calling_code": "1939"
+},
+{
+    "country": "卡塔尔",
+    "calling_code": "974"
+},
+{
+    "country": "团圆",
+    "calling_code": "262"
+},
+{
+    "country": "罗马尼亚",
+    "calling_code": "40"
+},
+{
+    "country": "俄罗斯联邦",
+    "calling_code": "7"
+},
+{
+    "country": "卢旺达",
+    "calling_code": "250"
+},
+{
+    "country": "圣赫勒拿",
+    "calling_code": "290"
+},
+{
+    "country": "圣基茨和尼维斯",
+    "calling_code": "1869"
+},
+{
+    "country": "圣卢西亚",
+    "calling_code": "1758"
+},
+{
+    "country": "圣皮埃尔和密克隆",
+    "calling_code": "508"
+},
+{
+    "country": "圣文森特和格林纳丁斯",
+    "calling_code": "1784"
+},
+{
+    "country": "萨摩亚",
+    "calling_code": "685"
+},
+{
+    "country": "圣马力诺",
+    "calling_code": "378"
+},
+{
+    "country": "圣多美和普林西比",
+    "calling_code": "239"
+},
+{
+    "country": "沙特阿拉伯",
+    "calling_code": "966"
+},
+{
+    "country": "苏格兰",
+    "calling_code": null
+},
+{
+    "country": "塞内加尔",
+    "calling_code": "221"
+},
+{
+    "country": "塞舌尔",
+    "calling_code": "248"
+},
+{
+    "country": "塞拉利昂",
+    "calling_code": "232"
+},
+{
+    "country": "新加坡",
+    "calling_code": "65"
+},
+{
+    "country": "斯洛伐克",
+    "calling_code": "421"
+},
+{
+    "country": "斯洛文尼亚",
+    "calling_code": "386"
+},
+{
+    "country": "所罗门群岛",
+    "calling_code": "677"
+},
+{
+    "country": "索马里",
+    "calling_code": "252"
+},
+{
+    "country": "南非",
+    "calling_code": "27"
+},
+{
+    "country": "南乔治亚岛和南桑威奇群岛",
+    "calling_code": "500"
+},
+{
+    "country": "韩国",
+    "calling_code": null
+},
+{
+    "country": "南苏丹",
+    "calling_code": "211"
+},
+{
+    "country": "西班牙",
+    "calling_code": "34"
+},
+{
+    "country": "斯里兰卡",
+    "calling_code": null
+},
+{
+    "country": "苏丹",
+    "calling_code": "249"
+},
+{
+    "country": "苏里南",
+    "calling_code": "597"
+},
+{
+    "country": "斯瓦尔巴和扬马延",
+    "calling_code": null
+},
+{
+    "country": "斯威士兰",
+    "calling_code": "268"
+},
+{
+    "country": "瑞典",
+    "calling_code": "46"
+},
+{
+    "country": "瑞士",
+    "calling_code": "41"
+},
+{
+    "country": "叙利亚",
+    "calling_code": "963"
+},
+{
+    "country": "塔吉克斯坦",
+    "calling_code": "992"
+},
+{
+    "country": "坦桑尼亚",
+    "calling_code": "255"
+},
+{
+    "country": "泰国",
+    "calling_code": "66"
+},
+{
+    "country": "刚果民主共和国",
+    "calling_code": null
+},
+{
+    "country": "多哥",
+    "calling_code": "228"
+},
+{
+    "country": "托克劳",
+    "calling_code": "690"
+},
+{
+    "country": "汤加",
+    "calling_code": "676"
+},
+{
+    "country": "特立尼达和多巴哥",
+    "calling_code": "1868"
+},
+{
+    "country": "突尼斯",
+    "calling_code": "216"
+},
+{
+    "country": "土耳其",
+    "calling_code": "90"
+},
+{
+    "country": "土库曼斯坦",
+    "calling_code": "993"
+},
+{
+    "country": "特克斯和凯科斯群岛",
+    "calling_code": "1649"
+},
+{
+    "country": "图瓦卢",
+    "calling_code": "688"
+},
+{
+    "country": "乌干达",
+    "calling_code": "256"
+},
+{
+    "country": "乌克兰",
+    "calling_code": "380"
+},
+{
+    "country": "阿拉伯联合酋长国",
+    "calling_code": "971"
+},
+{
+    "country": "英国",
+    "calling_code": "44"
+},
+{
+    "country": "美国",
+    "calling_code": "1"
+},
+{
+    "country": "美国本土外小岛屿",
+    "calling_code": null
+},
+{
+    "country": "乌拉圭",
+    "calling_code": "598"
+},
+{
+    "country": "乌兹别克斯坦",
+    "calling_code": "998"
+},
+{
+    "country": "瓦努阿图",
+    "calling_code": "678"
+},
+{
+    "country": "委内瑞拉",
+    "calling_code": "58"
+},
+{
+    "country": "越南",
+    "calling_code": "84"
+},
+{
+    "country": "维尔京群岛,英国",
+    "calling_code": null
+},
+{
+    "country": "美属维尔京群岛",
+    "calling_code": null
+},
+{
+    "country": "威尔士",
+    "calling_code": null
+},
+{
+    "country": "瓦利斯和富图纳群岛",
+    "calling_code": "681"
+},
+{
+    "country": "西撒哈拉",
+    "calling_code": null
+},
+{
+    "country": "也门",
+    "calling_code": "967"
+},
+{
+    "country": "南斯拉夫",
+    "calling_code": null
+},
+{
+    "country": "赞比亚",
+    "calling_code": "260"
+},
+{
+    "country": "津巴布韦",
+    "calling_code": "263"
+}
+]
