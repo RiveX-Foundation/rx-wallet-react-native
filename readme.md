@@ -1,6 +1,6 @@
 # rivex-react-native
 RVX mobile wallet using `react-native@0.59.10`
-
+[![GitHub License][license]][license-url]
 ## Features
  - BIP39/BIP44
  - Support OTP 
