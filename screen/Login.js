@@ -30,6 +30,8 @@ import { observer, inject } from 'mobx-react';
 import intl from 'react-intl-universal';
 import locales from '../locales';
 
+import { ethnetwork,wannetwork } from '../libs/network'
+
 @inject('settingStore')
 @inject('languageStore')
 @inject('securityStore')
@@ -82,7 +84,8 @@ class Login extends Component {
           Id:accId,
           notification:true,
           currency:"USD",
-          network:networks_json[0].shortcode,
+          ethnetwork:ethnetwork[0].shortcode,
+          wannetwork:wannetwork[0].shortcode,
           language:this.state.defaultlang,
           security:{
             selected:security_json[0].name,
@@ -97,7 +100,8 @@ class Login extends Component {
         await AsyncStorage.setItem('@settings', JSON.stringify(settings)).then(()=>{
           this._changeLanguage(newsetting.language);
           this.props.settingStore.setSettings(newsetting);
-          this.props.settingStore.setBlockchainNetwork(networks_json.find(x => x.shortcode == newsetting.network));
+          this.props.settingStore.setBlockchainNetwork(newsetting.ethnetwork,"ethnetwork");
+          this.props.settingStore.setBlockchainNetwork(newsetting.wannetwork,"wannetwork");
           this.props.navigation.navigate("App");
         })
       }else{
@@ -108,11 +112,13 @@ class Login extends Component {
         if(JSON.stringify(allsettings).indexOf(accId) > -1){
           // console.log("come here 1")
           var mysetting = allsettings.filter(x => x.Id == accId)[0];
-          if(mysetting.network == undefined) mysetting.network = networks_json[0].shortcode;
+          if(mysetting.ethnetwork == undefined) mysetting.network = ethnetwork[0].shortcode;
+          if(mysetting.wannetwork == undefined) mysetting.network = wannetwork[0].shortcode;
           if(mysetting.language == undefined) mysetting.language = this.state.defaultlang;
           this._changeLanguage(mysetting.language);
           this.props.settingStore.setSettings(mysetting);
-          this.props.settingStore.setBlockchainNetwork(networks_json.find(x => x.shortcode == mysetting.network));
+          this.props.settingStore.setBlockchainNetwork(mysetting.ethnetwork,"ethnetwork");
+          this.props.settingStore.setBlockchainNetwork(mysetting.wannetwork,"wannetwork");
           this.props.navigation.navigate("App");
         }else{
           // console.log("come here 2", accId)
@@ -121,7 +127,8 @@ class Login extends Component {
             Id:accId,
             notification:true,
             currency:"USD",
-            network:networks_json[0].shortcode,
+            ethnetwork:ethnetwork[0].shortcode,
+            wannetwork:wannetwork[0].shortcode,
             language:this.state.defaultlang,
             security:{
               selected:security_json[0].name,
@@ -135,7 +142,8 @@ class Login extends Component {
           await AsyncStorage.setItem('@settings', JSON.stringify(allsettings)).then(()=>{
             this._changeLanguage(newsetting.language);
             this.props.settingStore.setSettings(newsetting);
-            this.props.settingStore.setBlockchainNetwork(networks_json.find(x => x.shortcode == newsetting.network));
+            this.props.settingStore.setBlockchainNetwork(newsetting.ethnetwork,"ethnetwork");
+            this.props.settingStore.setBlockchainNetwork(newsetting.wannetwork,"wannetwork");
             this.props.navigation.navigate("App");
           })
         }

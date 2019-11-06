@@ -111,10 +111,12 @@ class TransactionDetail extends Component {
   }
 
   _goToEtherscan = (type,val) =>{
-    if(this.props.settingStore.selectedBlockchainNetwork.shortcode == "mainnet"){
-      Linking.openURL(`https://etherscan.io/${type}/${val}`);
-    }else{
-      Linking.openURL(`https://${this.props.settingStore.selectedBlockchainNetwork.shortcode}.etherscan.io/${type}/${val}`);
+    if(this.state.selectedToken.TokenType == "eth" || this.state.selectedToken.TokenType == "erc20"){
+      if(this.props.settingStore.selectedETHNetwork.shortcode == "mainnet"){
+        Linking.openURL(`https://etherscan.io/${type}/${val}`);
+      }else{
+        Linking.openURL(`https://${this.props.settingStore.selectedETHNetwork.shortcode}.etherscan.io/${type}/${val}`);
+      }
     }
   }
 

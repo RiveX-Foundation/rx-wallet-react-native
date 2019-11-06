@@ -103,6 +103,12 @@ class BasicWallet extends Component {
             console.log(response);
             this.screenloader.hide();
             if(response.status == 200){
+              //new
+              this.props.walletStore.InsertTokenAssetToCloudWallet(this.props.settingStore.acctoken,wallet.publicaddress,wallet.tokenassetlist,(response)=>{
+
+              },(response)=>{
+
+              })
               this.props.walletStore.saveETHWalletToStorage(wallet,()=>{
                 this.newwallettab.setPage(6  - (params.isFirstTime ? 0 : 1));
                 // this.setState({

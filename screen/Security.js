@@ -46,7 +46,6 @@ class Security extends Component {
       showhiderestorewalletpicker:false,
       showhidepincodemodal:false,
       showhidenetworkpicker:false,
-      selectedblockchainnetwork:networks_json[0],
       showhidelanguagepicker:false,
       selectedsecuritylist:this.props.settingStore.settings.security.selectedlist
     }
@@ -402,14 +401,6 @@ class Security extends Component {
     this.props.navigation.navigate("PinCode",{isfirsttime:false,changepincode:true,isverify:false})
   }
 
-  _setBlockchainNetwork = (network) =>{
-    this.setState({
-      selectedblockchainnetwork:network
-    },()=>{
-      this._showhideNetworkPicker();
-      this._updateStorageSetting(true);
-    })
-  }
 
   _changeLanguage = (lan) => {
     // console.log("_changeLanguage", lan)

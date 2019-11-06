@@ -136,7 +136,8 @@ export const Config = {
 }
 
 export const DevivationPath = {
-  ETH:"m/44'/60'/0'/0/0"
+  ETH:"m/44'/60'/0'/0/",
+  WAN: "m/44'/5718350'/0'/0/"
 }
 
 export const SensitiveInfo = {

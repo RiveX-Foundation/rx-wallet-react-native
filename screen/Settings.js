@@ -25,6 +25,7 @@ import intl from 'react-intl-universal';
 import locales from '../locales';
 import { observer, inject } from 'mobx-react';
 import { toJS } from 'mobx';
+import {ethnetwork,wannetwork, networkList} from '../libs/network'
 
 @inject('walletStore')
 @inject('settingStore')
@@ -40,7 +41,10 @@ class Settings extends Component {
       showhiderestorewalletpicker:false,
       showhidepincodemodal:false,
       showhidenetworkpicker:false,
-      selectedblockchainnetwork:networks_json[0],
+      showhidenetworktype:"",
+      // oldnetwork:wannetwork[0],
+      selectedETHNetwork:ethnetwork[0],
+      selectedWANNetwork:wannetwork[0],
       showhidelanguagepicker:false,
       refreshSetting:true
     }
@@ -57,10 +61,12 @@ class Settings extends Component {
 
   _checkAccountSetting = () =>{
     var settings = this.props.settingStore.settings;
-    console.log(toJS(settings));
+    // console.log(settings.network)
     this.setState({
       selectedcurrency:settings.currency,
-      selectedblockchainnetwork:networks_json.find(x => x.shortcode == settings.network),
+      // oldnetwork:networkList.find(x => x.shortcode == settings.network),
+      selectedETHNetwork:ethnetwork.find(x => x.shortcode == settings.ethnetwork),
+      selectedWANNetwork:wannetwork.find(x => x.shortcode == settings.wannetwork),
     })
     if(settings.notification){
       this.setState({
@@ -89,7 +95,7 @@ class Settings extends Component {
     // console.log("currentavailable", currentavailable)
     // this.setState({
     //   selectedtoggle:currentavailable,
-    //   selectedblockchainnetwork:networks_json.find(x => x.shortcode == settings.network)
+    //   oldnetwork:networks_json.find(x => x.shortcode == settings.network)
     // });
   }
 
@@ -213,12 +219,16 @@ class Settings extends Component {
         // allsettings[indexsetting].pincode.enable = this.state.selectedtoggle.indexOf("pincode") > -1;
         // allsettings[indexsetting].touchid = this.state.selectedtoggle.indexOf("touchid") > -1;
         allsettings[indexsetting].currency = this.state.selectedcurrency;
-        allsettings[indexsetting].network = this.state.selectedblockchainnetwork.shortcode;
+        // allsettings[indexsetting].network = this.state.oldnetwork.shortcode;
+        allsettings[indexsetting].ethnetwork = this.state.selectedETHNetwork.shortcode;
+        allsettings[indexsetting].wannetwork = this.state.selectedWANNetwork.shortcode;
         allsettings[indexsetting].language = this.props.languageStore.language;
         await AsyncStorage.setItem('@settings', JSON.stringify(allsettings)).then(()=>{
           // console.log(JSON.stringify(allsettings));
           this.props.settingStore.setSettings(allsettings[indexsetting]);
-          this.props.settingStore.setBlockchainNetwork(this.state.selectedblockchainnetwork);
+          // this.props.settingStore.setBlockchainNetwork(this.state.oldnetwork);
+          this.props.settingStore.setBlockchainNetwork(this.state.selectedETHNetwork.shortcode,"ethnetwork");
+          this.props.settingStore.setBlockchainNetwork(this.state.selectedWANNetwork.shortcode,"wannetwork");
           this.props.walletStore.GetAllTokenAssetByNetwork(this.props.settingStore.acctoken,() => null,() => null);
           if(needreload){
             // this.props.walletStore.resetHomeBeforeLoadWallet();
@@ -315,8 +325,8 @@ class Settings extends Component {
     // listitem.name == "Currency" ? ()=> this._showhideCurrencyPicker() : !isNullOrEmpty(listitem.Route) ? ()=> this.props.navigation.navigate(listitem.Route) : null
     if(listitem.name  == "Currency"){
       this._showhideCurrencyPicker();
-    }else if(listitem.name  == "Network"){
-      this._showhideNetworkPicker();
+    }else if(listitem.name  == "ETHNetwork" || listitem.name  == "WANNetwork"){
+      this._showhideNetworkPicker(listitem.name);
     }else if(listitem.Route  == "RestoreWallet"){
     }else if(listitem.name  == "Language"){
       this._showhideLanguagePicker();
@@ -386,10 +396,16 @@ class Settings extends Component {
                   {listitem.name == "Language" && listitem.type == "custom" ? 
                   <Text style={styles.whitetext}>{intl.get('Language.' + this.props.languageStore.language)}</Text>
                   : null }
-                  {listitem.name == "Network" && listitem.type == "custom" ? 
+                  {listitem.name == "ETHNetwork" && listitem.type == "custom" ? 
                   <View style={styles.networkdotctn}>
-                    <View style={[styles.networkdot,{backgroundColor:this.state.selectedblockchainnetwork.color}]}></View>
-                    <Text style={[styles.whitetext,{color:this.state.selectedblockchainnetwork.color}]}>{this.state.selectedblockchainnetwork.name}</Text>
+                    <View style={[styles.networkdot,{backgroundColor:this.state.selectedETHNetwork.color}]}></View>
+                    <Text style={[styles.whitetext,{color:this.state.selectedETHNetwork.color}]}>{this.state.selectedETHNetwork.name}</Text>
+                  </View>
+                  : null }
+                  {listitem.name == "WANNetwork" && listitem.type == "custom" ? 
+                  <View style={styles.networkdotctn}>
+                    <View style={[styles.networkdot,{backgroundColor:this.state.selectedWANNetwork.color}]}></View>
+                    <Text style={[styles.whitetext,{color:this.state.selectedWANNetwork.color}]}>{this.state.selectedWANNetwork.name}</Text>
                   </View>
                   : null }
                 </TouchableOpacity>
@@ -408,9 +424,10 @@ class Settings extends Component {
     })
   }
   
-  _showhideNetworkPicker = ()=>{
+  _showhideNetworkPicker = (networktype)=>{
     this.setState({
-      showhidenetworkpicker:!this.state.showhidenetworkpicker
+      showhidenetworkpicker:!this.state.showhidenetworkpicker,
+      showhidenetworktype:networktype
     })
   }
 
@@ -463,11 +480,13 @@ class Settings extends Component {
     this.props.navigation.navigate("PinCode",{isfirsttime:false,changepincode:true,isverify:false})
   }
 
-  _setBlockchainNetwork = (network) =>{
+  _setBlockchainNetwork = (network,networktype) =>{
     this.setState({
-      selectedblockchainnetwork:network
+      // oldnetwork:network,
+      selectedETHNetwork:networktype == "ethnetwork" ? network : this.state.selectedETHNetwork,
+      selectedWANNetwork:networktype == "wannetwork" ? network : this.state.selectedWANNetwork
     },()=>{
-      this._showhideNetworkPicker();
+      this._showhideNetworkPicker("");
       this._updateStorageSetting(true);
     })
   }
@@ -516,18 +535,39 @@ class Settings extends Component {
             </Ripple>
           </View>
         }/> */}
-        <ReusedPicker title={intl.get('Settings.SelectNetwork')} isVisible={this.state.showhidenetworkpicker} onBackdropPress={()=> this._showhideNetworkPicker()}
-        onBackButtonPress={()=> this._showhideNetworkPicker()}
+        <ReusedPicker title={intl.get('Settings.SelectNetwork.ethnetwork')} isVisible={this.state.showhidenetworkpicker && this.state.showhidenetworktype == "ETHNetwork"} onBackdropPress={()=> this._showhideNetworkPicker("ETHNetwork")}
+        onBackButtonPress={()=> this._showhideNetworkPicker("ETHNetwork")}
         content={
           <View>
-            {networks_json.map((item,index)=>{
+            {networkList.filter(x => x.type == "ethnetwork").map((item,index)=>{
+              let islast = networkList.filter(x => x.type == "ethnetwork").length - 1 == index;
               return(
-                <Ripple key={index} style={styles.countrypickeritem} onPress={()=> this._setBlockchainNetwork(item)}>
+                <Ripple key={index} style={[styles.countrypickeritem,islast?{borderBottomColor:'transparent'}:null]} onPress={()=> this._setBlockchainNetwork(item,item.type)}>
                   <View style={styles.networkdotctn}>
                     <View style={[styles.networkdot,{backgroundColor:item.color}]}></View>
                     <Text style={[styles.countrypickertt,{color:item.color}]}>{item.name}</Text>
                   </View>
-                  {this.state.selectedblockchainnetwork.shortcode == item.shortcode ?
+                  {this.state.selectedETHNetwork.shortcode == item.shortcode ?
+                  <IoIcon name="md-checkmark" color="#fff" size={15} />
+                  : null }
+                </Ripple>
+              )
+            })}
+          </View>
+        } />
+        <ReusedPicker title={intl.get('Settings.SelectNetwork.wannetwork')} isVisible={this.state.showhidenetworkpicker && this.state.showhidenetworktype == "WANNetwork"} onBackdropPress={()=> this._showhideNetworkPicker("WANNetwork")}
+        onBackButtonPress={()=> this._showhideNetworkPicker("WANNetwork")}
+        content={
+          <View>
+            {networkList.filter(x => x.type == "wannetwork").map((item,index)=>{
+              let islast = networkList.filter(x => x.type == "wannetwork").length - 1 == index;
+              return(
+                <Ripple key={index} style={[styles.countrypickeritem,islast?{borderBottomColor:'transparent'}:null]} onPress={()=> this._setBlockchainNetwork(item,item.type)}>
+                  <View style={styles.networkdotctn}>
+                    <View style={[styles.networkdot,{backgroundColor:item.color}]}></View>
+                    <Text style={[styles.countrypickertt,{color:item.color}]}>{item.name}</Text>
+                  </View>
+                  {this.state.selectedWANNetwork.shortcode == item.shortcode ?
                   <IoIcon name="md-checkmark" color="#fff" size={15} />
                   : null }
                 </Ripple>
@@ -559,6 +599,16 @@ class Settings extends Component {
 export default Settings;  
 
 const styles = StyleSheet.create({
+  pickerheadertt:{
+    fontSize:14,
+    color:"#fff",
+    fontFamily:Config.boldtt
+  },
+  pickerheader:{
+    paddingHorizontal:20,
+    paddingVertical:15,
+    backgroundColor:Color.greyblue
+  },
   networkdot:{
     height:10,
     width:10,
@@ -571,7 +621,8 @@ const styles = StyleSheet.create({
   },
   countrypickertt:{
     fontSize:14,
-    color:"#fff"
+    color:"#fff",
+    fontFamily:Config.regulartt
   },
   countrypickeritem:{
     borderBottomWidth:1,
@@ -612,7 +663,7 @@ const styles = StyleSheet.create({
     color:"#fff",
     paddingVertical:20,
     paddingHorizontal:20,
-    fontFamily:Config.regulartt
+    fontFamily:Config.boldtt
   },
   sectionitem:{
     flexDirection:'row',

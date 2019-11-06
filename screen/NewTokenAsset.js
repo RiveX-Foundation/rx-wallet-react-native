@@ -62,9 +62,10 @@ class NewTokenAsset extends Component {
     });
   }
 
-  _addTokenAssetToWallet = (tokenasset) =>{
+  _addTokenAssetToWallet = async(tokenasset) =>{
     tokenasset = toJS(tokenasset);
-    if(this.state.selectedWallet.tokenassetlist.some(x => x.AssetCode.toUpperCase() == tokenasset.AssetCode.toUpperCase() && x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode)){
+    // if(this.state.selectedWallet.tokenassetlist.some(x => x.AssetCode.toUpperCase() == tokenasset.AssetCode.toUpperCase() && x.Network == this.props.settingStore.oldnetwork.shortcode)){
+    if(this.state.selectedWallet.tokenassetlist.some(x => x.AssetCode.toUpperCase() == tokenasset.AssetCode.toUpperCase())){
       console.log("already have")
       showMessage({
         message: intl.get('Alert.TokenAssetAlreadyExist'),
@@ -72,10 +73,14 @@ class NewTokenAsset extends Component {
         icon:"warning",
       });
     }else{
-      // console.log("dont have",this.state.selectedWallet.isCloud)
+      var derivepath = this.state.selectedWallet.derivepath;
+      var seed = this.state.selectedWallet.seedphase;
+      var walletkey = await this.props.walletStore.GenerateBIP39Address(derivepath + "0", seed);
+      tokenasset.PrivateAddress = walletkey.privateaddress;
+      tokenasset.PublicAddress = walletkey.publicaddress;
       if(this.state.selectedWallet.isCloud){
         this.screenloader.show();
-        this.props.walletStore.InsertTokenAssetToCloudWallet(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,tokenasset.AssetCode.toUpperCase(),(response)=>{
+        this.props.walletStore.InsertTokenAssetToCloudWallet(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,[tokenasset],(response)=>{
           this.screenloader.hide();
           console.log(response);
           if(response.status == 200){

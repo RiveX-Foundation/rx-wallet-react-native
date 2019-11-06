@@ -11,6 +11,7 @@ import {showMessage} from "react-native-flash-message";
 import { withNavigation } from 'react-navigation';
 import walletStore from '../stores/WalletStore'
 import intl from 'react-intl-universal';
+import { ethnetwork,wannetwork } from '../libs/network'
 
 var QRCode = require('@remobile/react-native-qrcode-local-image');
 const options_android = {
@@ -44,6 +45,9 @@ class SettingStore {
     code:"",
     enable:false
   }
+  @observable selectedBlockchainNetwork = {}
+  @observable selectedETHNetwork = {}
+  @observable selectedWANNetwork = {}
   @observable selectedBlockchainNetwork = {}
   @observable convertrate = 1.34; // USD Price
   @observable openOffline = ()=> null;
@@ -97,8 +101,14 @@ class SettingStore {
     }
   }
 
-  @action setBlockchainNetwork(network){
-    this.selectedBlockchainNetwork = network;
+  @action setBlockchainNetwork(networkcode,networktype){
+    // this.selectedBlockchainNetwork = network;
+    if(networktype == "ethnetwork"){
+      this.selectedETHNetwork = ethnetwork.find(x => x.shortcode == networkcode);
+    }
+    if(networktype == "wannetwork"){
+      this.selectedWANNetwork = wannetwork.find(x => x.shortcode == networkcode);
+    }
   }
   
   @action setEnableNotification(status){

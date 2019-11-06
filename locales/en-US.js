@@ -37,6 +37,10 @@ const en_US = {
     "Settings.SelectLanguage":"Select Language",
     "Settings.TransactionVerification":"Transaction Verification",
     "Settings.SelectedVerification":"{total} Selected",
+    "Settings.SelectNetwork.wannetwork":"WAN Network",
+    "Settings.SelectNetwork.ethnetwork":"ETH Network",
+    "Settings.ETHNetwork":"ETH Network",
+    "Settings.WANNetwork":"WAN Network",
     "Scurity.TransactionVerification.Notice":"You can select up to {total} method to verify your transaction.",
 
     //Security

@@ -63,7 +63,7 @@ class Home extends Component {
   }
 
   componentDidMount(){
-    // console.log(JSON.stringify(this.props.settingStore.selectedBlockchainNetwork));
+    // console.log(JSON.stringify(this.props.settingStore.oldnetwork));
     this._getTokenSparkLineByAssetCode();
     this.props.settingStore.setOffline(this._openOffline);
     this.props.walletStore.setHomeBeforeLoadWallet(this._resetHomeBeforeLoadWallet);
@@ -94,7 +94,7 @@ class Home extends Component {
 
   _GetPrimaryTokenAssetByNetwork = () =>{
     this.props.walletStore.GetPrimaryTokenAssetByNetwork(this.props.settingStore.acctoken,(response)=>{
-      // console.log("_GetPrimaryTokenAssetByNetwork", toJS(this.props.walletStore.primaryTokenAsset))
+      console.log("_GetPrimaryTokenAssetByNetwork", toJS(this.props.walletStore.primaryTokenAsset))
     },(response)=>{
       // console.log(response)
     })
@@ -183,7 +183,7 @@ class Home extends Component {
   }
 
   _setHomeSelectedWallet = (wallet) =>{
-    // console.log("_setHomeSelectedWallet", JSON.stringify(wallet));
+    // console.log("_setHomeSelectedWallet", wallet);
     this.setState({
       selectedWallet:wallet
     },()=> {
@@ -194,7 +194,8 @@ class Home extends Component {
         let pymaridMissingAsset = [];
         primaryTokenAssetResult.map((tokenitem,index)=>{
           if(this.state.selectedWallet.tokenassetlist.length > 0){
-            if(!this.state.selectedWallet.tokenassetlist.find(x => x.AssetCode.toUpperCase() == tokenitem.AssetCode.toUpperCase() && x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode)){
+            // if(!this.state.selectedWallet.tokenassetlist.find(x => x.AssetCode.toUpperCase() == tokenitem.AssetCode.toUpperCase() && x.Network == this.props.settingStore.oldnetwork.shortcode)){
+            if(!this.state.selectedWallet.tokenassetlist.find(x => x.AssetCode.toUpperCase() == tokenitem.AssetCode.toUpperCase())){
               pymaridMissingAsset.push(tokenitem);
             }
           }
@@ -242,18 +243,21 @@ class Home extends Component {
   //["#482841","#3F253D","#372239","#2A1D33"]
   _renderItems({item,index}){
     var settings = this.props.settingStore.settings;
+    // console.log("_renderItems", item)
     if(item.isLast){
-      return(
-        <TouchableOpacity style={styles.mywalletitemlast} activeOpacity={1} 
-          onPress={()=> 
-            this.state.mywalletlist.length == 0 ? 
-            this.props.navigation.navigate("NewWallet",{isFirsttime:this.state.mywalletlist.length == 0 ? true : false}) 
-            : 
-            this.props.navigation.navigate("NewTokenAsset",{selectedWallet:this.state.selectedWallet})}>
-          <AntIcon name="plus" color={Color.lightbluegreen} size={25} />
-          <Text style={styles.addnewtt}>{this.state.mywalletlist.length == 0 ? intl.get('Common.AddNewWallet').toUpperCase() : intl.get('Common.AddNewTokenAsset').toUpperCase()}</Text>
-        </TouchableOpacity> 
-      )
+      if(!isNullOrEmpty(this.state.selectedWallet.seedphase)){
+        return(
+          <TouchableOpacity style={styles.mywalletitemlast} activeOpacity={1} 
+            onPress={()=> 
+              this.state.mywalletlist.length == 0 ? 
+              this.props.navigation.navigate("NewWallet",{isFirsttime:this.state.mywalletlist.length == 0 ? true : false}) 
+              : 
+              this.props.navigation.navigate("NewTokenAsset",{selectedWallet:this.state.selectedWallet})}>
+            <AntIcon name="plus" color={Color.lightbluegreen} size={25} />
+            <Text style={styles.addnewtt}>{this.state.mywalletlist.length == 0 ? intl.get('Common.AddNewWallet').toUpperCase() : intl.get('Common.AddNewTokenAsset').toUpperCase()}</Text>
+          </TouchableOpacity> 
+        )
+      }
     }else{
       item.AssetCode = item.AssetCode.toUpperCase();
       return(
@@ -270,7 +274,7 @@ class Home extends Component {
                 </View>
                 <View style={[styles.leftright,{marginTop:3}]}>
                   <Text style={styles.wallettype}>{item.Name}</Text>
-                  <Text style={styles.totalcurrency}>${numberWithCommas(parseFloat(!isNaN(this.props.settingStore.convertrate * item.TokenBalance) ? this.props.settingStore.convertrate * item.TokenBalance : 0),true)}</Text>
+                  <Text style={styles.totalcurrency}>${numberWithCommas(parseFloat(!isNaN(item.TokenPrice * item.TokenBalance) ? item.TokenPrice * item.TokenBalance : 0),true)}</Text>
                 </View>
               </View>
             </Ripple>
@@ -308,7 +312,8 @@ class Home extends Component {
       //   this._loadWallet();
       // })
       //get from walletlist, filter userid and network, left walletlist by current user
-      mywalletlist = walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id && x.network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
+      // mywalletlist = walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id && x.network == this.props.settingStore.oldnetwork.shortcode);
+      mywalletlist = walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id);
       this.props.walletStore.GetCloudWalletByUserId(this.props.settingStore.acctoken, async(response)=>{
         const mycloudwallet = response.wallet;
         console.log("mycloudwallet", mycloudwallet)
@@ -365,7 +370,7 @@ class Home extends Component {
     let TokenAssetsList = [];
     if(TokenAssets){
       TokenAssets.map((tokenasset,index)=>{
-        tokenasset.Network = this.props.settingStore.selectedBlockchainNetwork.shortcode;
+        // tokenasset.Network = this.props.settingStore.oldnetwork.shortcode;
         TokenAssetsList.push(tokenasset);
       })
     }
@@ -383,9 +388,10 @@ class Home extends Component {
         console.log("_loadWallet", walletlist)
         if(walletlist.length > 0){
           walletlist = walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id);
-          // walletlist = walletlist.filter(x => x.network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
+          // walletlist = walletlist.filter(x => x.network == this.props.settingStore.oldnetwork.shortcode);
             if(walletlist.length > 0){
               if(!isObjEmpty(toJS(this.state.selectedWallet))){
+                // console.log(toJS(this.state.selectedWallet))
                 this._setHomeSelectedWallet(walletlist.find(x => x.publicaddress == toJS(this.state.selectedWallet).publicaddress));
               }else{
                 const lastwalletvalue = await AsyncStorage.getItem('@lastwallet');
@@ -415,13 +421,13 @@ class Home extends Component {
               //   });
               // });
 
-              // const web3 = new Web3(this.props.settingStore.selectedBlockchainNetwork.infuraendpoint);
+              // const web3 = new Web3(this.props.settingStore.oldnetwork.infuraendpoint);
               // // Get ERC20 Token contract instance
-              // let contract = new web3.eth.Contract(abiArray, this.props.settingStore.selectedBlockchainNetwork.contractaddr);
+              // let contract = new web3.eth.Contract(abiArray, this.props.settingStore.oldnetwork.contractaddr);
               // walletlist.map(async(wallet,index) =>{
               //   // console.log(wallet);
               //   web3.eth.call({
-              //     to: this.props.settingStore.selectedBlockchainNetwork.contractaddr,
+              //     to: this.props.settingStore.oldnetwork.contractaddr,
               //     data: contract.methods.balanceOf(wallet.publicaddress).encodeABI()
               //   }).then(balance => {  
               //     balance = balance / (10**18);
@@ -437,71 +443,88 @@ class Home extends Component {
               // });
             }else{
               this._setHomeSelectedWallet({});
-              this.setState({
-                mywalletlist:[]
-              },()=>{
-                this.props.navigation.navigate("NewWallet",{isFirsttime:true});
-              })
+              this._emptyWallet();
             }
         }else{
-          this.props.navigation.navigate("NewWallet",{isFirsttime:true});
+          this._emptyWallet();
         }
       }else{ //totally no wallet
-        this.props.navigation.navigate("NewWallet",{isFirsttime:true});
+        this._emptyWallet();
       }
     } catch(e) {
       // error reading value
     }
   }
 
-  _loadTokenAssetList = () =>{
+  _emptyWallet = () =>{
     this.setState({
-      refreshing:false,
-      totalworthcurrency:0
+      mywalletlist:[],
+      selectedWallet:{}
     },()=>{
-      // console.log("_loadTokenAssetList" , this.state.selectedWallet)
-      if(!isObjEmpty(this.state.selectedWallet)){
-        let totalworthcurrency = 0;
-        const web3 = new Web3(this.props.settingStore.selectedBlockchainNetwork.infuraendpoint);
-        let selectedTokenAssetList = this.state.selectedWallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
-        selectedTokenAssetList.map(async(tokenitem,index) =>{
-          // console.log("tokenitem.TokenType" , tokenitem.TokenType)
-          if(tokenitem.TokenType == "eth"){
-            web3.eth.getBalance(this.state.selectedWallet.publicaddress).then(balance => { 
-              balance = balance / (10**18);
-              tokenitem.TokenBalance = balance;
-              // console.log("ETH >> ", tokenitem.AssetCode , tokenitem.TokenBalance)
-              //tokenitem.CurrentPrice
-              totalworthcurrency += (this.props.settingStore.convertrate * balance);
-              this.setState({
-                selectedWallet: this.state.selectedWallet,
-                // totalworthcurrency:this.state.totalworthcurrency + (this.props.settingStore.convertrate * balance)
-              });
-            })
-          }else{
-            var TokenInfo = tokenitem.TokenInfoList.find(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
-            TokenInfo = toJS(TokenInfo);
-            var tokenAbiArray = JSON.parse(TokenInfo.AbiArray);
-            // Get ERC20 Token contract instance
-            let contract = new web3.eth.Contract(tokenAbiArray, TokenInfo.ContractAddress);
-            web3.eth.call({
-              to: !isNullOrEmpty(TokenInfo.ContractAddress) ? TokenInfo.ContractAddress : null,
-              data: contract.methods.balanceOf(this.state.selectedWallet.publicaddress).encodeABI()
-            }).then(balance => {  
-              balance = balance / (10**18);
-              tokenitem.TokenBalance = !isNaN(balance) ? balance : 0;
-              totalworthcurrency += (this.props.settingStore.convertrate * balance);
-              this.setState({
-                selectedWallet: this.state.selectedWallet,
-                // totalworthcurrency:this.state.totalworthcurrency + (this.props.settingStore.convertrate * balance)
-              });
-            });
-          }
-          // console.log("totalworthcurrency", totalworthcurrency)
-        });
-        
-      }
+      this.props.navigation.navigate("NewWallet",{isFirsttime:true});
     })
+  }
+
+  // _loadTokenAssetList = () =>{
+  //   this.setState({
+  //     refreshing:false,
+  //     totalworthcurrency:0
+  //   },()=>{
+  //     // console.log("_loadTokenAssetList" , this.state.selectedWallet)
+  //     if(!isObjEmpty(this.state.selectedWallet)){
+  //       let totalworthcurrency = 0;
+  //       const web3 = new Web3(this.props.settingStore.oldnetwork.infuraendpoint);
+  //       let selectedTokenAssetList = this.state.selectedWallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
+  //       selectedTokenAssetList.map(async(tokenitem,index) =>{
+  //         // console.log("tokenitem.TokenType" , tokenitem.TokenType)
+  //         if(tokenitem.TokenType == "eth"){
+  //           web3.eth.getBalance(this.state.selectedWallet.publicaddress).then(balance => { 
+  //             balance = balance / (10**18);
+  //             tokenitem.TokenBalance = balance;
+  //             // console.log("ETH >> ", tokenitem.AssetCode , tokenitem.TokenBalance)
+  //             //tokenitem.CurrentPrice
+  //             totalworthcurrency += (this.props.settingStore.convertrate * balance);
+  //             this.setState({
+  //               selectedWallet: this.state.selectedWallet,
+  //               // totalworthcurrency:this.state.totalworthcurrency + (this.props.settingStore.convertrate * balance)
+  //             });
+  //           })
+  //         }else{
+  //           var TokenInfo = tokenitem.TokenInfoList.find(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
+  //           TokenInfo = toJS(TokenInfo);
+  //           var tokenAbiArray = JSON.parse(TokenInfo.AbiArray);
+  //           // Get ERC20 Token contract instance
+  //           let contract = new web3.eth.Contract(tokenAbiArray, TokenInfo.ContractAddress);
+  //           web3.eth.call({
+  //             to: !isNullOrEmpty(TokenInfo.ContractAddress) ? TokenInfo.ContractAddress : null,
+  //             data: contract.methods.balanceOf(this.state.selectedWallet.publicaddress).encodeABI()
+  //           }).then(balance => {  
+  //             balance = balance / (10**18);
+  //             tokenitem.TokenBalance = !isNaN(balance) ? balance : 0;
+  //             totalworthcurrency += (this.props.settingStore.convertrate * balance);
+  //             this.setState({
+  //               selectedWallet: this.state.selectedWallet,
+  //               // totalworthcurrency:this.state.totalworthcurrency + (this.props.settingStore.convertrate * balance)
+  //             });
+  //           });
+  //         }
+  //         // console.log("totalworthcurrency", totalworthcurrency)
+  //       });
+        
+  //     }
+  //   })
+  // }
+
+  _loadTokenAssetList = () =>{
+    if(!isObjEmpty(this.state.selectedWallet)){
+      this.props.walletStore.loadTokenAssetList(this.state.selectedWallet).then((value) =>{
+        // console.log("_loadTokenAssetList", value)
+        this.setState({
+          refreshing:false,
+          selectedWallet:value
+        })
+      })
+    }
   }
 
   _showhideDropDownMenu = (isShow,type,filtername) =>{
@@ -540,17 +563,22 @@ class Home extends Component {
   }
 
   _getTotalWorth(){
+    // var totalworth = 0;
+    // if(!isObjEmpty(this.state.selectedWallet)){
+    //   let tokenassetlist = toJS(this.state.selectedWallet.tokenassetlist);
+    //   tokenassetlist = tokenassetlist.filter(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
+    //   if(tokenassetlist.length > 0){
+    //     tokenassetlist.map((asset,index)=>{
+    //       totalworth += asset.TokenBalance;
+    //     })
+    //   }
+    // }
+    // return `$${numberWithCommas(parseFloat(!isNaN(this.props.settingStore.convertrate * totalworth) ? this.props.settingStore.convertrate * totalworth : 0),true)}`;
     var totalworth = 0;
     if(!isObjEmpty(this.state.selectedWallet)){
-      let tokenassetlist = toJS(this.state.selectedWallet.tokenassetlist);
-      tokenassetlist = tokenassetlist.filter(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
-      if(tokenassetlist.length > 0){
-        tokenassetlist.map((asset,index)=>{
-          totalworth += asset.TokenBalance;
-        })
-      }
+      totalworth = this.state.selectedWallet.totalassetworth;
     }
-    return `$${numberWithCommas(parseFloat(!isNaN(this.props.settingStore.convertrate * totalworth) ? this.props.settingStore.convertrate * totalworth : 0),true)}`;
+    return `$${numberWithCommas(parseFloat(!isNaN(totalworth) ? totalworth : 0),true)}`;
   }
 
   //rgb(134, 65, 244)
@@ -629,7 +657,8 @@ class Home extends Component {
             {!isObjEmpty(this.state.selectedWallet) ?
             <FlatList
               // data={[...this.state.mywalletlist,{isLast:true}]}
-              data={[...this.state.selectedWallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode),{isLast:true}]}
+              // data={[...this.state.selectedWallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.oldnetwork.shortcode),{isLast:true}]}
+              data={[...this.state.selectedWallet.tokenassetlist,{isLast:true}]}
               keyExtractor={(item,index) => index.toString()}
               renderItem={this._renderItems.bind(this)}
               contentContainerStyle={styles.mywalletlistctn}
@@ -641,7 +670,7 @@ class Home extends Component {
                 <AntIcon name="plus" color={Color.lightbluegreen} size={25} />
                 <Text style={styles.addnewtt}>{this.state.mywalletlist.length == 0 ? intl.get('Common.AddNewWallet').toUpperCase() : intl.get('Common.AddNewTokenAsset').toUpperCase()}</Text>
               </TouchableOpacity>
-            </View>  
+            </View> 
             }
             {/* <View style={{flex:1,justifyContent:"center"}}>
               <Carousel 

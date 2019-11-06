@@ -125,7 +125,7 @@ class Send extends Component {
   _onProceedSuccess = () =>{
     this.screenloader.show();
     if(this.state.selectedWallet.wallettype == "Shared"){
-      this.props.walletStore.createMultiSigTransaction(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,this.state.recipientaddress,parseFloat(this.state.setamount),(response)=>{
+      this.props.walletStore.createMultiSigTransaction(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,this.state.recipientaddress,parseFloat(this.state.setamount),this.state.selectedToken,(response)=>{
         clearInterval(this.otpcountdown);
         this.sendtab.setPage(3);
         this.screenloader.hide();
@@ -413,7 +413,7 @@ class Send extends Component {
                 <KeyboardAvoidingView style={styles.flexgrow}>
                   <View style={styles.authoctn}>
                     <Text style={styles.authott}>{intl.get('TrxDetail.From')}</Text>
-                    <Text style={styles.authovalue} ellipsizeMode={'tail'} numberOfLines={1}>{this.state.selectedWallet.publicaddress}</Text>
+                    <Text style={styles.authovalue} ellipsizeMode={'tail'} numberOfLines={1}>{this.state.selectedToken.PublicAddress}</Text>
                   </View>
                   <View style={styles.authoctn}>
                     <Text style={styles.authott}>{intl.get('TrxDetail.To')}</Text>

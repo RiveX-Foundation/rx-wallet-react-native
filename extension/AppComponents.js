@@ -93,7 +93,7 @@ export class CountryPickerItem extends PureComponent {
 
 export class CurrencyPicker extends Component{
   renderItem({item,index}){
-    console.log(item)
+    // console.log(item)
     return(
       <TouchableOpacity style={styles.countrypickeritem} onPress={()=> this.props.onSelect(item.currency_name)}>
         <Text style={styles.countrypickertt}>{`${intl.get('Country.' + item.countrycode)} (${item.currency_name})`}</Text>
@@ -231,11 +231,11 @@ export class TopHeader extends Component{
         :
           <Text style={styles.topheadertt}>{this.props.title}</Text>
         }
-        {this.props.addNetwork ?
-        <Text style={[styles.topheadertt,{color:this.props.settingStore.selectedBlockchainNetwork.color}]}>
-          {` - ${this.props.settingStore.selectedBlockchainNetwork.name}`}
+        {/* {this.props.addNetwork ?
+        <Text style={[styles.topheadertt,{color:this.props.settingStore.oldnetwork.color}]}>
+          {`- (${this.props.settingStore.oldnetwork.type == "ethnetwork" ? "ETH" : "WAN"}) ${this.props.settingStore.oldnetwork.name}`}
         </Text>
-        : null}
+        : null} */}
         {this.props.ishome ?
         <TouchableOpacity style={[styles.headericon,{position:'relative'}]} onPress={()=> this.props.navigation.navigate("ManageWallet",{fromHome:true})}>
             <RiveIcon name={"wallet-menu"} color={Color.lightbluegreen} size={19} />

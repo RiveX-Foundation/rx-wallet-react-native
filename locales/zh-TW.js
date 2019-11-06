@@ -37,6 +37,10 @@ const zh_TW = {
      "Settings.SelectLanguage":"選擇語言",
      "Settings.TransactionVerification":"交易驗證",
      "Settings.SelectedVerification":"已選擇{total}種",
+     "Settings.SelectNetwork.wannetwork":"WAN 網絡",
+     "Settings.SelectNetwork.ethnetwork":"ETH 網絡",
+     "Settings.ETHNetwork":"ETH 網絡",
+     "Settings.WANNetwork":"WAN 網絡",
      "Scurity.TransactionVerification.Notice":"您可以選擇最多{total}種來驗證您的交易。",
     
     //Security

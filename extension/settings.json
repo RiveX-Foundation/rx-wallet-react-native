@@ -8,10 +8,12 @@
         "name":"ManageWallets",
         "type":"arrow",
         "Route":"ManageWallet"
-    },{
-        "name":"Network",
-        "type":"custom"
-    },{
+    },
+    // {
+    //     "name":"Network",
+    //     "type":"custom"
+    // },
+    {
         "key":"notification",
         "name":"Notification",
         "type":"toggle"
@@ -28,6 +30,18 @@
     //     "Route":"RestoreWallet"
     // }
 ]
+},{
+    "title":"Network",
+    "list":[
+        {
+            "name":"ETHNetwork",
+            "type":"custom"
+        },
+        {
+            "name":"WANNetwork",
+            "type":"custom"
+        }
+    ]
 },{
     "title":"Security",
     "list":[

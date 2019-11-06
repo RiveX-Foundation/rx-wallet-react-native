@@ -193,7 +193,7 @@ class SharedWallet extends Component {
     this.props.walletStore.basicCompleteSave = (wallet) =>{
       this.props.walletStore.createMultiSigWallet(this.props.settingStore.acctoken,wallet,(response)=>{
         this.screenloader.hide();
-        // console.log("_presetBasicCompleteSave", response);
+        console.log("_presetBasicCompleteSave", response);
         if(response.status == 200){
           this.props.walletStore.saveETHWalletToStorage(wallet,()=>{
             // console.log("save this" , wallet);

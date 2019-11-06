@@ -36,7 +36,8 @@ class Receive extends Component {
       currentindex:0,
       setamount:"0",
       convertrate:43,
-      selectedWallet:{}
+      selectedWallet:{},
+      selectedToken:{},
     }
   }
 
@@ -44,7 +45,8 @@ class Receive extends Component {
     const {params} = this.props.navigation.state;
     this.setState({
       startanimate:true,
-      selectedWallet:params.selectedWallet
+      selectedWallet:params.selectedWallet,
+      selectedToken:params.selectedToken,
     });
   }
 
@@ -132,14 +134,14 @@ class Receive extends Component {
                   {/* <QRCode content='ABCDEFG' codeStyle='circle' size={220}
                     linearGradient={['#3D3D7D','#494FAC']} gradientDirection={[0,170,0,0]}/> */}
                   <View style={styles.qrcodectn}>
-                    <QRCode value={this.state.selectedWallet.publicaddress} size={180} color={"#4954AE"} />
+                    <QRCode value={this.state.selectedToken.PublicAddress} size={180} color={"#4954AE"} />
                   </View>
-                    <Text style={styles.addresskey}>{this.state.selectedWallet.publicaddress}</Text>
+                    <Text style={styles.addresskey}>{this.state.selectedToken.PublicAddress}</Text>
                 </LinearGradient>
               </View>
               <View style={styles.bottomnavbtnctn}>
                 <View style={styles.bottomnavinner}>
-                  <Ripple style={styles.bottomnavbtn}  onPress={()=> this.props.settingStore.copytoclipboard(this.state.selectedWallet.publicaddress)}>
+                  <Ripple style={styles.bottomnavbtn}  onPress={()=> this.props.settingStore.copytoclipboard(this.state.selectedToken.PublicAddress)}>
                     <RiveIcon name="copy" color={"#fff"} size={22} />
                   </Ripple>
                   <Text style={styles.whitelabel}>{intl.get('Common.COPY')}</Text>
@@ -151,7 +153,7 @@ class Receive extends Component {
                   <Text style={styles.whitelabel}>SET AMOUNT</Text>
                 </Ripple> */}
                 <View style={styles.bottomnavinner}>
-                  <Ripple style={styles.bottomnavbtn}  onPress={()=> this.props.settingStore.onShareContent(this.state.selectedWallet.publicaddress)}>
+                  <Ripple style={styles.bottomnavbtn}  onPress={()=> this.props.settingStore.onShareContent(this.state.selectedToken.PublicAddress)}>
                     <RiveIcon name="share" color={"#fff"} size={22} />
                   </Ripple>
                   <Text style={styles.whitelabel}>{intl.get('Common.SHARE')}</Text>

@@ -100,42 +100,67 @@ class ManageWallet extends Component {
     }
   }
 
+  // _loadWallet = () => {
+  //   let filterwalletList = this.props.walletStore.walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id);
+  //   // filterwalletList = filterwalletList.filter(x => x.network == this.props.settingStore.oldnetwork.shortcode);
+  //   if(filterwalletList.length > 0){
+  //     const web3 = new Web3(this.props.settingStore.oldnetwork.infuraendpoint);
+  //     filterwalletList.map((wallet,index)=>{
+  //       wallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.oldnetwork.shortcode).map(async(tokenitem,index) =>{
+  //         if(tokenitem.TokenType == "eth"){
+  //           web3.eth.getBalance(wallet.publicaddress).then(balance => { 
+  //             balance = balance / (10**18);
+  //             tokenitem.TokenBalance = balance;
+  //             this.setState({
+  //               totalworthprice:this.state.totalworthprice.concat(balance)
+  //             })
+  //           })
+  //         }else{
+  //           var TokenInfo = tokenitem.TokenInfoList.find(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
+  //           var tokenAbiArray = JSON.parse(TokenInfo.AbiArray);
+  //           // Get ERC20 Token contract instance
+  //           let contract = new web3.eth.Contract(tokenAbiArray, TokenInfo.ContractAddress);
+  //           web3.eth.call({
+  //             to: !isNullOrEmpty(TokenInfo.ContractAddress) ? TokenInfo.ContractAddress : null,
+  //             data: contract.methods.balanceOf(wallet.publicaddress).encodeABI()
+  //           }).then(balance => {  
+  //             balance = balance / (10**18);
+  //             tokenitem.TokenBalance = balance;
+  //             this.setState({
+  //               totalworthprice:this.state.totalworthprice.concat(balance)
+  //             })
+  //           });
+  //         }
+  //       });
+  //     });
+  //   }
+  //   this.setState({
+  //     walletList:filterwalletList
+  //   })
+  // }
+
   _loadWallet = () => {
-    let filterwalletList = this.props.walletStore.walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id);
-    // filterwalletList = filterwalletList.filter(x => x.network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
-    if(filterwalletList.length > 0){
-      const web3 = new Web3(this.props.settingStore.selectedBlockchainNetwork.infuraendpoint);
-      filterwalletList.map((wallet,index)=>{
-        wallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode).map(async(tokenitem,index) =>{
-          if(tokenitem.TokenType == "eth"){
-            web3.eth.getBalance(wallet.publicaddress).then(balance => { 
-              balance = balance / (10**18);
-              tokenitem.TokenBalance = balance;
-              this.setState({
-                totalworthprice:this.state.totalworthprice.concat(balance)
-              })
-            })
-          }else{
-            var TokenInfo = tokenitem.TokenInfoList.find(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
-            var tokenAbiArray = JSON.parse(TokenInfo.AbiArray);
-            // Get ERC20 Token contract instance
-            let contract = new web3.eth.Contract(tokenAbiArray, TokenInfo.ContractAddress);
-            web3.eth.call({
-              to: !isNullOrEmpty(TokenInfo.ContractAddress) ? TokenInfo.ContractAddress : null,
-              data: contract.methods.balanceOf(wallet.publicaddress).encodeABI()
-            }).then(balance => {  
-              balance = balance / (10**18);
-              tokenitem.TokenBalance = balance;
-              this.setState({
-                totalworthprice:this.state.totalworthprice.concat(balance)
-              })
-            });
-          }
-        });
-      });
-    }
+    let newFilterList = [];
+    let filterwalletList = toJS(this.props.walletStore.walletlist).filter(x => x.userid == this.props.settingStore.accinfo.Id);
     this.setState({
       walletList:filterwalletList
+    },()=>{
+      if(filterwalletList.length > 0){
+        filterwalletList.map((wallet,index)=>{
+          if(wallet.tokenassetlist.length == 0){
+            newFilterList.push(wallet);
+          }else{
+            this.props.walletStore.loadTokenAssetList(wallet).then((value) =>{
+              newFilterList.push(value);
+              if(index == filterwalletList.length - 1){
+                this.setState({
+                  walletList:newFilterList
+                })
+              }
+            })
+          }
+        });
+      }
     })
   }
 
@@ -147,19 +172,18 @@ class ManageWallet extends Component {
   }
 
   _getTotalWorth(wallet){
-    var totalworth = 0;
-    if(!isObjEmpty(wallet)){
-      wallet.tokenassetlist = wallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
-      if(wallet.tokenassetlist.length > 0){
-        wallet.tokenassetlist.map((asset,index)=>{
-          totalworth += asset.TokenBalance;
-        })
-      }
-    }
-    return `$${numberWithCommas(parseFloat(!isNaN(this.props.settingStore.convertrate * totalworth) ? this.props.settingStore.convertrate * totalworth : 0),true)}`;
+    // var totalworth = 0;
+    // if(!isObjEmpty(wallet)){
+    //   wallet.tokenassetlist = wallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
+    //   if(wallet.tokenassetlist.length > 0){
+    //     wallet.tokenassetlist.map((asset,index)=>{
+    //       totalworth += asset.TokenBalance;
+    //     })
+    //   }
+    // }
+    // return `$${numberWithCommas(parseFloat(!isNaN(this.props.settingStore.convertrate * totalworth) ? this.props.settingStore.convertrate * totalworth : 0),true)}`;
+    return `$${numberWithCommas(parseFloat(!isNaN(wallet.totalassetworth) ? wallet.totalassetworth : 0),true)}`;
   }
-
-
 
   renderItem({item,index}){
     return(
@@ -272,8 +296,12 @@ class ManageWallet extends Component {
     },async()=>{
       try {
         await AsyncStorage.setItem('@wallet', JSON.stringify(this.state.walletList)).then(()=>{
-          this.props.walletStore.setWallets(this.state.walletList);
-          this.props.walletStore.homeSelectedWallet(this.props.walletStore.walletlist[0]);
+          if(this.state.walletList.length > 0){
+            this.props.walletStore.setWallets(this.state.walletList);
+            this.props.walletStore.homeSelectedWallet(this.props.walletStore.walletlist[0]);
+          }else{
+            AsyncStorage.setItem('@lastwallet','');
+          }
           this.props.walletStore.reloadWallet();
           this._showhideRemoveModal();
           this.managewallettab.setPage(0);

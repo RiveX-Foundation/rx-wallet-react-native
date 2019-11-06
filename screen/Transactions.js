@@ -79,8 +79,9 @@ class Transactions extends Component {
   componentDidMount(){
     this._getTokenSparkLineByAssetCode();
     const {params} = this.props.navigation.state;
-    var TokenInfo = params.selectedToken.TokenInfoList.find(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
-    params.selectedWallet.tokenassetlist = params.selectedWallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
+    // var TokenInfo = params.selectedToken.TokenInfoList.find(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
+    var TokenInfo = params.selectedToken.TokenInfoList[0];
+    // params.selectedWallet.tokenassetlist = params.selectedWallet.tokenassetlist.filter(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
     this.setState({
       selectedWallet:params.selectedWallet,
       selectedToken:params.selectedToken,
@@ -156,15 +157,15 @@ class Transactions extends Component {
   _navigateAction = (name) =>{
     if(name == "Send"){
       //remember
-      if(this.state.selectedToken.TokenBalance == 0){
-        showMessage({
-          message: intl.get('Transaction.NotEnoughBalance'),
-          type: "warning",
-          icon:"warning",
-          // autoHide:false
-        });
-        return;
-      }
+      // if(this.state.selectedToken.TokenBalance == 0){
+      //   showMessage({
+      //     message: intl.get('Transaction.NotEnoughBalance'),
+      //     type: "warning",
+      //     icon:"warning",
+      //     // autoHide:false
+      //   });
+      //   return;
+      // }
       this.props.navigation.navigate("Send",{selectedWallet:this.state.selectedWallet,selectedToken:this.state.selectedToken,onRefresh:this._onRefresh})
     }else{
       this.props.navigation.navigate("Receive",{selectedWallet:this.state.selectedWallet,selectedToken:this.state.selectedToken})
@@ -177,34 +178,43 @@ class Transactions extends Component {
     this._reloadAssetBalance();
   }
 
+  // _reloadAssetBalance = () =>{
+  //   const web3 = new Web3(this.props.settingStore.oldnetwork.infuraendpoint);
+  //   if(this.state.selectedToken.TokenType == "eth"){
+  //     web3.eth.getBalance(this.state.selectedWallet.publicaddress).then(balance => { 
+  //       balance = balance / (10**18);
+  //       this.state.selectedToken.TokenBalance = balance;
+  //       // console.log("ETH >> ", this.state.selectedToken.AssetCode , this.state.selectedToken.TokenBalance)
+  //       this.setState({
+  //         selectedToken: this.state.selectedToken
+  //       });
+  //     })
+  //   }else{
+  //     var TokenInfo = this.state.selectedToken.TokenInfoList.find(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
+  //     var tokenAbiArray = JSON.parse(TokenInfo.AbiArray);
+  //     // Get ERC20 Token contract instance
+  //     let contract = new web3.eth.Contract(tokenAbiArray, TokenInfo.ContractAddress);
+  //     web3.eth.call({
+  //       to: !isNullOrEmpty(TokenInfo.ContractAddress) ? TokenInfo.ContractAddress : null,
+  //       data: contract.methods.balanceOf(this.state.selectedWallet.publicaddress).encodeABI()
+  //     }).then(balance => {  
+  //       balance = balance / (10**18);
+  //       this.state.selectedToken.TokenBalance = balance;
+  //       // console.log("OTHERS >> ", this.state.selectedToken.AssetCode , this.state.selectedToken.TokenBalance)
+  //       this.setState({
+  //         selectedToken: this.state.selectedToken
+  //       });
+  //     });
+  //   }
+  // }
+
   _reloadAssetBalance = () =>{
-    const web3 = new Web3(this.props.settingStore.selectedBlockchainNetwork.infuraendpoint);
-    if(this.state.selectedToken.TokenType == "eth"){
-      web3.eth.getBalance(this.state.selectedWallet.publicaddress).then(balance => { 
-        balance = balance / (10**18);
-        this.state.selectedToken.TokenBalance = balance;
-        // console.log("ETH >> ", this.state.selectedToken.AssetCode , this.state.selectedToken.TokenBalance)
-        this.setState({
-          selectedToken: this.state.selectedToken
-        });
+    this.props.walletStore.loadTokenAssetList(this.state.selectedWallet).then((value) =>{
+      this.setState({
+        selectedWallet:value,
+        selectedToken:value.find(x => x.TokenType == this.state.selectedToken.TokenType && x.AssetCode == this.state.selectedToken.AssetCode)
       })
-    }else{
-      var TokenInfo = this.state.selectedToken.TokenInfoList.find(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
-      var tokenAbiArray = JSON.parse(TokenInfo.AbiArray);
-      // Get ERC20 Token contract instance
-      let contract = new web3.eth.Contract(tokenAbiArray, TokenInfo.ContractAddress);
-      web3.eth.call({
-        to: !isNullOrEmpty(TokenInfo.ContractAddress) ? TokenInfo.ContractAddress : null,
-        data: contract.methods.balanceOf(this.state.selectedWallet.publicaddress).encodeABI()
-      }).then(balance => {  
-        balance = balance / (10**18);
-        this.state.selectedToken.TokenBalance = balance;
-        // console.log("OTHERS >> ", this.state.selectedToken.AssetCode , this.state.selectedToken.TokenBalance)
-        this.setState({
-          selectedToken: this.state.selectedToken
-        });
-      });
-    }
+    })
   }
 
   // blockHash: ""
@@ -245,7 +255,7 @@ class Transactions extends Component {
       })
     }else{
       this.props.walletStore.LoadTransactionByAddress(this.state.selectedToken.TokenType, this.state.selectedWallet.publicaddress,(response)=>{
-        this.props.walletStore.LoadMultiSigTransactionByAddress(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,(sigresponse)=>{
+        this.props.walletStore.LoadMultiSigTransactionByAddress(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,this.state.selectedToken,(sigresponse)=>{
           // console.log(response.trx);
           this.setState({
             refreshing:false,
@@ -280,7 +290,8 @@ class Transactions extends Component {
   
   _onchangeSelectedIndex = (response) =>{
     let index = response.position;
-    var TokenInfo = this.state.selectedWallet.tokenassetlist[index].TokenInfoList.find(x => x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
+    // var TokenInfo = this.state.selectedWallet.tokenassetlist[index].TokenInfoList.find(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
+    var TokenInfo = this.state.selectedWallet.tokenassetlist[index].TokenInfoList[0];
     this.setState({
       currentindex:index,
       selectedToken:this.state.selectedWallet.tokenassetlist[index],
@@ -288,6 +299,7 @@ class Transactions extends Component {
       fetchdone:false,
       isPrimary:TokenInfo.IsPrimary
     },()=>{
+      console.log("_onchangeSelectedIndex", this.state.selectedToken)
       this.LoadTransactionByAddress();
     });
   }
@@ -333,7 +345,8 @@ class Transactions extends Component {
           walletlist.map(async(wallet,index)=>{
             if(wallet.publicaddress == this.state.selectedWallet.publicaddress){
               // wallet.tokenassetlist = wallet.tokenassetlist.filter(x => x.AssetCode != this.state.selectedToken.AssetCode);
-              var deleteindex = wallet.tokenassetlist.findIndex(x => x.AssetCode === this.state.selectedToken.AssetCode && x.Network == this.props.settingStore.selectedBlockchainNetwork.shortcode);
+              // var deleteindex = wallet.tokenassetlist.findIndex(x => x.AssetCode === this.state.selectedToken.AssetCode && x.Network == this.props.settingStore.oldnetwork.shortcode);
+              var deleteindex = wallet.tokenassetlist.findIndex(x => x.PublicAddress === this.state.selectedToken.PublicAddress &&  x.AssetCode === this.state.selectedToken.AssetCode);
               wallet.tokenassetlist.splice(deleteindex,1);
               await AsyncStorage.setItem('@wallet', JSON.stringify(walletlist)).then(()=>{
                 showMessage({
