@@ -183,7 +183,7 @@ class Home extends Component {
   }
 
   _setHomeSelectedWallet = (wallet) =>{
-    // console.log("_setHomeSelectedWallet", wallet);
+    // console.log("_setHomeSelectedWallet", JSON.stringify(wallet))
     this.setState({
       selectedWallet:wallet
     },()=> {
@@ -202,7 +202,6 @@ class Home extends Component {
         });
         //if have missing asset insert to tokenassetlist
         if(pymaridMissingAsset.length > 0){
-          // console.log("_setHomeSelectedWallet", pymaridMissingAsset);
           this._UpdateWalletStorage(pymaridMissingAsset);
         }else{
           this._loadTokenAssetList();
@@ -395,8 +394,9 @@ class Home extends Component {
                 this._setHomeSelectedWallet(walletlist.find(x => x.publicaddress == toJS(this.state.selectedWallet).publicaddress));
               }else{
                 const lastwalletvalue = await AsyncStorage.getItem('@lastwallet');
-                if(lastwalletvalue != null){
+                if(!isNullOrEmpty(lastwalletvalue)){
                   let lastwallet = JSON.parse(lastwalletvalue);
+                  console.log("lastwallet", lastwallet)
                   this._setHomeSelectedWallet(lastwallet);
                 }else{
                   this._setHomeSelectedWallet(walletlist[0]);
@@ -517,13 +517,14 @@ class Home extends Component {
 
   _loadTokenAssetList = () =>{
     if(!isObjEmpty(this.state.selectedWallet)){
-      this.props.walletStore.loadTokenAssetList(this.state.selectedWallet).then((value) =>{
-        // console.log("_loadTokenAssetList", value)
-        this.setState({
-          refreshing:false,
-          selectedWallet:value
+      if(this.state.selectedWallet.tokenassetlist.length > 0){
+        this.props.walletStore.loadTokenAssetList(this.state.selectedWallet).then((value) =>{
+          this.setState({
+            refreshing:false,
+            selectedWallet:value
+          })
         })
-      })
+      }
     }
   }
 

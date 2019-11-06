@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { Color, Config, shuffle, DevivationPath,SensitiveInfo, sendToast, callApi, convertHexToDecimal } from '../extension/AppInit';
+import { Color, Config, shuffle, DevivationPath,SensitiveInfo, sendToast, callApi, convertHexToDecimal, isObjEmpty } from '../extension/AppInit';
 import HDKey from 'hdkey';
 const ethUtil = require('ethereumjs-util');
 import bip39 from 'react-native-bip39'
@@ -260,14 +260,6 @@ class WalletStore {
   }
 
   @action createETHAddress = async(accinfoId,newwalletname,seedval,totalowners,totalsignatures,wallettype, isCloud) =>{
-    if(seedval.split(" ").length != 12){
-      showMessage({
-        message: intl.get('Alert.InvalidLengthOfMnemonicePhrase'),
-        type: "warning",
-        icon:"warning"
-      });
-      return;
-    }
     // var hdkey = HDKey.fromMasterSeed(bip39.mnemonicToSeed(seedval));
     // const derivepath = DevivationPath.ETH;
     // const addrNode = hdkey.derive(derivepath);   
@@ -913,11 +905,11 @@ class WalletStore {
     //   if(token.AssetCode == assetcode && token.TokenType == tokentype) price = token.CurrentPrice;
     // });
     let selectedAsset = this.allTokenAsset.find(x => x.AssetCode.toLowerCase() == assetcode.toLowerCase() && x.TokenType.toLowerCase() == tokentype.toLowerCase());
-    return selectedAsset.CurrentPrice;
+    return !isObjEmpty(selectedAsset) ? selectedAsset.CurrentPrice : 0;
   }
 
   loadTokenAssetList = (selectedwallet) =>{
-    console.log(toJS(settingStore.selectedETHNetwork),toJS(settingStore.selectedWANNetwork))
+    iWanUtils._checkswitchnetwork(toJS(settingStore.selectedWANNetwork));
     return new Promise((resolve,reject) =>{
       let totalget = 0;
       let totalassetworth = 0;

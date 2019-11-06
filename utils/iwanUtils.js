@@ -6,6 +6,8 @@ const { wannetwork } = require('../libs/network');
 const EventEmitter = require('events').EventEmitter;
 class WsEvent extends EventEmitter {}
 import AsyncStorage from '@react-native-community/async-storage';
+import { observer, inject } from 'mobx-react';
+import { isNullOrEmpty, isObjEmpty } from '../extension/AppInit';
 
 const config = {
   //socketUrl: 'apitest.wanchain.org',
@@ -38,6 +40,7 @@ const CONN_OPTIONS = {
 
 const PENDING_REPONSE = {"error": "Websocket closed"};
 
+// @inject('settingStore')
 class iWanUtils{//extends WsInstance {
   constructor(apiKey, secretKey, option = {}) {
     //GET NETWORK SETTING
@@ -46,12 +49,29 @@ class iWanUtils{//extends WsInstance {
   }
 
   _getWanNetwork = async(apiKey, secretKey, option) =>{
-    var selectedwannetwork = await AsyncStorage.getItem('wannetwork');
-    if(selectedwannetwork == "" || selectedwannetwork == null){
-      selectedwannetwork = JSON.stringify(wannetwork[0]);
-      AsyncStorage.setItem("wannetwork",selectedwannetwork);
+    var selectedwannetwork = wannetwork[0];
+    const accinfo = await AsyncStorage.getItem('@accinfo');
+    if(!isNullOrEmpty(accinfo)){
+      let accinfodetail = JSON.parse(accinfo);
+      var allsettingslist = await AsyncStorage.getItem('@settings');
+      if(!isNullOrEmpty(allsettingslist)){
+        let allsettingsobj = JSON.parse(allsettingslist);
+        let mysetting = allsettingsobj.find(x => x.Id == accinfodetail.user.Id);
+        if(!isObjEmpty(mysetting)){
+          selectedwannetwork = wannetwork.find(x => x.shortcode == mysetting.wannetwork);
+        }
+      }
     }
-    selectedwannetwork = JSON.parse(selectedwannetwork);
+
+    console.log("_getWanNetwork", selectedwannetwork);
+
+    // var selectedwannetwork = await AsyncStorage.getItem('wannetwork');
+    // if(selectedwannetwork == "" || selectedwannetwork == null){
+    //   selectedwannetwork = JSON.stringify(wannetwork[0]);
+    //   AsyncStorage.setItem("wannetwork",selectedwannetwork);
+    // }
+    // selectedwannetwork = JSON.parse(selectedwannetwork);
+
     this.iWanKey = selectedwannetwork.iwankey;
     this.iWanSecret = selectedwannetwork.iwansecret;
 
@@ -71,7 +91,32 @@ class iWanUtils{//extends WsInstance {
         this.lockReconnect = false;
         this.functionDict = {};
         this.heartCheck();
-        // this.createWebSocket();
+        this.createWebSocket();
+    } else {
+        throw new Error('Should config \'APIKEY\' and \'SECRETKEY\'');
+    }
+  }
+
+  _checkswitchnetwork = (selectedwannetwork) =>{
+    this.iWanKey = selectedwannetwork.iwankey;
+    this.iWanSecret = selectedwannetwork.iwansecret;
+
+    this.intervalObj = null;
+    this.apiKey = this.iWanKey;
+    this.secretKey = this.iWanSecret;
+    this.events = new WsEvent();
+    this.option = Object.assign({url:selectedwannetwork.wsendpoint,port:selectedwannetwork.wsport,flag:config.apiFlag,version:config.apiVersion} ,{});
+    this.ws_url = 'wss://' + this.option.url + ':' + this.option.port;
+    if (this.option.flag) {
+        this.ws_url += '/' + this.option.flag;
+    }
+
+    if (this.apiKey) {
+        this.ws_url += '/' + this.option.version + '/' + this.apiKey;
+
+        this.lockReconnect = false;
+        this.functionDict = {};
+        this.createWebSocket();
     } else {
         throw new Error('Should config \'APIKEY\' and \'SECRETKEY\'');
     }

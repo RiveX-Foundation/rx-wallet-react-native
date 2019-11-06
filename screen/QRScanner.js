@@ -70,7 +70,7 @@ export default class QRScanner extends Component {
             }}
             // ratio={"1:1"}
             onGoogleVisionBarcodesDetected={({ barcodes }) => {
-              console.log(barcodes);
+              // console.log(barcodes);
               let code = barcodes[0];
               if(!this.state.isScandone && code.type == "QR_CODE"){
                 this.setState({

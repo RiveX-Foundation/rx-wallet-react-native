@@ -184,6 +184,14 @@ class ImportWallet extends Component {
   _onCompleteImport = () =>{
     this.props.walletStore.setSkipStore(false);
     if(this.state.restorecontenttype == "phrase"){
+      if(this.state.importfieldcontent.split(" ").length != 12){
+        showMessage({
+          message: intl.get('Alert.InvalidLengthOfMnemonicePhrase'),
+          type: "warning",
+          icon:"warning"
+        });
+        return;
+      }
       this.props.walletStore.createETHAddress(this.props.settingStore.accinfo.Id,this.state.newwalletname,this.state.importfieldcontent,0,0,"Basic",false);
     }else{
       this.props.walletStore.CreateETHAddressByPrivateKey(this.props.settingStore.accinfo.Id,this.state.newwalletname,this.state.importfieldcontent,0,0,"Basic",false);

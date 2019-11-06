@@ -295,12 +295,19 @@ class ManageWallet extends Component {
       walletList:this.state.walletList.filter(x => x != this.state.selectedRemoveWallet)
     },async()=>{
       try {
-        await AsyncStorage.setItem('@wallet', JSON.stringify(this.state.walletList)).then(()=>{
+        await AsyncStorage.setItem('@wallet', JSON.stringify(this.state.walletList)).then(async()=>{
           if(this.state.walletList.length > 0){
             this.props.walletStore.setWallets(this.state.walletList);
             this.props.walletStore.homeSelectedWallet(this.props.walletStore.walletlist[0]);
+            const lastwalletvalue = await AsyncStorage.getItem('@lastwallet');
+            if(!isNullOrEmpty(lastwalletvalue)){
+              let lastwallet = JSON.parse(lastwalletvalue);
+              if(this.state.selectedRemoveWallet.publicaddress == lastwallet.publicaddress){
+                await AsyncStorage.setItem('@lastwallet','');
+              }
+            }
           }else{
-            AsyncStorage.setItem('@lastwallet','');
+            await AsyncStorage.setItem('@lastwallet','');
           }
           this.props.walletStore.reloadWallet();
           this._showhideRemoveModal();
