@@ -26,6 +26,7 @@ import locales from '../locales';
 import { observer, inject } from 'mobx-react';
 import { toJS } from 'mobx';
 import {ethnetwork,wannetwork, networkList} from '../libs/network'
+import iWanUtils from '../utils/iwanUtils';
 
 @inject('walletStore')
 @inject('settingStore')
@@ -232,6 +233,11 @@ class Settings extends Component {
           this.props.walletStore.GetAllTokenAssetByNetwork(this.props.settingStore.acctoken,() => null,() => null);
           if(needreload){
             // this.props.walletStore.resetHomeBeforeLoadWallet();
+            try{
+              iWanUtils._checkswitchnetwork(toJS(this.props.settingStore.selectedWANNetwork));
+            }catch(e){
+              
+            }
             this.props.walletStore.reloadWallet();
             this._GetAllTokenAssetByNetwork();
             this._GetPrimaryTokenAssetByNetwork();

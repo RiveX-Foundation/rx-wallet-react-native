@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TransBar, TopHeader,ScreenLoader } from '../extension/AppComponents';
-import { Color, Config } from '../extension/AppInit';
+import { Color, Config, isObjEmpty } from '../extension/AppInit';
 import AccountInfoContext from '../context/AccountInfoContext'
 import IoIcon from 'react-native-vector-icons/Ionicons'
 import RiveIcon from '../extension/RiveIcon'
@@ -75,7 +75,7 @@ class TransactionDetail extends Component {
     }
     this.screenloader.show();
     this.props.walletStore.approveMultiSigTransaction(this.props.settingStore.acctoken,this.state.tranxLog.trxid,
-    this.state.selectedWallet,this.state.selectedToken,this.state.tranxLog.to,this.state.tranxLog.value,isexecute,(response)=>{
+    this.state.selectedWallet,this.state.selectedToken,this.state.tranxLog.to,this.state.tranxLog.value.toString(),isexecute,(response)=>{
       this.screenloader.hide();
       if(response.status == 200){
         let newsigners = {
@@ -127,10 +127,10 @@ class TransactionDetail extends Component {
         <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
           <TopHeader {...this.props} title={intl.get('TrxDetail.TRANSACTIONDETAILS')} isclosebtn/>
           <ScrollView contentContainerStyle={{paddingBottom:20}}>
-            {this.state.selectedWallet.wallettype == "Basic" ?
+            {!isObjEmpty(this.state.tranxLog) && this.state.selectedWallet.wallettype == "Basic" ?
             <TouchableOpacity activeOpacity={0.9} style={[styles.trxinfoctn,{flexDirection:'column',alignItems:'flex-start'}]}
             onPress={()=> this._goToEtherscan('tx',this.state.tranxLog.trxid)}>
-              <Text style={styles.trxinfott}>{intl.get('TrxDetail.TransactionID')}</Text>
+              <Text style={styles.trxinfott}>{intl.get('TrxDetail.Hash')}</Text>
               <View style={[styles.leftright,{width:'100%',marginTop:10}]}>
                 <Text style={[styles.trxinfovalue,{flex:1,textAlign:'left',marginRight:20}]}>{this.state.tranxLog.trxid}</Text>
                 <RiveIcon name="copy" color={"#fff"} size={22} onPress={()=> this.props.settingStore.copytoclipboard(this.state.tranxLog.trxid)}/>
@@ -144,10 +144,10 @@ class TransactionDetail extends Component {
               </View>
             </View>
             }
-            {this.state.selectedWallet.wallettype != "Shared" ?
+            {!isObjEmpty(this.state.tranxLog) && this.state.selectedWallet.wallettype != "Shared" ?
             <View style={styles.trxinfoctn}>
               <Text style={styles.trxinfott}>{intl.get('TrxDetail.Block')}</Text>
-              <Text style={styles.trxinfovalue}>{this.state.tranxLog.blockNumber}</Text>
+              <Text style={styles.trxinfovalue}>{this.state.tranxLog.block}</Text>
             </View>
             :null}
             <TouchableOpacity activeOpacity={0.9} style={[styles.trxinfoctn,{flexDirection:'column',alignItems:'flex-start'}]}
@@ -174,11 +174,12 @@ class TransactionDetail extends Component {
               <Text style={styles.trxinfott}>To</Text>
               <Text style={styles.trxinfovalue} ellipsizeMode={'tail'} numberOfLines={1}>{this.state.tranxLog.to}</Text>
             </View> */}
-            {this.state.selectedWallet.wallettype != "Shared" ?
+            {!isObjEmpty(this.state.tranxLog) && this.state.selectedWallet.wallettype != "Shared" ?
             <View style={styles.trxinfoctnbig}>
               <View style={[styles.trxinfoctn,styles.trxinfomix]}>
                 <Text style={styles.trxinfott}>{intl.get('TrxDetail.Amount')}</Text>
-                <Text style={styles.trxinfovalue}>{Web3.utils.fromWei(new Web3.utils.BN(this.state.tranxLog.value), 'ether')}</Text>
+                {/* <Text style={styles.trxinfovalue}>{Web3.utils.fromWei(new Web3.utils.BN(this.state.tranxLog.value), 'ether')}</Text> */}
+                <Text style={styles.trxinfovalue}>{this.state.tranxLog.value} {this.state.selectedToken.AssetCode}</Text>
               </View>
               <View style={[styles.trxinfoctn,styles.trxinfomix]}>
                 <Text style={styles.trxinfott}>{intl.get('TrxDetail.GasPrice')}</Text>
@@ -195,29 +196,31 @@ class TransactionDetail extends Component {
               <Text style={styles.trxinfovalue}>{this.state.tranxLog.value}</Text>
             </View>
             }
+            {this.state.selectedToken.TokenType != "wrc20" && this.state.selectedToken.TokenType != "wan" ?
             <View style={styles.trxinfoctn}>
               <Text style={styles.trxinfott}>{intl.get('TrxDetail.CreatedOn')}</Text>
               <Text style={styles.trxinfovalue}>{moment.unix(this.state.tranxLog.timestamp).format("YYYY-MM-DD hh:mm:ss A")}</Text>
             </View>
-            {this.state.selectedWallet.wallettype != "Shared" ?
+            : null }
+            {!isObjEmpty(this.state.tranxLog) && this.state.selectedWallet.wallettype != "Shared" ?
             <View style={styles.trxinfoctn}>
               <Text style={styles.trxinfott}>{intl.get('TrxDetail.Nounce')}</Text>
               <Text style={styles.trxinfovalue}>{this.state.tranxLog.nonce}</Text>
             </View>
             :null}
-            {this.state.selectedWallet.wallettype != "Shared" ?
+            {!isObjEmpty(this.state.tranxLog) && this.state.selectedWallet.wallettype != "Shared" ?
             <View style={styles.trxinfoctn}>
               <Text style={styles.trxinfott}>{intl.get('TrxDetail.Confirmation')}</Text>
               <Text style={styles.trxinfovalue}>{this.state.tranxLog.confirmation}</Text>
             </View>
             :null}
-            {this.state.selectedWallet.wallettype != "Shared" ?
+            {!isObjEmpty(this.state.tranxLog) && this.state.selectedWallet.wallettype != "Shared" ?
             <View style={styles.trxinfoctn}>
               <Text style={styles.trxinfott}>{intl.get('TrxDetail.Status')}</Text>
               <Text style={styles.trxinfovalue}>{this.state.tranxLog.status ? intl.get('Transaction.Status.' + this.state.tranxLog.status) : ""}</Text>
             </View>
             :null}
-            {this.state.selectedWallet.wallettype == "Shared" && !this.state.tranxLog.isblockchain ?
+            {!isObjEmpty(this.state.tranxLog) && this.state.selectedWallet.wallettype == "Shared" && !this.state.tranxLog.isblockchain ?
             <View style={[styles.trxinfoctnbig,{backgroundColor:'#3A2739'}]}>
               <View style={[styles.trxinfoctn,styles.trxinfomix]}>
                 <Text style={styles.trxinfott}>{intl.get('TrxDetail.TotalSigners')}</Text>
@@ -231,7 +234,7 @@ class TransactionDetail extends Component {
               />
             </View>
             : null }
-            {this.state.selectedWallet.wallettype == "Shared" && this.state.tranxLog.status == "pending" && this.state.tranxLog.action == "Approve" ?
+            {!isObjEmpty(this.state.tranxLog) && this.state.selectedWallet.wallettype == "Shared" && this.state.tranxLog.status == "pending" && this.state.tranxLog.action == "Approve" ?
             <View style={styles.approvebtnctn}>
               <Ripple style={styles.approvebtn} onPress={()=> this._approveTransaction()}>
                 <Text style={styles.whitelabel}>{intl.get('TrxDetail.Approve')}</Text>

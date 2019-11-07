@@ -21,7 +21,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { TransBar, TopHeader, NumberPad, BottomButton, QRImagePicker, ScreenLoader } from '../extension/AppComponents';
 import SecurityComponent from '../extension/SecurityComponent';
-import { Color, Config, isNullOrEmpty, numberWithCommas, SensitiveInfo } from '../extension/AppInit';
+import { Color, Config, isNullOrEmpty, numberWithCommas, SensitiveInfo, toFixedNoRounding } from '../extension/AppInit';
 // import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 // import EnIcon from 'react-native-vector-icons/Entypo'
 import IoIcon from 'react-native-vector-icons/Ionicons'
@@ -59,7 +59,10 @@ class Send extends Component {
       setamount:"0",
       convertrate:35.14,
       selectedWallet:{},
-      selectedToken:{}
+      selectedToken:{
+        AssetCode:"",
+        TokenType:""
+      }
       // requested2fa:false,
       // startresend2fa:false,
       // verifyOTP:"",
@@ -342,6 +345,18 @@ class Send extends Component {
     this.sendtab.setPage(2);
   }
 
+  formatCoinBalance(TokenBalance){
+    try{
+      TokenBalance = TokenBalance != undefined || TokenBalance != null ? TokenBalance : 0;
+      if(TokenBalance % 1 != 0){
+        return toFixedNoRounding(TokenBalance,4);
+      }
+      return toFixedNoRounding(TokenBalance,2);
+    }catch(e){
+      console.log("formatCoinBalance >> ", e)
+    }
+  }
+
   render() {
     var settings = this.props.settingStore.settings;
     return (
@@ -356,7 +371,7 @@ class Send extends Component {
                 
               </View> */}
               <Text style={styles.walletname}>{this.state.selectedWallet.walletname}</Text>
-                <Text style={styles.walletamount}>{this.state.selectedToken.TokenBalance} {this.state.selectedToken.AssetCode}</Text>
+                <Text style={styles.walletamount}>{this.formatCoinBalance(this.state.selectedToken.TokenBalance)} {this.state.selectedToken.AssetCode}</Text>
               <View style={[styles.flexgrow,styles.centerlize]}>
                 {/* <View style={styles.setamountctn}>
                   <TouchableOpacity style={styles.maximumbtn}>
@@ -365,7 +380,7 @@ class Send extends Component {
                 </View> */}
                 <View style={styles.receiveamountctn}>
                   <Text style={[styles.receiveamountcoin,this.state.setamount.length > 13 ?{fontSize:24,marginTop:0}: null]}>{`${this.state.setamount} ${this.state.selectedToken.AssetCode}`}</Text>
-                  <Text style={styles.receiveamountprice}>{`$${numberWithCommas(parseFloat(this.state.setamount) * (this.props.settingStore.settings.currency == "USD" ? this.props.settingStore.convertrate : this.props.settingStore.convertrate * 4),true)} ${this.props.settingStore.settings.currency}`}</Text>
+                  <Text style={styles.receiveamountprice}>{`$${numberWithCommas(parseFloat(this.state.setamount) * this.props.walletStore.getTokenPrice(this.state.selectedToken.AssetCode,this.state.selectedToken.TokenType),true)} ${this.props.settingStore.settings.currency}`}</Text>
                   {/* <RiveIcon name="exchange" color={Color.lightbluegreen} size={20} style={styles.exchangebtn} /> */}
                 </View>
                 <View style={[styles.receivenumpad,{marginTop:40}]}>

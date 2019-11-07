@@ -23,7 +23,8 @@ const config = {
   },
 
   maxTries: 3,
-  pingTime: 30000,
+  // pingTime: 30000,
+  pingTime: 60000,
 
   ws: {
     code: {
@@ -63,7 +64,7 @@ class iWanUtils{//extends WsInstance {
       }
     }
 
-    console.log("_getWanNetwork", selectedwannetwork);
+    // console.log("_getWanNetwork", selectedwannetwork);
 
     // var selectedwannetwork = await AsyncStorage.getItem('wannetwork');
     // if(selectedwannetwork == "" || selectedwannetwork == null){
@@ -98,6 +99,7 @@ class iWanUtils{//extends WsInstance {
   }
 
   _checkswitchnetwork = (selectedwannetwork) =>{
+    this.close();
     this.iWanKey = selectedwannetwork.iwankey;
     this.iWanSecret = selectedwannetwork.iwansecret;
 
@@ -193,6 +195,7 @@ class iWanUtils{//extends WsInstance {
               return this.heartCheck;
           },
           start: () => {
+              clearInterval(that.intervalObj);
               that.intervalObj = setInterval(function ping() {
                   if (!that.wss.isAlive) {
                       --that.wss.tries;

@@ -318,7 +318,7 @@ class SharedWallet extends Component {
             <TopHeader {...this.props} title={selectedcontent.header[this.state.currentindex]} 
             isclosebtn={this.state.currentindex == 0 ? true : false} noback={this.state.currentindex == (this.state.sharewallettype == "create" ? 3 : 2)  ? true : false} 
             backfunc={()=> this._stepGoBackSharedWallet()} /> 
-            <IndicatorViewPager ref={(r) => this.sharewallettab = r} style={styles.container} horizontalScroll={false} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
+            <IndicatorViewPager ref={(r) => this.sharewallettab = r} style={styles.container} horizontalScroll={true} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
               {/* step 1 */}
               <View style={styles.indicatorchild}>
                 <Ripple style={styles.menulistitem} onPress={()=> this._onSelectCreateType('create')}>

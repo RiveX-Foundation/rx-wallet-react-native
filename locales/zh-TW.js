@@ -103,6 +103,7 @@ const zh_TW = {
      "Transaction.RemoveAsset.Question":"您確定要刪除資產嗎？",
 
      //Trx Detail
+     "TrxDetail.Hash":"哈希",
      "TrxDetail.TRANSACTIONDETAILS":"交易內容",
      "TrxDetail.TransactionID":"交易ID",
      "TrxDetail.Block":"區塊",

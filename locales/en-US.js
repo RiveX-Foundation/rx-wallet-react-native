@@ -103,6 +103,7 @@ const en_US = {
     "Transaction.RemoveAsset.Question":"Are you sure want to remove asset ?",
 
     //Trx Detail
+    "TrxDetail.Hash":"Hash",
     "TrxDetail.TRANSACTIONDETAILS":"TRANSACTION DETAILS",
     "TrxDetail.TransactionID":"Transaction ID",
     "TrxDetail.Block":"Block",

@@ -26,6 +26,7 @@ import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndi
 import Ripple from 'react-native-material-ripple';
 import AccountInfoContext from '../context/AccountInfoContext';
 import { observer, inject } from 'mobx-react';
+import intl from 'react-intl-universal';
 
 @inject('walletStore')
 @inject('settingStore')
@@ -34,17 +35,7 @@ class WalletInvitation extends Component {
   constructor(props){
     super(props);
     this.state = {
-      currentindex:0,
-      setamount:"0",
-      convertrate:43,
       selectedWallet:{},
-      copayerlist:[{
-        Id:"123",
-        Name:"Me"
-      },{
-        Id:"456",
-        Name:"Sashimi"
-      }]
     }
   }
 
@@ -52,32 +43,7 @@ class WalletInvitation extends Component {
     const {params} = this.props.navigation.state;
     this.setState({
       selectedWallet:params.selectedWallet
-    },()=>{
-      this._LoadMultiSigTransactionByAddress();
     });
-  }
-
-  _LoadMultiSigTransactionByAddress = () =>{
-    this.props.walletStore.LoadMultiSigTransactionByAddress(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,(response)=>{
-      console.log(response);
-    })
-  }
-
-  _renderCoPayer({item,index}){
-    return(
-      <View style={styles.copayeritemctn}>
-        <View style={styles.copayeriteminner}>
-          {/* {item.Id == "123" ?
-          <IoIcon name={"md-checkmark"} color={"#fff"} size={20} style={{width:20}} />
-          :
-          <View style={{width:20,alignItems:'flex-start'}}>
-            <ActivityIndicator size={18} color={"#fff"} />
-          </View>
-          } */}
-          <Text style={[styles.whitelabel,{marginTop:0}]}>{item.Name}</Text>
-        </View>
-      </View>
-    )
   }
 
   render() {
@@ -85,9 +51,9 @@ class WalletInvitation extends Component {
       <SafeAreaView style={styles.container}>
         <TransBar />
         <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
-          <TopHeader {...this.props} title={"WALLET INVITATION"} 
-            isclosebtn={this.state.currentindex == 0 ? true : false}/>
-            <Text style={[styles.whitelabel,{alignSelf:'center',marginTop:30,marginBottom:20}]}>Share this address with your co-payer</Text>
+          <TopHeader {...this.props} title={intl.get('ShareWallet.WALLETINVITATION')} 
+            isclosebtn={true}/>
+            <Text style={[styles.whitelabel,{alignSelf:'center',marginTop:30,marginBottom:20}]}>{intl.get('ShareWallet.WalletInvitation.Msg')}</Text>
             <LinearGradient colors={['#4954AE', '#4A47A9', '#393B73']} style={styles.qrcontainer}>
               <View style={styles.qrcodectn}>
                 <QRCode value={this.state.selectedWallet.publicaddress} size={100} color={"#4954AE"} />
@@ -99,38 +65,6 @@ class WalletInvitation extends Component {
                 <RiveIcon name="copy" color={"#fff"} size={22} />
               </TouchableOpacity>
             </View>
-            {/* <View style={styles.copayerctn}>
-              <View style={styles.leftright}>
-                <Text style={[styles.whitelabel,{marginTop:0}]}>Co-Payer</Text>
-                <Text style={[styles.whitelabel,{marginTop:0}]}>{`[ ${this.state.selectedWallet.totalsignatures}-to-${this.state.selectedWallet.totalowners} ]`}</Text>
-              </View>
-              <FlatList 
-                data={this.state.copayerlist}
-                keyExtractor={(item,index) => index.toString()}
-                renderItem={this._renderCoPayer.bind(this)}
-                // contentContainerStyle={styles.mywalletlistctn}
-              />
-            </View> */}
-          {/* <IndicatorViewPager ref={(r) => this.receivetab = r} style={styles.container} horizontalScroll={false} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
-            <View style={styles.receivectn}>
-              <View style={[styles.centerlize,styles.flexgrow]}>
-                
-              </View>
-            </View>
-            <View style={styles.indicatorchild}>
-              <View style={[styles.centerlize,styles.flexgrow]}>
-                <View style={styles.receiveamountctn}>
-                  <Text style={styles.receiveamountcoin}>{`${this.state.setamount} RVX`}</Text>
-                  <Text style={styles.receiveamountprice}>{`$${numberWithCommas(parseFloat(this.state.setamount) * this.state.convertrate,true)} USD`}</Text>
-                  <RiveIcon name="exchange" color={Color.lightbluegreen} size={20} style={styles.exchangebtn} />
-                </View>
-                <View style={[styles.receivenumpad,{marginTop:40}]}>
-                  <NumberPad onEnter={(value)=> this.onSetAmount(value)} onRemove={()=> this.onRemoveAmount()} />
-                </View>
-              </View>
-              <BottomButton title="Confirm" onPress={()=> this._goBackandRemove()} />
-            </View>
-          </IndicatorViewPager> */}
         </LinearGradient>
       </SafeAreaView>
     );

@@ -81,7 +81,7 @@ export const AppNavigator = createStackNavigator({
     ExportKey:ExportKey,
     Notification:Notification,
     SharedWallet:SharedWallet,
-    // WalletInvitation:WalletInvitation,
+    WalletInvitation:WalletInvitation,
     PersonalProfile:PersonalProfile,
     EasyContent:EasyContent,
     Offline:Offline,

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import LinearGradientWrapper from 'react-native-linear-gradient';
 import { TransBar, TrxTopHeader, Refreshing, PopModal, ScreenLoader } from '../extension/AppComponents';
-import { Color, Config, isNullOrEmpty, numberWithCommas,toFixedNoRounding } from '../extension/AppInit';
+import { Color, Config, isNullOrEmpty, numberWithCommas,toFixedNoRounding, isObjEmpty } from '../extension/AppInit';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import IoIcon from 'react-native-vector-icons/Ionicons'
 import MaIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -24,6 +24,7 @@ import axios from 'axios';
 import Ripple from 'react-native-material-ripple';
 import Menu, { MenuItem } from 'react-native-material-menu';
 import { observer, inject } from 'mobx-react';
+import { toJS } from 'mobx';
 import moment from 'moment';
 import * as Animatable from 'react-native-animatable';
 import {showMessage} from "react-native-flash-message";
@@ -36,6 +37,7 @@ import FastImage from 'react-native-fast-image'
 import AsyncStorage from '@react-native-community/async-storage';
 const Web3 = require('web3');
 import {MaterialIndicator} from 'react-native-indicators';
+import iWanUtils from '../utils/iwanUtils';
 
 const Line = ({ line }) => (
   <AnimatedSVGPath
@@ -87,7 +89,7 @@ class Transactions extends Component {
       selectedToken:params.selectedToken,
       isPrimary:TokenInfo.IsPrimary
     },()=>{
-      console.log(this.state.selectedWallet)
+      // console.log(this.state.selectedWallet)
       this.walletdetails.setPageWithoutAnimation(this.state.selectedWallet.tokenassetlist.findIndex(x => x.AssetCode == this.state.selectedToken.AssetCode));
       this.LoadTransactionByAddress();
     });
@@ -122,13 +124,15 @@ class Transactions extends Component {
     // console.log(item)
     // if(index ==0) item.shared = true;
     // console.log(item.from,this.state.selectedWallet.publicaddress);
+    let isLast = false;
+    if(index == this.state.transactionlist.length - 1) isLast = true;
     return(
       <View>
         {/* {index == 0 ?
         <Text style={styles.trxtt}>TRANSACTION HISTORY</Text>
         : null } */}
         <Ripple onPress={()=> this.props.navigation.navigate("TransactionDetail",{selectedWallet:this.state.selectedWallet,selectedToken:this.state.selectedToken,tranxLog:item,onRefresh:this._onRefresh})}>
-          <View style={styles.traxitem}>
+          <View style={[styles.traxitem,isLast?{borderBottomColor:'transparent'}:null]}>
             {/* <View style={styles.leftright}>
               <IoIcon name={item.type == "up" ? "ios-arrow-round-up" : "ios-arrow-round-down" } 
               color={item.type == "up" ? "#EF3333" : Color.lightbluegreen } size={25} />
@@ -140,12 +144,14 @@ class Transactions extends Component {
               <Text style={styles.traxtime}>{moment.unix(item.timeStamp).format("YYYY-MM-DD hh:mm:ss")}</Text>
             </View> */}
             <View style={styles.leftright}>
-              <Text style={[styles.traxitemvalue,{fontSize:17},item.from.toLowerCase() == this.state.selectedWallet.publicaddress.toLowerCase() ? {color:"#DB3032"}:{color:"#64F44C"}]}>
-              {item.value} RVX
+              <Text style={[styles.traxitemvalue,{fontSize:17},item.from.toLowerCase() == this.state.selectedToken.PublicAddress.toLowerCase() ? {color:"#DB3032"}:{color:"#64F44C"}]}>
+              {item.value} {this.state.selectedToken.AssetCode}
               </Text>
               <View style={{alignItems:'flex-end'}}>
                 <Text style={[styles.traxstatus,item.status == "pending" ?  {color:"#DB3032"}:null]}>{item.status == "pending" ? `${intl.get('Transaction.ToBeApprove')} [${item.signers.length}/${this.state.selectedWallet.totalsignatures}]` : intl.get('Transaction.Status.' + this.props.settingStore.Capitalize(item.status))}</Text>
+                {this.state.selectedToken.TokenType != "wrc20" && this.state.selectedToken.TokenType != "wan" ?
                 <Text style={styles.traxtime}>{moment.unix(item.timestamp).format("YYYY-MM-DD hh:mm:ss A")}</Text>
+                : null }
               </View>
             </View>
           </View>
@@ -157,15 +163,15 @@ class Transactions extends Component {
   _navigateAction = (name) =>{
     if(name == "Send"){
       //remember
-      // if(this.state.selectedToken.TokenBalance == 0){
-      //   showMessage({
-      //     message: intl.get('Transaction.NotEnoughBalance'),
-      //     type: "warning",
-      //     icon:"warning",
-      //     // autoHide:false
-      //   });
-      //   return;
-      // }
+      if(this.state.selectedToken.TokenBalance == 0){
+        showMessage({
+          message: intl.get('Transaction.NotEnoughBalance'),
+          type: "warning",
+          icon:"warning",
+          // autoHide:false
+        });
+        return;
+      }
       this.props.navigation.navigate("Send",{selectedWallet:this.state.selectedWallet,selectedToken:this.state.selectedToken,onRefresh:this._onRefresh})
     }else{
       this.props.navigation.navigate("Receive",{selectedWallet:this.state.selectedWallet,selectedToken:this.state.selectedToken})
@@ -209,10 +215,12 @@ class Transactions extends Component {
   // }
 
   _reloadAssetBalance = () =>{
+    iWanUtils._checkswitchnetwork(toJS(this.props.settingStore.selectedWANNetwork));
     this.props.walletStore.loadTokenAssetList(this.state.selectedWallet).then((value) =>{
       this.setState({
+        refreshing:false,
         selectedWallet:value,
-        selectedToken:value.find(x => x.TokenType == this.state.selectedToken.TokenType && x.AssetCode == this.state.selectedToken.AssetCode)
+        selectedToken:value.tokenassetlist.find(x => x.TokenType == this.state.selectedToken.TokenType && x.AssetCode == this.state.selectedToken.AssetCode)
       })
     })
   }
@@ -239,12 +247,12 @@ class Transactions extends Component {
     // console.log("LoadTransactionByAddress");
     if(this.state.selectedWallet.wallettype == "Basic"){
       // console.log("Basic");
-      this.props.walletStore.LoadTransactionByAddress(this.state.selectedToken.TokenType, this.state.selectedWallet.publicaddress,(response)=>{
+      this.props.walletStore.LoadTransactionByAddress(this.state.selectedToken.TokenType, this.state.selectedToken.PublicAddress,(response)=>{
         // console.log(JSON.stringify(response));
         this.setState({
           refreshing:false,
           fetchdone:true,
-          transactionlist:response
+          transactionlist:(this.state.selectedToken.TokenType == "wrc20" || this.state.selectedToken.TokenType == "wan") ? response.reverse() : response
         })
       },(response)=>{
         this.setState({
@@ -254,7 +262,7 @@ class Transactions extends Component {
         })
       })
     }else{
-      this.props.walletStore.LoadTransactionByAddress(this.state.selectedToken.TokenType, this.state.selectedWallet.publicaddress,(response)=>{
+      this.props.walletStore.LoadTransactionByAddress(this.state.selectedToken.TokenType, this.state.selectedToken.PublicAddress,(response)=>{
         this.props.walletStore.LoadMultiSigTransactionByAddress(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,this.state.selectedToken,(sigresponse)=>{
           // console.log(response.trx);
           this.setState({
@@ -299,7 +307,7 @@ class Transactions extends Component {
       fetchdone:false,
       isPrimary:TokenInfo.IsPrimary
     },()=>{
-      console.log("_onchangeSelectedIndex", this.state.selectedToken)
+      // console.log("_onchangeSelectedIndex", this.state.selectedToken)
       this.LoadTransactionByAddress();
     });
   }
@@ -425,9 +433,10 @@ class Transactions extends Component {
                   </Ripple>
                   <View style={styles.transactiontopinner}>
                     <FastImage source={{uri:tokenasset.LogoUrl}} style={styles.tokenlogo} resizeMode={'contain'} />
-                    <Text style={styles.coinbalance}>{this.formatCoinBalance(tokenasset.TokenBalance)}</Text>
+                    <Text style={[styles.coinbalance,this.formatCoinBalance(tokenasset.TokenBalance).length >= 11 ? {fontSize:21}:null]}>{this.formatCoinBalance(tokenasset.TokenBalance)}</Text>
                     <Text style={[styles.coinbalance,{fontSize:20,marginTop:-5}]}>{tokenasset.AssetCode}</Text>
-                    <Text style={styles.worthprice}>{`$${numberWithCommas(parseFloat(tokenasset.TokenBalance) * (this.props.settingStore.settings.currency == "USD" ? this.props.settingStore.convertrate : this.props.settingStore.convertrate * 4),true)} ${this.props.settingStore.settings.currency}`}</Text>
+                    {/* <Text style={styles.worthprice}>{`$${numberWithCommas(parseFloat(tokenasset.TokenBalance) * (this.props.settingStore.settings.currency == "USD" ? this.props.settingStore.convertrate : this.props.settingStore.convertrate * 4),true)} ${this.props.settingStore.settings.currency}`}</Text> */}
+                    <Text style={styles.worthprice}>{`$${numberWithCommas(parseFloat(tokenasset.TokenBalance) * this.props.walletStore.getTokenPrice(tokenasset.AssetCode,tokenasset.TokenType),true)} ${this.props.settingStore.settings.currency}`}</Text>
                   </View>
                   <Ripple activeOpacity={0.9} style={[styles.bottomnavbtn]}
                   onPress={()=> this._navigateAction("Send")}>

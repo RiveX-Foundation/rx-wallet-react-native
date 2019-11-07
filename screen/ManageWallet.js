@@ -26,6 +26,7 @@ import abiArray from '../contractabi/tokenabi.json'
 const Web3 = require('web3');
 import { observer, inject } from 'mobx-react';
 import { toJS, autorun } from 'mobx';
+import iWanUtils from '../utils/iwanUtils';
 
 @inject('walletStore')
 @inject('settingStore')
@@ -43,7 +44,9 @@ class ManageWallet extends Component {
       selectedWalletName:"",
       showhideexportkey:false,
       isfromHome:false,
-      totalworthprice:[]
+      totalworthprice:[],
+      updatedresult:false,
+      currentHomeWallet:{}
     }
   }
 
@@ -55,6 +58,7 @@ class ManageWallet extends Component {
     this._loadWallet();
     this._checkJumpToWallet();
     this._isFromHome();
+    this._getCurrentHomeWallet();
     // autorun(() => {
     //   console.log(toJS(this.props.walletStore.walletlist), this.state.walletList)
     // });
@@ -74,6 +78,15 @@ class ManageWallet extends Component {
           isfromHome:true
         })
       }
+    }
+  }
+
+  _getCurrentHomeWallet = () =>{
+    let currentHomeWallet = toJS(this.props.walletStore.currentHomeWallet);
+    if(!isObjEmpty(currentHomeWallet)){
+      this.setState({
+        currentHomeWallet:currentHomeWallet
+      })
     }
   }
 
@@ -140,28 +153,62 @@ class ManageWallet extends Component {
   // }
 
   _loadWallet = () => {
-    let newFilterList = [];
+    let BeforeFilterList = [];
+    let FinalFilterList = [];
     let filterwalletList = toJS(this.props.walletStore.walletlist).filter(x => x.userid == this.props.settingStore.accinfo.Id);
     this.setState({
       walletList:filterwalletList
     },()=>{
       if(filterwalletList.length > 0){
-        filterwalletList.map((wallet,index)=>{
-          if(wallet.tokenassetlist.length == 0){
-            newFilterList.push(wallet);
-          }else{
-            this.props.walletStore.loadTokenAssetList(wallet).then((value) =>{
-              newFilterList.push(value);
-              if(index == filterwalletList.length - 1){
-                this.setState({
-                  walletList:newFilterList
-                })
+        try{
+          // iWanUtils._checkswitchnetwork(toJS(this.props.settingStore.selectedWANNetwork));
+          filterwalletList.map((wallet,index)=>{
+            if(wallet.tokenassetlist.length == 0){
+              let walletitem = {
+                index:index,
+                wallet:wallet
               }
-            })
-          }
-        });
+              BeforeFilterList.push(walletitem);
+            }else{
+              this.props.walletStore.loadTokenAssetList(wallet).then((value) =>{       
+                let walletitem = {
+                  index:index,
+                  wallet:value
+                }
+                // console.log("loadTokenAssetList", value)
+                BeforeFilterList.push(walletitem);
+                // if(index == filterwalletList.length - 1){
+                //   this.setState({
+                //     updatedresult:true,
+                //     walletList:BeforeFilterList
+                //   })
+                // }
+                if(index == filterwalletList.length - 1){
+                  // purpose for this, is to make sure the wallet order is correct before load balance
+                  // console.log("BeforeFilterList length", BeforeFilterList.length, BeforeFilterList.sort((a,b)=> a.index - b.index).length)
+                  BeforeFilterList.sort((a,b)=> a.index - b.index).map((final,finalindex)=>{
+                    // console.log(finalindex)
+                    FinalFilterList.push(final.wallet);
+                    if(finalindex == BeforeFilterList.length - 1){
+                      this.setState({
+                        updatedresult:true,
+                        walletList:FinalFilterList
+                      })
+                    }
+                  })
+                }
+              })
+            }
+          });
+        }catch(e){
+          console.log(e)
+        }
       }
     })
+  }
+
+  _queqeLoadTokenAsset = () =>{
+
   }
 
   _checkJumpToWallet = () =>{
@@ -186,12 +233,21 @@ class ManageWallet extends Component {
   }
 
   renderItem({item,index}){
+    let isSelectedWallet = false;
+    if(item.publicaddress == this.state.currentHomeWallet.publicaddress){
+      isSelectedWallet = true;
+      item = this.state.currentHomeWallet;
+    } 
     return(
       <View>
         <Ripple style={[styles.mywalletitem,index === this.state.walletList.length -1 ? {borderBottomWidth:0} : null]}
         onPress={!this.state.isfromHome ? ()=> this._onSelectWallet(item) : ()=> this._onSelectHomeWallet(item)}>
           <Text style={styles.mywalletname}>{item.walletname}</Text>
+          {!isSelectedWallet ?
+          <Text style={styles.mywalletvalue}>{this.state.updatedresult ? `${this._getTotalWorth(item)} ${this.props.settingStore.settings.currency}` : `...`}</Text>
+          :
           <Text style={styles.mywalletvalue}>{this._getTotalWorth(item)} {this.props.settingStore.settings.currency}</Text>
+          }
         </Ripple>
         {!this.state.isfromHome ?
         <TouchableOpacity style={styles.removebtn} activeOpacity={0.9} onPress={()=> this._selectWalletToRemove(item)}>
@@ -292,8 +348,9 @@ class ManageWallet extends Component {
 
   _totallyRemoveFromLocal = () =>{
     this.setState({
-      walletList:this.state.walletList.filter(x => x != this.state.selectedRemoveWallet)
+      walletList:this.state.walletList.filter(x => x.publicaddress != this.state.selectedRemoveWallet.publicaddress)
     },async()=>{
+      console.log("_totallyRemoveFromLocal", this.state.walletList, this.state.selectedRemoveWallet)
       try {
         await AsyncStorage.setItem('@wallet', JSON.stringify(this.state.walletList)).then(async()=>{
           if(this.state.walletList.length > 0){

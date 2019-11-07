@@ -39,6 +39,7 @@ import { Defs, LinearGradient, Stop, Path } from 'react-native-svg'
 // import LottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image'
 
+
 @inject('walletStore')
 @inject('settingStore')
 @observer
@@ -188,26 +189,27 @@ class Home extends Component {
       selectedWallet:wallet
     },()=> {
       // console.log("_setHomeSelectedWallet", toJS(this.props.walletStore.primaryTokenAsset))
-      //check primary token exist
-      let primaryTokenAssetResult = toJS(this.props.walletStore.primaryTokenAsset);
-      if(primaryTokenAssetResult.length > 0){
-        let pymaridMissingAsset = [];
-        primaryTokenAssetResult.map((tokenitem,index)=>{
-          if(this.state.selectedWallet.tokenassetlist.length > 0){
-            // if(!this.state.selectedWallet.tokenassetlist.find(x => x.AssetCode.toUpperCase() == tokenitem.AssetCode.toUpperCase() && x.Network == this.props.settingStore.oldnetwork.shortcode)){
-            if(!this.state.selectedWallet.tokenassetlist.find(x => x.AssetCode.toUpperCase() == tokenitem.AssetCode.toUpperCase())){
-              pymaridMissingAsset.push(tokenitem);
-            }
-          }
-        });
-        //if have missing asset insert to tokenassetlist
-        if(pymaridMissingAsset.length > 0){
-          this._UpdateWalletStorage(pymaridMissingAsset);
-        }else{
-          this._loadTokenAssetList();
-        }
-      }
-
+      // // check primary token exist
+      // let primaryTokenAssetResult = toJS(this.props.walletStore.primaryTokenAsset);
+      // // console.log("primaryTokenAssetResult", primaryTokenAssetResult)
+      // if(primaryTokenAssetResult.length > 0){
+      //   let pymaridMissingAsset = [];
+      //   primaryTokenAssetResult.map((tokenitem,index)=>{
+      //     if(this.state.selectedWallet.tokenassetlist.length > 0){
+      //       if(!this.state.selectedWallet.tokenassetlist.find(x => x.AssetCode.toUpperCase() == tokenitem.AssetCode.toUpperCase())){
+      //         tokenitem
+      //         pymaridMissingAsset.push(tokenitem);
+      //       }
+      //     }
+      //   });
+      //   // if have missing asset insert to tokenassetlist
+      //   if(pymaridMissingAsset.length > 0){
+      //     this._UpdateWalletStorage(pymaridMissingAsset);
+      //   }else{
+      //     this._loadTokenAssetList();
+      //   }
+      // }
+      this._loadTokenAssetList();
     });
   }
 
@@ -396,7 +398,7 @@ class Home extends Component {
                 const lastwalletvalue = await AsyncStorage.getItem('@lastwallet');
                 if(!isNullOrEmpty(lastwalletvalue)){
                   let lastwallet = JSON.parse(lastwalletvalue);
-                  console.log("lastwallet", lastwallet)
+                  // console.log("lastwallet", lastwallet)
                   this._setHomeSelectedWallet(lastwallet);
                 }else{
                   this._setHomeSelectedWallet(walletlist[0]);
@@ -522,6 +524,9 @@ class Home extends Component {
           this.setState({
             refreshing:false,
             selectedWallet:value
+          },()=>{
+            // console.log("home _loadTokenAssetList", this.state.selectedWallet)
+            this.props.walletStore.setCurrentHomeWallet(this.state.selectedWallet);
           })
         })
       }
@@ -598,7 +603,7 @@ class Home extends Component {
             <View style={styles.totalrvxctn}>
               {/* <Text style={[styles.totalrvx,{fontSize:25}]}>{`$${numberWithCommas(parseFloat(this.state.totalrvx) * (this.props.settingStore.settings.currency == "USD" ? this.props.settingStore.convertrate : this.props.settingStore.convertrate * 4),true)}`}</Text> */}
               {/* <Text style={[styles.totalrvx,{fontSize:25}]}>{`$${numberWithCommas(parseFloat(this._getTotalWorth),true)}`}</Text> */}
-              <Text style={[styles.totalrvx,{fontSize:25}]}>{this._getTotalWorth()}</Text>
+              <Text style={[styles.totalrvx,this._getTotalWorth().length >= 13 ? {fontSize:20} : null]}>{this._getTotalWorth()}</Text>
               <Text style={[styles.totalrvxcctt,{fontSize:16}]}>{this.props.settingStore.settings.currency}</Text>
             </View>
             {/* <View style={styles.totalrvxctn}>
@@ -707,7 +712,9 @@ class Home extends Component {
             : null } */}
             {this.state.selectedWallet && this.state.selectedWallet.wallettype == "Shared" ?
             <Animatable.View useNativeDriver animation={"slideInRight"} duration={500} style={styles.flagleftctn}>
-              <Text style={styles.flaglefttt}>{this.state.selectedWallet.totalsignatures}-to-{this.state.selectedWallet.totalowners}</Text>
+              <TouchableOpacity style={styles.flagleftinner} activeOpacity={0.9} onPress={()=> this.props.navigation.navigate("WalletInvitation",{selectedWallet:this.state.selectedWallet})}>
+                <Text style={styles.flaglefttt}>{this.state.selectedWallet.totalsignatures}-to-{this.state.selectedWallet.totalowners}</Text>
+              </TouchableOpacity>
             </Animatable.View>
             : null }
           </ScrollView>
@@ -725,12 +732,14 @@ const styles = StyleSheet.create({
     fontFamily:Config.regulartt,
     fontSize:14
   },
-  flagleftctn:{
+  flagleftinner:{
     backgroundColor:Color.rowblue,
     paddingHorizontal:20,
     paddingVertical:15,
     borderTopLeftRadius:30,
     borderBottomLeftRadius:30,
+  },
+  flagleftctn:{
     position:'absolute',
     top:10,
     right:0
@@ -776,7 +785,7 @@ const styles = StyleSheet.create({
   totalrvx:{
     fontFamily:Config.regulartt,
     color:Color.lightbluegreen,
-    fontSize:24,
+    fontSize:25,
     maxWidth:'80%',
     textAlign:'center'
   },

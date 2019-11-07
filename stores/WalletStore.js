@@ -30,6 +30,7 @@ class WalletStore {
   @observable homeSelectedWallet = ()=> null;
   @observable primaryTokenAsset = [];
   @observable allTokenAsset = [];
+  @observable currentHomeWallet = {};
 
   @action setSkipStore = (status) =>{
     this.skipStore = status;
@@ -63,6 +64,10 @@ class WalletStore {
     this.homeSelectedWallet = func;
   }
 
+  @action setCurrentHomeWallet = (wallet) =>{
+    this.currentHomeWallet = wallet;
+  }
+
   @action generate12SeedPhase = async(cb) => {
     let selectedwordlist = bip39.wordlists.DEFAULT_WORDLIST;
     if(languageStore.language == "zh_CN") selectedwordlist = bip39.wordlists.Chinese_Simplified;
@@ -89,7 +94,6 @@ class WalletStore {
       const web3 = new Web3(settingStore.selectedETHNetwork.infuraendpoint);
       var from = selectedToken.PublicAddress;
       var targetaddr = recipientaddress;
-      var amountToSend = setamount;
       let gasPrices = await this.getCurrentGasPrices();
       var nonce = 0;
 
@@ -98,7 +102,7 @@ class WalletStore {
         let details = {
           "from": from,
           "to": targetaddr,
-          "value": web3.utils.toHex( web3.utils.toWei(amountToSend, 'ether') ),
+          "value": web3.utils.toHex( web3.utils.toWei(setamount, 'ether') ),
           "gas": 21000,
           "gasPrice": gasPrices.high * 1000000000, 
           "nonce": nonce,
@@ -121,7 +125,9 @@ class WalletStore {
       });
     }else if(selectedToken.TokenType == "wan"){
       const web3 = new Web3(settingStore.selectedETHNetwork.infuraendpoint);
-      var TokenInfo = selectedToken.TokenInfoList.find(x => x.Network == settingStore.selectedWANNetwork.shortcode);
+      var from = selectedToken.PublicAddress;
+      // var TokenInfo = selectedToken.TokenInfoList.find(x => x.Network == settingStore.selectedWANNetwork.shortcode);
+      var TokenInfo = selectedToken.TokenInfoList[0];
       var abiArray = JSON.parse(TokenInfo.AbiArray);
       var receiver = recipientaddress;//"0x8859C2BE1a9D6Fbe37E1Ed58c103487eE7B8b90F";
 
@@ -139,7 +145,7 @@ class WalletStore {
                 "gasLimit": '0x35B60',//web3.utils.toHex("519990"),//"0x7458",
                 "Txtype": "0x01",
                 "to": receiver,
-                "value": web3.utils.toHex( web3.utils.toWei(amountToSend, 'ether') ),
+                "value": web3.utils.toHex( web3.utils.toWei(setamount, 'ether') ),
                 "chainId": settingStore.selectedWANNetwork.chainid
               };
               console.log("trx raw", rawTransaction);
@@ -164,8 +170,10 @@ class WalletStore {
         console.log(err);
       });
     }else if(selectedToken.TokenType == "wrc20"){
+      console.log("setamount", setamount)
       const web3 = new Web3(settingStore.selectedETHNetwork.infuraendpoint);
-      var TokenInfo = selectedToken.TokenInfoList.find(x => x.Network == settingStore.selectedWANNetwork.shortcode);
+      var TokenInfo = selectedToken.TokenInfoList[0];
+      // var TokenInfo = selectedToken.TokenInfoList.find(x => x.Network == settingStore.selectedWANNetwork.shortcode);
       var abiArray = JSON.parse(TokenInfo.AbiArray);
       
       var contractdata = new web3.eth.Contract(abiArray, TokenInfo.ContractAddress);
@@ -188,7 +196,7 @@ class WalletStore {
                   name: "amount",
                   type: "uint256"
                 }]
-              }, [receiver, web3.utils.toWei(amountToSend, 'ether')]);
+              }, [receiver, web3.utils.toWei(setamount, 'ether')]);
 
               var rawTransaction = {
                 "from": selectedToken.PublicAddress,
@@ -553,6 +561,7 @@ class WalletStore {
   }
 
   FormatTransactionByAddress(tokentype,item){
+    // console.log("FormatTransactionByAddress", JSON.stringify(item));
     var trx = {
       trxid : item.hash,
       from : item.from,
@@ -610,6 +619,7 @@ class WalletStore {
       });
     }else if(tokentype == "wrc20" || tokentype == "wan"){
       iWanUtils.getTransByAddress("WAN",publicaddress).then(response => {
+        // console.log("getTransByAddress",tokentype, response)
         if(response == null) response = [];
         if(response.length > 0){
           var finallist = [];
@@ -694,18 +704,17 @@ class WalletStore {
   }
 
   @action approveMultiSigTransaction(acctoken, trxid, selectedWallet,selectedToken,recipientaddress,setamount,execute,cb,cberror){
-    console.log(acctoken, trxid, selectedWallet,recipientaddress,setamount,execute);
+    // console.log(acctoken, trxid, selectedWallet,recipientaddress,setamount,execute);
     if(execute){
       this.TransferETH(selectedWallet,selectedToken,recipientaddress,setamount,(response)=>{
-        cb(response);
-        this.updateCompletedMultiSignTrx(acctoken, trxid, selectedToken, false);
+        this.updateCompletedMultiSignTrx(acctoken, trxid, selectedToken, false, cb, cberror);
       },cberror);
     }else{
-      this.updateCompletedMultiSignTrx(acctoken, trxid , selectedToken, true);
+      this.updateCompletedMultiSignTrx(acctoken, trxid , selectedToken, true, cb, cberror);
     }
   }
 
-  @action updateCompletedMultiSignTrx(acctoken, trxid, selectedToken, isredirect){
+  @action updateCompletedMultiSignTrx(acctoken, trxid, selectedToken, isredirect, cb, cberror){
     var network = settingStore.selectedETHNetwork.shortcode;
     if(selectedToken.TokenType == "wan" || selectedToken.TokenType == "wrc20"){
       network = settingStore.selectedWANNetwork.shortcode;
@@ -715,11 +724,12 @@ class WalletStore {
     formdata.append('token', acctoken);
     formdata.append('network', network);
     callApi("api/multisig/ApproveTrx",formdata,(response)=>{
-      console.log(response);
+      cb(response);
       if(isredirect){
         console.log("isredirect");
       }
     },(response)=>{
+      cberror(response);
       console.log(response);
     });
   }
@@ -728,7 +738,7 @@ class WalletStore {
     var formdata = new FormData();
     formdata.append('crypto', crypto);
     formdata.append('token', acctoken);
-    console.log(acctoken)
+    // console.log(acctoken)
     callApi("api/token/GetTokenSparkLine",formdata,(response)=>{
       cb(response);
     },(response)=>{
@@ -909,10 +919,9 @@ class WalletStore {
   }
 
   loadTokenAssetList = (selectedwallet) =>{
-    iWanUtils._checkswitchnetwork(toJS(settingStore.selectedWANNetwork));
     return new Promise((resolve,reject) =>{
-      let totalget = 0;
-      let totalassetworth = 0;
+      var totalget = 0;
+      var totalassetworth = 0;
       selectedwallet.tokenassetlist.map(async(tokenitem,index) =>{
         if(tokenitem.TokenType == "eth"){
           var web3 = new Web3(settingStore.selectedETHNetwork.infuraendpoint);
@@ -922,6 +931,7 @@ class WalletStore {
             tokenitem.TokenPrice = this.getTokenPrice(tokenitem.AssetCode,tokenitem.TokenType);
             totalassetworth += (this.getTokenPrice(tokenitem.AssetCode,tokenitem.TokenType) * tokenitem.TokenBalance);
             totalget++;
+            // console.log("selectedwallet", selectedwallet.walletname , totalget == selectedwallet.tokenassetlist.length)
             if(totalget == selectedwallet.tokenassetlist.length){
               selectedwallet.totalassetworth = totalassetworth;
               resolve(toJS(selectedwallet));
@@ -985,7 +995,6 @@ class WalletStore {
                 // self.selectedassettokenlist.push(tokenitem);
                 totalget++;
                 if(totalget == selectedwallet.tokenassetlist.length){
-                  console.log("last");
                   selectedwallet.totalassetworth = totalassetworth;
                   resolve(toJS(selectedwallet));
                 }
@@ -998,7 +1007,7 @@ class WalletStore {
           })
         }
       });
-    });
+   });
   }
 
   // loadTokenAssetList = async(selectedwallet) =>{
