@@ -75,7 +75,7 @@ export default class App extends Component {
       AndroidSplashScreen.hide()
     }else{
       iOSSplashScreen.close({
-        animationType: SplashScreen.animationType.fade,
+        animationType: iOSSplashScreen.animationType.fade,
         duration: 850,
         delay: 500,
       })
