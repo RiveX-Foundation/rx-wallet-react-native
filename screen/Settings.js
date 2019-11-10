@@ -215,7 +215,7 @@ class Settings extends Component {
         let allsettings = JSON.parse(value);
         let selectedsetting = allsettings.find(x => x.Id == this.props.settingStore.accinfo.Id);
         let indexsetting = allsettings.indexOf(selectedsetting);
-        console.log(allsettings,this.props.settingStore.accinfo.Id);
+        // console.log(allsettings,this.props.settingStore.accinfo.Id);
         allsettings[indexsetting].notification = this.state.selectedtoggle.indexOf("notification") > -1;
         // allsettings[indexsetting].pincode.enable = this.state.selectedtoggle.indexOf("pincode") > -1;
         // allsettings[indexsetting].touchid = this.state.selectedtoggle.indexOf("touchid") > -1;
@@ -262,7 +262,7 @@ class Settings extends Component {
 
   _GetPrimaryTokenAssetByNetwork = () =>{
     this.props.walletStore.GetPrimaryTokenAssetByNetwork(this.props.settingStore.acctoken,(response)=>{
-      console.log("_GetPrimaryTokenAssetByNetwork", toJS(this.props.walletStore.primaryTokenAsset))
+      // console.log("_GetPrimaryTokenAssetByNetwork", toJS(this.props.walletStore.primaryTokenAsset))
     },(response)=>{
       console.log(response)
     })

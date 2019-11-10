@@ -892,7 +892,8 @@ class iWanUtils{//extends WsInstance {
           return cb(err);
         }
         //console.log("GET BALANCE RESULT", Number(result).toLocaleString('fullwide', {useGrouping:false}));
-        return cb(null, Number(result).toLocaleString('fullwide', {useGrouping:false}));
+        return cb(null, result);
+        // return cb(null, Number(result).toLocaleString('fullwide', {useGrouping:false}));
       });
     });
   }

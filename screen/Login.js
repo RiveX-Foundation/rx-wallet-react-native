@@ -60,7 +60,7 @@ class Login extends Component {
   _checkUserExist = async() =>{
     try {
       const value = await AsyncStorage.getItem('@accinfo');
-      console.log(value);
+      // console.log(value);
       if(value !== null) {
         let accinfo = JSON.parse(value);
         this._checkDeviceToken(accinfo.token);

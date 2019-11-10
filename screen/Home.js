@@ -95,7 +95,7 @@ class Home extends Component {
 
   _GetPrimaryTokenAssetByNetwork = () =>{
     this.props.walletStore.GetPrimaryTokenAssetByNetwork(this.props.settingStore.acctoken,(response)=>{
-      console.log("_GetPrimaryTokenAssetByNetwork", toJS(this.props.walletStore.primaryTokenAsset))
+      // console.log("_GetPrimaryTokenAssetByNetwork", toJS(this.props.walletStore.primaryTokenAsset))
     },(response)=>{
       // console.log(response)
     })
@@ -297,7 +297,7 @@ class Home extends Component {
   }
 
   _loadCloudWallet = async() =>{
-    console.log("_loadCloudWallet")
+    // console.log("_loadCloudWallet")
     try {
       let walletlist = [];
       let mywalletlist = [];
@@ -317,7 +317,7 @@ class Home extends Component {
       mywalletlist = walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id);
       this.props.walletStore.GetCloudWalletByUserId(this.props.settingStore.acctoken, async(response)=>{
         const mycloudwallet = response.wallet;
-        console.log("mycloudwallet", mycloudwallet)
+        // console.log("mycloudwallet", mycloudwallet)
         if(mycloudwallet.length > 0){
           mycloudwallet.map((cloud,index)=>{
             if(cloud.Enable){
@@ -348,7 +348,7 @@ class Home extends Component {
           });
           try {
             walletlist = walletlist.concat(haventaddedcloudlist);
-            console.log("haventaddedcloudlist", walletlist)
+            // console.log("haventaddedcloudlist", walletlist)
             await AsyncStorage.setItem('@wallet', JSON.stringify(walletlist)).then(()=>{
               this._loadWallet();
             })
@@ -379,14 +379,14 @@ class Home extends Component {
   }
 
   _loadWallet = async() => {
-    console.log("start load");
+    // console.log("start load");
     this.setState({totalrvx:0});
     try {
       const value = await AsyncStorage.getItem('@wallet')
       // console.log(value);
       if(value !== null) {
         let walletlist = JSON.parse(value);
-        console.log("_loadWallet", walletlist)
+        // console.log("_loadWallet", walletlist)
         if(walletlist.length > 0){
           walletlist = walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id);
           // walletlist = walletlist.filter(x => x.network == this.props.settingStore.oldnetwork.shortcode);
@@ -549,8 +549,12 @@ class Home extends Component {
   }
 
   _onRefresh = () =>{
-    this.setState({refreshing:true,totalworthcurrency:0});
-    this._loadTokenAssetList();
+    this.setState({
+      refreshing:true,
+      totalworthcurrency:0
+    },()=>{
+      this._loadTokenAssetList();
+    });
     // this._loadWallet();
     // this._loadCloudWallet();
   }

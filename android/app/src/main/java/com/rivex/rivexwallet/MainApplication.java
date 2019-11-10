@@ -3,6 +3,7 @@ package com.rivex.rivexwallet;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -40,6 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeExceptionHandlerPackage(),
             new FastImageViewPackage(),
             new RNCViewPagerPackage(),
             new SplashScreenReactPackage(),

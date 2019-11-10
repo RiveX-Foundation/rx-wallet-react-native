@@ -5,7 +5,8 @@ import {
   Text,
   View,
   AppState,
-  PermissionsAndroid
+  PermissionsAndroid,
+  Alert
 } from 'react-native';
 import './shim.js'
 import {AppContainer} from './extension/Route';
@@ -26,6 +27,24 @@ import AndroidSplashScreen from 'react-native-splash-screen'
 import iOSSplashScreen from 'react-native-smart-splash-screen'
 import intl from 'react-intl-universal';
 import locales from './locales';
+import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
+
+const errorHandler = (e, isFatal) => {
+  if (isFatal) {
+    Alert.alert(
+        'Unexpected error occurred',
+        `
+        Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}
+        We have reported this to our team ! Please close the app and start again!
+        `,
+      [{
+        text: 'Close'
+      }]
+    );
+  } else {
+    console.log(e); // So that we can see it in the ADB logs in case of Android if needed
+  }
+};
 
 // Subscribe
 NetInfo.addEventListener(state => {
@@ -33,6 +52,10 @@ NetInfo.addEventListener(state => {
   // console.log("Is connected?", state.isConnected);
   settingStore.setNetworkInfo(state.type,state.isConnected);
 });
+
+setJSExceptionHandler(errorHandler, true);
+
+setNativeExceptionHandler(errorHandler, true);
 
 try{
   Pushy.setNotificationListener(async (data) => {
@@ -115,7 +138,7 @@ export default class App extends Component {
   }
 
   _changeLanguage = (lan) => {
-    console.log("_changeLanguage", lan)
+    // console.log("_changeLanguage", lan)
     intl.init({
       currentLocale: lan,
       locales
