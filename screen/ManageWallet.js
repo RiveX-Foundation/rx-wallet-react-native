@@ -46,8 +46,10 @@ class ManageWallet extends Component {
       isfromHome:false,
       totalworthprice:[],
       updatedresult:false,
-      currentHomeWallet:{}
+      currentHomeWallet:{},
     }
+    this.quequtokenInterval = null;
+    this.quequtoken = false;
   }
 
   componentDidMount(){
@@ -153,53 +155,54 @@ class ManageWallet extends Component {
   // }
 
   _loadWallet = () => {
-    let BeforeFilterList = [];
-    let FinalFilterList = [];
+    // let BeforeFilterList = [];
+    // let FinalFilterList = [];
     let filterwalletList = toJS(this.props.walletStore.walletlist).filter(x => x.userid == this.props.settingStore.accinfo.Id);
     this.setState({
       walletList:filterwalletList
     },()=>{
       if(filterwalletList.length > 0){
         try{
+          this._queqeLoadTokenAsset(filterwalletList);
           // iWanUtils._checkswitchnetwork(toJS(this.props.settingStore.selectedWANNetwork));
-          filterwalletList.map((wallet,index)=>{
-            if(wallet.tokenassetlist.length == 0){
-              let walletitem = {
-                index:index,
-                wallet:wallet
-              }
-              BeforeFilterList.push(walletitem);
-            }else{
-              this.props.walletStore.loadTokenAssetList(wallet).then((value) =>{       
-                let walletitem = {
-                  index:index,
-                  wallet:value
-                }
-                // console.log("loadTokenAssetList", value)
-                BeforeFilterList.push(walletitem);
-                // if(index == filterwalletList.length - 1){
-                //   this.setState({
-                //     updatedresult:true,
-                //     walletList:BeforeFilterList
-                //   })
-                // }
-                if(index == filterwalletList.length - 1){
-                  // purpose for this, is to make sure the wallet order is correct before load balance
-                  // console.log("BeforeFilterList length", BeforeFilterList.length, BeforeFilterList.sort((a,b)=> a.index - b.index).length)
-                  BeforeFilterList.sort((a,b)=> a.index - b.index).map((final,finalindex)=>{
-                    // console.log(finalindex)
-                    FinalFilterList.push(final.wallet);
-                    if(finalindex == BeforeFilterList.length - 1){
-                      this.setState({
-                        updatedresult:true,
-                        walletList:FinalFilterList
-                      })
-                    }
-                  })
-                }
-              })
-            }
-          });
+          // filterwalletList.map((wallet,index)=>{
+          //   if(wallet.tokenassetlist.length == 0){
+          //     let walletitem = {
+          //       index:index,
+          //       wallet:wallet
+          //     }
+          //     BeforeFilterList.push(walletitem);
+          //   }else{
+          //     this.props.walletStore.loadTokenAssetList(wallet).then((value) =>{       
+          //       let walletitem = {
+          //         index:index,
+          //         wallet:value
+          //       }
+          //       // console.log("loadTokenAssetList", value)
+          //       BeforeFilterList.push(walletitem);
+          //       // if(index == filterwalletList.length - 1){
+          //       //   this.setState({
+          //       //     updatedresult:true,
+          //       //     walletList:BeforeFilterList
+          //       //   })
+          //       // }
+          //       if(index == filterwalletList.length - 1){
+          //         // purpose for this, is to make sure the wallet order is correct before load balance
+          //         // console.log("BeforeFilterList length", BeforeFilterList.length, BeforeFilterList.sort((a,b)=> a.index - b.index).length)
+          //         BeforeFilterList.sort((a,b)=> a.index - b.index).map((final,finalindex)=>{
+          //           // console.log(finalindex)
+          //           FinalFilterList.push(final.wallet);
+          //           if(finalindex == BeforeFilterList.length - 1){
+          //             this.setState({
+          //               updatedresult:true,
+          //               walletList:FinalFilterList
+          //             })
+          //           }
+          //         })
+          //       }
+          //     })
+          //   }
+          // });
         }catch(e){
           console.log(e)
         }
@@ -207,8 +210,33 @@ class ManageWallet extends Component {
     })
   }
 
-  _queqeLoadTokenAsset = () =>{
-
+  _queqeLoadTokenAsset = (filterwalletList) =>{
+    let currentindex = 0;
+    let BeforeFilterList = [];
+    let totalwallet = filterwalletList.length;
+    // console.log("totalwallet" , totalwallet)
+    clearInterval(this.quequtokenInterval);
+    this.quequtokenInterval = setInterval(()=>{
+      // console.log("on interval")
+      if(!this.state.quequtoken){
+        this.quequtoken = true;
+        let currentWallet = filterwalletList[currentindex];
+        // console.log("currentWallet", currentWallet)
+        this.props.walletStore.loadTokenAssetList(currentWallet).then((value) =>{   
+          // console.log("currentWallet output", currentWallet)
+          this.quequtoken = false;
+          currentindex++;
+          BeforeFilterList.push(value);
+          if(currentindex == totalwallet){
+            clearInterval(this.quequtokenInterval);
+            this.setState({
+              updatedresult:true,
+              walletList:BeforeFilterList
+            })
+          }
+        });
+      }
+    },1000)
   }
 
   _checkJumpToWallet = () =>{
