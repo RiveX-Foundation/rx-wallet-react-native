@@ -90,7 +90,7 @@ export default class App extends Component {
   componentWillMount() {
     this._changeLanguage("en_US");
     Platform.OS === "android" ? Obscure.activateObscure() : PrivacySnapshot.enabled(true);
-    // this.clearAll();
+    // this.clearAll(); 
   }
 
   componentDidMount(){
