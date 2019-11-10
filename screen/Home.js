@@ -551,7 +551,7 @@ class Home extends Component {
   _onRefresh = () =>{
     this.setState({
       refreshing:true,
-      totalworthcurrency:0
+      totalworthcurrency:0 
     },()=>{
       this._loadTokenAssetList();
     });
