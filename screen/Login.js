@@ -45,6 +45,7 @@ class Login extends Component {
       phonenumberinput:"",
       usernameinput:"",
       passwordinput:"",
+      emailinput:"",
       checksubmit:false,
       loading:false,
       showhidelanguagepicker:false,
@@ -191,8 +192,9 @@ class Login extends Component {
   _Login = () =>{
     this.setState({checksubmit:true,loading:true});
     var formdata = new FormData();
-    formdata.append('countrycode', this.state.selectedCoutryCode);
-    formdata.append('mobile', this.state.usernameinput);
+    // formdata.append('countrycode', this.state.selectedCoutryCode);
+    // formdata.append('mobile', this.state.usernameinput);
+    formdata.append('email', this.state.emailinput);
     formdata.append('password', this.state.passwordinput);
     callApi("api/auth/Login",formdata,(response)=>{
       console.log(response);
@@ -323,8 +325,8 @@ class Login extends Component {
   }
 
   _checkSubmition(type){
-    if(type == "username"){ // type =="phone"
-      if(this.state.checksubmit && this.state.usernameinput == ""){
+    if(type == "email"){ // type =="phone" // "username"
+      if(this.state.checksubmit && this.state.emailinput == ""){
         return [Config.authinput,Config.inputerror]; //[Config.phoneinput,Config.inputerror];
       }else{
         return Config.authinput; //Config.phoneinput;
@@ -374,8 +376,8 @@ class Login extends Component {
                 <TextInput keyboardType="number-pad" placeholder={intl.get('Common.MobileNumber')} onChangeText={(text) => this.setState({phonenumberinput:text})}
                   style={this._checkSubmition("phone")} placeholderTextColor="#fff" onSubmitEditing={()=> this._Login()}/>
               </View> */}
-              <TextInput placeholder={intl.get('Common.UserName')} style={this._checkSubmition("username")} placeholderTextColor="#fff"
-              onChangeText={(text)=> this.setState({usernameinput:text})} onSubmitEditing={()=> this._Login()}/>
+              <TextInput placeholder={intl.get('Common.EmailAddress')} style={this._checkSubmition("email")} placeholderTextColor="#fff"
+              onChangeText={(text)=> this.setState({emailinput:text})} onSubmitEditing={()=> this._Login()}/>
               <View style={this._checkSubmition("passctn")}>
                 <TextInput placeholder={intl.get('Common.Password')} secureTextEntry={this.state.showhidepassword } style={Config.passinput} placeholderTextColor="#fff"
                 onChangeText={(text)=> this.setState({passwordinput:text})} onSubmitEditing={()=> this._Login()}/>

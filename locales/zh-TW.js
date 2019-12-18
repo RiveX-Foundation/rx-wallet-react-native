@@ -80,6 +80,7 @@ const zh_TW = {
      "ManageWallet.RemoveWallet.Question":"您確定要刪除錢包嗎？",
      "ManageWallet.MyWallet":"我的錢包",
      "ManageWallet.RemoveAsset":"刪除資產",
+     "ManageWallet.ExportPrivateKey.Picker":"選擇代幣資產",
 
      //Export Key
      "ExportKey.Notice":"請確保您的環境安全，沒人注意您的屏幕。",
@@ -162,7 +163,8 @@ const zh_TW = {
      "Common.MobileNumber":"手機號碼",
      "Common.BACKTOLOGIN":"回到登入",
      "Common.KeyInOTP":"請查詢手機簡訊，並輸入6位數驗證碼",
-     "Common.RESENDOTP":"重新發送",
+     "Common.KeyInOTP_Email":"我們向您發送了6位數驗證碼至您的電郵",    
+     "Common.RESENDOTP":"重新發送",
      "Common.FullName":"名字",
      "Common.EmailAddress":"電郵地址",
      "Common.Password":"密碼",

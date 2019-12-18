@@ -80,6 +80,7 @@ const en_US = {
     "ManageWallet.RemoveWallet.Question":"Are you sure want to remove wallet ?",
     "ManageWallet.MyWallet":"My Wallet",
     "ManageWallet.RemoveAsset":"Remove Asset",
+    "ManageWallet.ExportPrivateKey.Picker":"Select Token Asset",
 
     //Export Key
     "ExportKey.Notice":"Make sure your enviroment is secure, and no one sees your screen.",
@@ -162,6 +163,7 @@ const en_US = {
     "Common.MobileNumber":"Mobile Number",
     "Common.BACKTOLOGIN":"BACK TO LOGIN",
     "Common.KeyInOTP":"PLEASE INSERT 6 DIGIT OTP VIA SMS",
+    "Common.KeyInOTP_Email":"WE HAVE SENT YOU 6 DIGIT OTP VIA EMAIL",
     "Common.RESENDOTP":"RESEND OTP",
     "Common.FullName":"Full Name",
     "Common.EmailAddress":"E-mail Address",

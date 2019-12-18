@@ -211,9 +211,10 @@ export class TopHeader extends Component{
     return(
       <View style={[styles.topheaderctn,this.props.style]}>
         {this.props.ishome ?
-        <TouchableOpacity style={styles.headericon} onPress={()=> this.props.backfunc()}>
-          <MCIcon name="dots-horizontal" color={Color.lightbluegreen} size={30}  />
-        </TouchableOpacity>
+        // <TouchableOpacity style={styles.headericon} onPress={()=> this.props.backfunc()}>
+        //   <MCIcon name="dots-horizontal" color={Color.lightbluegreen} size={30}  />
+        // </TouchableOpacity>
+        <View style={styles.headericon}></View>
         :
         !this.props.noback ?
         <TouchableOpacity onPress={this.props.backfunc ? ()=> this.props.backfunc() : ()=> this.props.navigation.goBack()} style={styles.headericon}>

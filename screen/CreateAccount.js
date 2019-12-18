@@ -36,6 +36,7 @@ class CreateAccount extends Component {
       showhidecountrypicker:false,
       accepttnc:false,
       phonenumberinput:"",
+      registeremailinput:"",
       checksubmit:false,
       countdowntimer:"",
       countdownotptime:"",
@@ -130,25 +131,68 @@ class CreateAccount extends Component {
     })
   }
 
-  _createAccount_Number = () =>{
+  // _createAccount_Number = () =>{
+  //   this.setState({checksubmit:true,loading:true});
+  //   if(isNullOrEmpty(this.state.phonenumberinput)){
+  //     showMessage({
+  //       message: intl.get('Alert.EmptyMobileNumber'),
+  //       type: "warning",
+  //       icon:"warning"
+  //     });
+  //     return;
+  //   }
+  //   var formdata = new FormData();
+  //   formdata.append('countrycode', this.state.selectedCoutryCode);
+  //   formdata.append('mobile', this.state.phonenumberinput);
+  //   formdata.append('smsnotification', true);
+  //   callApi("api/auth/RegisterMobileOTP",formdata,(response)=>{
+  //     console.log(response);
+  //     if(response.status == 200){
+  //       this._removeCheckSubmit({
+  //         // phonenumberinput:"",
+  //         jwtoken:response.token,
+  //         loading:false,
+  //         requestedotp:true,
+  //         verifyOTP:response.otp
+  //       },()=>{
+  //         this.createacctab.setPage(1);
+  //         this.Timer(120);
+  //       })
+  //     }else{
+  //       this.setState({
+  //         loading:false
+  //       },()=>{
+  //         showMessage({
+  //           message: intl.get('Error.' + response.msg),
+  //           type: "danger",
+  //           icon:"danger"
+  //         });
+  //       })
+  //     }
+  //   });
+  // }
+
+  _createAccount_Email = () =>{
     this.setState({checksubmit:true,loading:true});
-    if(isNullOrEmpty(this.state.phonenumberinput)){
-      showMessage({
-        message: intl.get('Alert.EmptyMobileNumber'),
-        type: "warning",
-        icon:"warning"
-      });
+    if(isNullOrEmpty(this.state.registeremailinput)){
+      this.setState({
+        loading:false
+      },()=>{
+        showMessage({
+          message: intl.get('Alert.InvalidEmailAddress'),
+          type: "warning",
+          icon:"warning"
+        });
+      })
       return;
     }
     var formdata = new FormData();
-    formdata.append('countrycode', this.state.selectedCoutryCode);
-    formdata.append('mobile', this.state.phonenumberinput);
-    formdata.append('smsnotification', true);
-    callApi("api/auth/RegisterMobileOTP",formdata,(response)=>{
+    formdata.append('email', this.state.registeremailinput);
+    formdata.append('emailnotification', true);
+    callApi("api/auth/RegisterEmailOTP",formdata,(response)=>{
       console.log(response);
       if(response.status == 200){
         this._removeCheckSubmit({
-          // phonenumberinput:"",
           jwtoken:response.token,
           loading:false,
           requestedotp:true,
@@ -171,10 +215,28 @@ class CreateAccount extends Component {
     });
   }
 
+  // _resendOTP = () =>{
+  //   var formdata = new FormData();
+  //   formdata.append('countrycode', this.state.selectedCoutryCode);
+  //   formdata.append('mobile', this.state.phonenumberinput);
+  //   callApi("api/auth/RegisterMobileOTP",formdata,(response)=>{
+  //     console.log(response);
+  //     if(response.status == 200){
+  //       this._removeCheckSubmit({
+  //         jwtoken:response.token,
+  //         requestedotp:true,
+  //         loading:false
+  //       },()=>{
+  //         this.Timer(120);
+  //       })
+  //     }
+  //   });
+  // }
+
   _resendOTP = () =>{
     var formdata = new FormData();
-    formdata.append('countrycode', this.state.selectedCoutryCode);
-    formdata.append('mobile', this.state.phonenumberinput);
+    formdata.append('email', this.state.registeremailinput);
+    formdata.append('emailnotification', true);
     callApi("api/auth/RegisterMobileOTP",formdata,(response)=>{
       console.log(response);
       if(response.status == 200){
@@ -470,24 +532,26 @@ class CreateAccount extends Component {
               <ScrollView contentContainerStyle={styles.indicatorscroll} keyboardShouldPersistTaps="always">
                 <Text style={styles.hedaerwhitett}>{intl.get('CreateAccount.CREATEACCOUNT')}</Text>
                 <KeyboardAvoidingView>
-                  <View style={styles.rowalign}>
+                  {/* <View style={styles.rowalign}>
                     <TouchableOpacity style={Config.countryinput} activeOpacity={0.9} onPress={()=> this._showhideCountryPicker()}>
                       <Text style={styles.whitett}>{`+${this.state.selectedCoutryCode}`}</Text>
                     </TouchableOpacity>
                     <TextInput keyboardType="number-pad" placeholder={intl.get('Common.MobileNumber')} onChangeText={(text) => this.setState({phonenumberinput:text})}
                     style={this._checkSubmition("phone")} placeholderTextColor="#fff" onSubmitEditing={()=> this._createAccount_Number()}/>
-                  </View>
+                  </View> */}
+                  <TextInput keyboardType="email-address" placeholder={intl.get('Common.EmailAddress')} onChangeText={(text) => this.setState({registeremailinput:text})}
+                    style={this._checkSubmition("email")} placeholderTextColor="#fff" onSubmitEditing={()=> this._createAccount_Email()}/>
                   <TouchableOpacity style={styles.bluegreenctn} activeOpacity={0.9} onPress={()=> this.props.navigation.goBack()}>
                     <Text style={[styles.bluegreentt,{fontSize:this.props.languageStore.language == "en_US" ? 12 : 14}]}>{intl.get('Common.BACKTOLOGIN')}</Text>
                   </TouchableOpacity>
                 </KeyboardAvoidingView>
-                <ProceedButton isload={this.state.loading} onPress={()=> this._createAccount_Number()} />
+                <ProceedButton isload={this.state.loading} onPress={()=> this._createAccount_Email()} />
               </ScrollView>
             </View>
             <View style={styles.indicatorChild}>
               <ScrollView contentContainerStyle={styles.indicatorscroll} keyboardShouldPersistTaps="always">
                 <Text style={styles.hedaerwhitett}>{intl.get('CreateAccount.CREATEACCOUNT')}</Text>
-                <Text style={styles.opacitytt}>{intl.get('Common.KeyInOTP')}</Text>
+                <Text style={styles.opacitytt}>{intl.get('Common.KeyInOTP_Email')}</Text>
                 <View style={styles.otpctn}>
                   <TextInput ref={(r) => this.otpinput_[1] = r} style={this._checkSubmition("otp1")} keyboardType="number-pad" onChangeText={(text)=> this.onFocusChangeText(text,1)} maxLength={1} />
                   <TextInput ref={(r) => this.otpinput_[2] = r} style={this._checkSubmition("otp2")} keyboardType="number-pad" onChangeText={(text)=> this.onFocusChangeText(text,2)} maxLength={1} />

@@ -514,7 +514,7 @@ class Settings extends Component {
       <SafeAreaView style={styles.container}>
         <TransBar />
         <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
-          <TopHeader {...this.props} title={intl.get('Settings.SETTINGS')} isclosebtn/>
+          <TopHeader {...this.props} title={intl.get('Settings.SETTINGS')} noback/>
           {this.state.refreshSetting ?
           <FlatList 
             data={settings_json}

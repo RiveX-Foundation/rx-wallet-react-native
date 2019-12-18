@@ -12,7 +12,7 @@ import {
   ScrollView
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { TransBar, TopHeader, PopModal, FlashAlert } from '../extension/AppComponents';
+import { TransBar, TopHeader, PopModal, FlashAlert , ReusedPicker} from '../extension/AppComponents';
 import { Color, Config, isNullOrEmpty, numberWithCommas, isObjEmpty } from '../extension/AppInit';
 import IoIcon from 'react-native-vector-icons/Ionicons'
 import MaIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -47,6 +47,7 @@ class ManageWallet extends Component {
       totalworthprice:[],
       updatedresult:false,
       currentHomeWallet:{},
+      showhideexportkeypicker:false
     }
     this.quequtokenInterval = null;
     this.quequtoken = false;
@@ -461,6 +462,12 @@ class ManageWallet extends Component {
       this.props.walletStore.setFromManageWallet(true);
     }
     this.props.navigation.replace("NewWallet");
+  }
+
+  _showhideexportkeypicker = () =>{
+    this.setState({
+      showhideexportkeypicker:!this.state.showhideexportkeypicker
+    })
   }
 
   render() {

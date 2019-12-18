@@ -379,14 +379,14 @@ class Home extends Component {
   }
 
   _loadWallet = async() => {
-    // console.log("start load");
+    console.log("start load");
     this.setState({totalrvx:0});
     try {
       const value = await AsyncStorage.getItem('@wallet')
       // console.log(value);
       if(value !== null) {
         let walletlist = JSON.parse(value);
-        // console.log("_loadWallet", walletlist)
+        console.log("_loadWallet", walletlist);
         if(walletlist.length > 0){
           walletlist = walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id);
           // walletlist = walletlist.filter(x => x.network == this.props.settingStore.oldnetwork.shortcode);
