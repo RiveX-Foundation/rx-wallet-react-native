@@ -376,7 +376,7 @@ class Login extends Component {
                 <TextInput keyboardType="number-pad" placeholder={intl.get('Common.MobileNumber')} onChangeText={(text) => this.setState({phonenumberinput:text})}
                   style={this._checkSubmition("phone")} placeholderTextColor="#fff" onSubmitEditing={()=> this._Login()}/>
               </View> */}
-              <TextInput placeholder={intl.get('Common.EmailAddress')} style={this._checkSubmition("email")} placeholderTextColor="#fff"
+              <TextInput placeholder={`${intl.get('Common.UserName')} / ${intl.get('Common.EmailAddress')}`} style={this._checkSubmition("email")} placeholderTextColor="#fff"
               onChangeText={(text)=> this.setState({emailinput:text})} onSubmitEditing={()=> this._Login()}/>
               <View style={this._checkSubmition("passctn")}>
                 <TextInput placeholder={intl.get('Common.Password')} secureTextEntry={this.state.showhidepassword } style={Config.passinput} placeholderTextColor="#fff"
