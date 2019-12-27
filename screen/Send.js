@@ -127,8 +127,9 @@ class Send extends Component {
 
   _onProceedSuccess = () =>{
     this.screenloader.show();
+    let checksumAddress = Web3.utils.toChecksumAddress(this.state.recipientaddress);
     if(this.state.selectedWallet.wallettype == "Shared"){
-      this.props.walletStore.createMultiSigTransaction(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,this.state.recipientaddress,parseFloat(this.state.setamount),this.state.selectedToken,(response)=>{
+      this.props.walletStore.createMultiSigTransaction(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,checksumAddress,parseFloat(this.state.setamount),this.state.selectedToken,(response)=>{
         clearInterval(this.otpcountdown);
         this.sendtab.setPage(3);
         this.screenloader.hide();
@@ -138,7 +139,7 @@ class Send extends Component {
         // console.log(error);
       });
     }else{
-      this.props.walletStore.TransferETH(this.state.selectedWallet,this.state.selectedToken,this.state.recipientaddress,this.state.setamount,(response)=>{
+      this.props.walletStore.TransferETH(this.state.selectedWallet,this.state.selectedToken,checksumAddress,this.state.setamount,(response)=>{
         this.sendtab.setPage(3);
         this.screenloader.hide();
         console.log(response);
@@ -334,7 +335,26 @@ class Send extends Component {
   }
 
   _checkField = () =>{
-    if(isNullOrEmpty(this.state.recipientaddress) || !Web3.utils.isAddress(this.state.recipientaddress)){
+    let checksumAdderss = "";
+    if(isNullOrEmpty(this.state.recipientaddress)){
+      showMessage({
+        message: intl.get('Alert.InvalidAddress'),
+        type: "warning",
+        icon:"warning"
+      });
+      return;
+    }
+    try{
+      checksumAdderss = Web3.utils.toChecksumAddress(this.state.recipientaddress);
+    }catch(e){
+      showMessage({
+        message: intl.get('Alert.InvalidAddress'),
+        type: "warning",
+        icon:"warning"
+      });
+      return;
+    }
+    if(!Web3.utils.isAddress(checksumAdderss)){
       showMessage({
         message: intl.get('Alert.InvalidAddress'),
         type: "warning",
