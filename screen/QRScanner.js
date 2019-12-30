@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TransBar, TopHeader } from '../extension/AppComponents';
-import { Color, Config } from '../extension/AppInit';
+import { Color, Config, isObjEmpty } from '../extension/AppInit';
 import { RNCamera } from 'react-native-camera';
 import MaIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -70,7 +70,7 @@ export default class QRScanner extends Component {
             }}
             // ratio={"1:1"}
             onGoogleVisionBarcodesDetected={({ barcodes }) => {
-              // console.log(barcodes);
+              console.log(barcodes);
               let code = barcodes[0];
               if(!this.state.isScandone && code.type == "QR_CODE"){
                 this.setState({
@@ -79,6 +79,21 @@ export default class QRScanner extends Component {
                 },()=>{
                   this._goBackResult();
                 });
+              }
+            }}
+            barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
+            onBarCodeRead={(barcodes)=>{
+              if(!isObjEmpty(barcodes)){
+                let code = barcodes;
+                if(!this.state.isScandone && code.type == "org.iso.QRCode"){
+                  console.log(barcodes);
+                  this.setState({
+                    isScandone:true,
+                    scannedresult:code.data.replace("ethereum:","")
+                  },()=>{
+                    this._goBackResult();
+                  });
+                }
               }
             }}
           >

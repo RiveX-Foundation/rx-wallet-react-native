@@ -32,11 +32,12 @@ export default class Stacking extends Component {
         <TransBar />
         <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
           <TopHeader {...this.props} title={"STACKING"} noback/>  
-          <IndicatorViewPager ref={(r) => this.newwallettab = r} style={styles.container} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
-            <View style={[styles.indicatorChild,styles.aligncenter]}>
+          {/* <IndicatorViewPager style={styles.container} >
+
+          </IndicatorViewPager> */}
+                      <View style={[styles.indicatorChild,styles.aligncenter]}>
               <Text style={styles.fakett}>Comming Soon</Text>
             </View>
-          </IndicatorViewPager>
         </LinearGradient>
       </SafeAreaView>
     );
