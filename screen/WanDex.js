@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView
+  SafeAreaView,
+  StatusBar
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TransBar, TopHeader } from '../extension/AppComponents';
@@ -18,12 +19,8 @@ export default class WanDex extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <TransBar />
+        {/* <StatusBar barStyle={"light-content"} backgroundColor={"#333"} /> */}
         <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
-          {/* <TopHeader {...this.props} title={"WAN DEX"} noback/>  
-          <View style={[styles.indicatorChild,styles.aligncenter]}>
-              <Text style={styles.fakett}>Comming Soon</Text>
-          </View> */}
           <WebView source={{ uri: 'http://167.99.77.158:3000/' }} />
         </LinearGradient>
       </SafeAreaView>
@@ -36,6 +33,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#08081E',
   }
 });
