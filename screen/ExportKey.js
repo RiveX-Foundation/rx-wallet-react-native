@@ -136,7 +136,7 @@ class ExportKey extends Component {
               <Text style={styles.toptt}>{intl.get('ExportKey.Notice')}</Text>
               <LinearGradient colors={['#4954AE', '#4A47A9', '#393B73']} style={styles.qrcontainer}>
                   <View style={styles.qrcodectn}>
-                    <QRCode value={"6194ac1a44f4cf8bc9c5657c4de50ef378a73261e94edd9807ccbe3dd16ef7e5"} size={180} color={"#4954AE"} />
+                    <QRCode value={this.state.selectedToken.PrivateAddress} size={180} color={"#4954AE"} />
                   </View>
               </LinearGradient>
               <Text style={styles.privatekeyctn}> 
