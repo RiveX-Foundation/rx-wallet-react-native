@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { TransBar, CountryPicker, ProceedButton, IndicatorTopHeader } from '../extension/AppComponents';
 import LinearGradient from 'react-native-linear-gradient';
-import { Color, Config, isNullOrEmpty, callApi, checkCryptographic } from '../extension/AppInit';
+import { Color, Config, isNullOrEmpty, callApi, checkCryptographic , validateEmail} from '../extension/AppInit';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import {showMessage} from "react-native-flash-message";
 import intl, { init } from 'react-intl-universal';
@@ -32,6 +32,7 @@ class ResetPassword extends Component {
       selectedCoutryCode:"60",
       showhidecountrypicker:false,
       phonenumberinput:"",
+      emailaddressinput:"",
       checksubmit:false,
       countdowntimer:"",
       countdownotptime:"",
@@ -106,6 +107,13 @@ class ResetPassword extends Component {
         return [Config.phoneinput,Config.inputerror];
       }else{
         return Config.phoneinput;
+      }
+    }
+    if(type == "email"){
+      if(this.state.checksubmit && this.state.currentindex == 0 && (this.state.emailaddressinput == "" || !validateEmail(this.state.emailaddressinput))){
+        return [Config.authinput,Config.inputerror];
+      }else{
+        return Config.authinput;
       }
     }
     if(type.indexOf("otp") > -1){
@@ -261,6 +269,60 @@ class ResetPassword extends Component {
     });
   }
 
+  _RequestForgotPassword_Email = () =>{
+    this.setState({checksubmit:true,loading:true});
+    if(isNullOrEmpty(this.state.emailaddressinput)){
+      this.setState({
+        loading:false
+      },()=>{
+        showMessage({
+          message: intl.get('Alert.InvalidEmailAddress'),
+          type: "warning",
+          icon:"warning"
+        });
+      })
+      return;
+    }
+    if(!validateEmail(this.state.emailaddressinput)){
+      this.setState({
+        loading:false
+      },()=>{
+        showMessage({
+          message: intl.get('Alert.InvalidEmailAddress'),
+          type: "warning",
+          icon:"warning"
+        });
+      })
+      return;
+    }
+    var formdata = new FormData();
+    formdata.append('countrycode', this.state.selectedCoutryCode);
+    formdata.append('mobile', this.state.phonenumberinput);
+    callApi("api/auth/RequestForgotPassword",formdata,(response)=>{
+      console.log(response);
+      if(response.status == 200){
+        this._removeCheckSubmit({
+          jwtoken:response.token,
+          loading:false,
+          verifyOTP:response.otp
+        },()=>{
+          this.resetpasstab.setPage(1);
+          this.Timer(120);
+        })
+      }else{
+        this.setState({
+          loading:false
+        },()=>{
+          showMessage({
+            message: intl.get('Error.' + response.msg),
+            type: "danger",
+            icon:"danger"
+          });
+        })
+      }
+    });
+  }
+
   _resendOTP = () =>{
     var formdata = new FormData();
     formdata.append('countrycode', this.state.selectedCoutryCode);
@@ -355,18 +417,20 @@ class ResetPassword extends Component {
               <ScrollView contentContainerStyle={styles.indicatorscroll} keyboardShouldPersistTaps="always">
                 <Text style={styles.hedaerwhitett}>{intl.get('ResetPass.RESETPASSWORD')}</Text>
                 <KeyboardAvoidingView>
-                  <View style={styles.rowalign}>
+                  {/* <View style={styles.rowalign}>
                     <TouchableOpacity style={Config.countryinput} activeOpacity={0.9} onPress={()=> this._showhideCountryPicker()}>
                       <Text style={styles.whitett}>{`+${this.state.selectedCoutryCode}`}</Text>
                     </TouchableOpacity>
                     <TextInput keyboardType="number-pad" placeholder={intl.get('Common.MobileNumber')} onChangeText={(text) => this.setState({phonenumberinput:text})}
                     style={this._checkSubmition("phone")} placeholderTextColor="#fff" onSubmitEditing={()=> this._RequestForgotPassword()}/>
-                  </View>
+                  </View> */}
+                  <TextInput keyboardType="email-address" placeholder={intl.get('Common.EmailAddress')} onChangeText={(text) => this.setState({emailaddressinput:text})}
+                    style={this._checkSubmition("email")} placeholderTextColor="#fff" onSubmitEditing={()=> this._RequestForgotPassword_Email()}/>
                   <TouchableOpacity style={styles.bluegreenctn} activeOpacity={0.9} onPress={()=> this.props.navigation.goBack()}>
                     <Text style={[styles.bluegreentt,{fontSize:this.props.languageStore.language == "en_US" ? 12 : 14}]}>{intl.get('Common.BACKTOLOGIN')}</Text>
                   </TouchableOpacity>
                 </KeyboardAvoidingView>
-                <ProceedButton isload={this.state.loading} onPress={()=> this._RequestForgotPassword()} />
+                <ProceedButton isload={this.state.loading} onPress={()=> this._RequestForgotPassword_Email()} />
               </ScrollView>
             </View>
             <View style={styles.indicatorChild}>

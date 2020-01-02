@@ -72,7 +72,11 @@ const en_US = {
     //Manage Wallet
     "ManageWallet.MANAGEWALLET":"MANAGE WALLET",
     "ManageWallet.ExportPrivateKey":"Export Private Key",
+    "ManageWallet.ExportMnemonicPhrase":"Export Mnemonic Phrase",
     "ManageWallet.RemoveWallet":"Remove Wallet",
+    'ManageWallet.ExportMnemonic.Msg1': 'It is essential to understand that the Mnemonic Phrase is the most important and sensitive part of your account information.',
+    'ManageWallet.ExportMnemonic.Msg2': 'Whoever has knowledge of a Mnemonic Phrase has full control over the associated funds and assets. ',
+    'ManageWallet.ExportMnemonic.Msg3': 'It is important for restoring your account so you should never lose it, but also keep it top secret. ',
     "ManageWallet.ExportPrivateKey.Msg1":"It is essential to understand that the Private Key is the most important and sensitive part of your account information.",
     "ManageWallet.ExportPrivateKey.Msg2":"Whoever has knowledge of a Private Key has full control over the associated funds and assets.",
     "ManageWallet.ExportPrivateKey.Msg3":"It is important for restoring your account so you should never lose it, but also keep it top secret.",
@@ -81,6 +85,7 @@ const en_US = {
     "ManageWallet.MyWallet":"My Wallet",
     "ManageWallet.RemoveAsset":"Remove Asset",
     "ManageWallet.ExportPrivateKey.Picker":"Select Token Asset",
+    "ManageWallet.TotalTokenAsset":"({total}) Token Asset",
 
     //Export Key
     "ExportKey.Notice":"Make sure your enviroment is secure, and no one sees your screen.",

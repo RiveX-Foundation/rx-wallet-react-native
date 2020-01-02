@@ -31,16 +31,26 @@ import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-e
 
 const errorHandler = (e, isFatal) => {
   if (isFatal) {
+    // Alert.alert(
+    //     'Unexpected error occurred',
+    //     `
+    //     Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}
+    //     We have reported this to our team ! Please close the app and start again!
+    //     `,
+    //   [{
+    //     text: 'Close'
+    //   }]
+    // );
     Alert.alert(
-        'Unexpected error occurred',
-        `
-        Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}
-        We have reported this to our team ! Please close the app and start again!
-        `,
-      [{
-        text: 'Close'
-      }]
-    );
+      'Unexpected error occurred',
+      `
+      We have reported this to our team ! Please close the app and start again!
+      `,
+    [{
+      text: 'Close'
+    }]
+  );
+  console.log(`Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}`)
   } else {
     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
   }
@@ -67,7 +77,7 @@ try{
         let parsesettings = JSON.parse(settings_value);
         let selectedsetting = parsesettings.find(x => x.Id == parseaccountinfo.user.Id);
         // Print notification payload data
-        console.log('Received notification: ' + JSON.stringify(data));
+        // console.log('Received notification: ' + JSON.stringify(data));
         // console.log("selectedsetting.notification", selectedsetting.notification)
         // Notification title
         let notificationTitle = 'RiveX';

@@ -72,7 +72,11 @@ const zh_TW = {
      //Manage Wallet
      "ManageWallet.MANAGEWALLET":"管理錢包",
      "ManageWallet.ExportPrivateKey":"導出私鑰",
+     "ManageWallet.ExportMnemonicPhrase":"導出助記詞",
      "ManageWallet.RemoveWallet":"刪除錢包",
+     "ManageWallet.ExportMnemonic.Msg1":"您必須清楚了解助記詞是您賬戶中最重要與最敏感的資訊。",
+     "ManageWallet.ExportMnemonic.Msg2":"任何人知道了您的助記詞將能夠全面控制您錢包裡的資金與資產。",
+     "ManageWallet.ExportMnemonic.Msg3":"它將是還原您錢包很重要的一項，千萬不能將它公開，收為己用。",
      "ManageWallet.ExportPrivateKey.Msg1":"您必須清楚了解私鑰是您賬戶中最重要與最敏感的資訊。",
      "ManageWallet.ExportPrivateKey.Msg2":"任何人知道了您的私鑰將能夠全面控制您錢包裡的資金與資產。",
      "ManageWallet.ExportPrivateKey.Msg3":"它將是還原您錢包很重要的一項，千萬不能將它公開，收為己用。",
@@ -81,6 +85,7 @@ const zh_TW = {
      "ManageWallet.MyWallet":"我的錢包",
      "ManageWallet.RemoveAsset":"刪除資產",
      "ManageWallet.ExportPrivateKey.Picker":"選擇代幣資產",
+     "ManageWallet.TotalTokenAsset":"({total})個代幣資產",
 
      //Export Key
      "ExportKey.Notice":"請確保您的環境安全，沒人注意您的屏幕。",

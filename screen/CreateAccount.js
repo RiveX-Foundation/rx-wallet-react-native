@@ -186,6 +186,18 @@ class CreateAccount extends Component {
       })
       return;
     }
+    if(!validateEmail(this.state.emailaddressinput)){
+      this.setState({
+        loading:false
+      },()=>{
+        showMessage({
+          message: intl.get('Alert.InvalidEmailAddress'),
+          type: "warning",
+          icon:"warning"
+        });
+      })
+      return;
+    }
     var formdata = new FormData();
     formdata.append('email', this.state.registeremailinput);
     formdata.append('emailnotification', true);

@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
-  Platform, 
+  Platform,
   StyleSheet,
   Text,
   View,
@@ -16,19 +16,47 @@ import RiveIcon from '../extension/RiveIcon'
 import { WebView } from 'react-native-webview';
 
 export default class WanDex extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      defaultURL: "https://wrdex.io/",
+      loadURL: "https://wrdex.io/",
+      loadedURL: ""
+    }
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        {/* <StatusBar barStyle={"light-content"} backgroundColor={"#333"} /> */}
-        <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
-          <WebView source={{ uri: 'http://167.99.77.158:3000/' }} />
-        </LinearGradient>
+        {/* <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
+
+        </LinearGradient> */}
+        <View style={Config.linearGradient}>
+          {this.state.loadedURL.indexOf("/main") > -1 ?
+            <TopHeader {...this.props} isclosebtn={false} backfunc={() => this.dexview.goBack()} 
+            style={styles.webheader}/>
+            : null}
+          <WebView source={{ uri: this.state.loadURL }}
+            ref={(r) => this.dexview = r}
+            onLoad={syntheticEvent => {
+              const { nativeEvent } = syntheticEvent;
+              console.log(nativeEvent.url);
+              this.setState({
+                loadedURL: nativeEvent.url
+              })
+            }} />
+        </View>
       </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  webheader:{
+    position:'absolute',
+    top:40,
+    zIndex:1
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

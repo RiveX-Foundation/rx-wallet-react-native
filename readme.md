@@ -1,5 +1,5 @@
 # rivex-react-native
-RVX mobile wallet using `react-native@0.59.10`
+RX mobile wallet using `react-native@0.59.10`
 
 [![GitHub License][license]][license-url]
 
@@ -29,7 +29,7 @@ RVX mobile wallet using `react-native@0.59.10`
 
 ## License
 
-RVX Wallet is open source software licensed as GPL-3.0
+RX Wallet is open source software licensed as GPL-3.0
 
 [license]: https://img.shields.io/badge/license-GNUGPL3-blue.svg
 [license-url]:https://github.com/RiveX-Foundation/rvx-desktop-wallet/blob/master/LICENSE

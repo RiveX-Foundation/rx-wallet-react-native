@@ -47,7 +47,8 @@ class ManageWallet extends Component {
       totalworthprice:[],
       updatedresult:false,
       currentHomeWallet:{},
-      showhideexportkeypicker:false
+      showhideexportkeypicker:false,
+      showhideexportseed:false
     }
     this.quequtokenInterval = null;
     this.quequtoken = false;
@@ -107,9 +108,9 @@ class ManageWallet extends Component {
       this.managewallettab.setPage(currentindex);
       let position = {position:currentindex};
       this._onchangeSelectedIndex(position);
-      if(currentindex == 0 && Platform.OS == "android"){
-        BackHandler.removeEventListener('hardwareBackPress', this.stepBackManageWallet);
-      }
+      // if(currentindex == 0 && Platform.OS == "android"){
+      //   BackHandler.removeEventListener('hardwareBackPress', this.stepBackManageWallet);
+      // }
     }
     if(currentindex != 2){
       clearInterval(this.state.countdowntimer);
@@ -277,6 +278,7 @@ class ManageWallet extends Component {
           :
           <Text style={styles.mywalletvalue}>{this._getTotalWorth(item)} {this.props.settingStore.settings.currency}</Text>
           }
+          {/* <Text style={styles.mywalletvalue}>{intl.get('ManageWallet.TotalTokenAsset',{total:item.tokenassetlist.length})}</Text> */}
         </Ripple>
         {!this.state.isfromHome ?
         <TouchableOpacity style={styles.removebtn} activeOpacity={0.9} onPress={()=> this._selectWalletToRemove(item)}>
@@ -288,10 +290,14 @@ class ManageWallet extends Component {
   }
 
   _onSelectWallet = (wallet) =>{
+    // this.props.walletStore.loadTokenAssetList(wallet).then((value) =>{   
+
+    // });
     this.setState({
       selectedWallet:wallet,
       selectedWalletName:wallet.walletname
     },()=>{
+      // console.log(this.state.selectedWallet.seedphase);
       this.managewallettab.setPage(1)
     })
   }
@@ -327,6 +333,12 @@ class ManageWallet extends Component {
   _showhideExportKey = () =>{
     this.setState({
       showhideexportkey:!this.state.showhideexportkey
+    })
+  }
+
+  _showhideExportMnemonicPhrase = () =>{
+    this.setState({
+      showhideexportseed:!this.state.showhideexportseed
     })
   }
 
@@ -451,6 +463,14 @@ class ManageWallet extends Component {
     this._showhideExportKey();
   }
 
+  _confirmExportMnemonicPhrase = () =>{
+    if(Platform.OS == "android"){
+      BackHandler.removeEventListener('hardwareBackPress', this.stepBackManageWallet);
+    }
+    this.props.navigation.navigate("ExportSeed",{selectedWallet:this.state.selectedWallet,onBack:this._onBacktoManage});
+    this._showhideExportMnemonicPhrase();
+  }
+
   _onBacktoManage = () =>{
     if(Platform.OS == "android"){
       BackHandler.addEventListener("hardwareBackPress", this.stepBackManageWallet);
@@ -504,6 +524,12 @@ class ManageWallet extends Component {
                 <Ripple style={styles.managewalletitem}>
                   <Text style={styles.managewalletitemtt}>{this._getTotalWorth(this.state.selectedWallet)} {this.props.settingStore.settings.currency}</Text>
                 </Ripple>
+                {!isNullOrEmpty(this.state.selectedWallet.seedphase) ?
+                <Ripple style={styles.managewalletitem} onPress={()=> this._showhideExportMnemonicPhrase()}>
+                  <Text style={styles.managewalletitemtt}>{intl.get('ManageWallet.ExportMnemonicPhrase')}</Text>
+                  <IoIcon name="ios-arrow-forward" color={Color.textgrey} size={20} />
+                </Ripple>
+                : null }
                 <Ripple style={styles.managewalletitem} onPress={()=> this._showhideExportKey()}>
                   <Text style={styles.managewalletitemtt}>{intl.get('ManageWallet.ExportPrivateKey')}</Text>
                   <IoIcon name="ios-arrow-forward" color={Color.textgrey} size={20} />
@@ -528,6 +554,18 @@ class ManageWallet extends Component {
           } 
           onCancel={()=> this._showhideExportKey()}
           onConfirm={()=> this._confirmExportKey()}
+        />
+        <PopModal isVisible={this.state.showhideexportseed} 
+          title={intl.get('Common.WARNING')}
+          content={
+            <View style={styles.exportkeyctn}>
+              <Text style={styles.exportkeytt}>{intl.get('ManageWallet.ExportMnemonic.Msg1')}</Text>
+              <Text style={styles.exportkeytt}>{intl.get('ManageWallet.ExportMnemonic.Msg2')}</Text>
+              <Text style={styles.exportkeytt}>{intl.get('ManageWallet.ExportMnemonic.Msg3')}</Text>
+            </View>
+          } 
+          onCancel={()=> this._showhideExportMnemonicPhrase()}
+          onConfirm={()=> this._confirmExportMnemonicPhrase()}
         />
         <PopModal isVisible={this.state.showhideediwalletname} 
           title={intl.get('ManageWallet.EditWalletName')}

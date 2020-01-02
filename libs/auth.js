@@ -10,7 +10,7 @@ function isJSON(obj) {
     let yes = false;
 
     try {
-        JSON.parse(JSON.stringify(obj));
+        // JSON.parse(JSON.stringify(obj));
         yes = true;
     } catch (err) {
         yes = false;

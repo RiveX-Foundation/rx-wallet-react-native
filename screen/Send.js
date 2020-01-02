@@ -128,6 +128,7 @@ class Send extends Component {
   _onProceedSuccess = () =>{
     this.screenloader.show();
     let checksumAddress = Web3.utils.toChecksumAddress(this.state.recipientaddress);
+    // console.log("OK");
     if(this.state.selectedWallet.wallettype == "Shared"){
       this.props.walletStore.createMultiSigTransaction(this.props.settingStore.acctoken,this.state.selectedWallet.publicaddress,checksumAddress,parseFloat(this.state.setamount),this.state.selectedToken,(response)=>{
         clearInterval(this.otpcountdown);
@@ -337,6 +338,7 @@ class Send extends Component {
   _checkField = () =>{
     let checksumAdderss = "";
     if(isNullOrEmpty(this.state.recipientaddress)){
+      // console.log("empty address");
       showMessage({
         message: intl.get('Alert.InvalidAddress'),
         type: "warning",
@@ -347,6 +349,8 @@ class Send extends Component {
     try{
       checksumAdderss = Web3.utils.toChecksumAddress(this.state.recipientaddress);
     }catch(e){
+      // console.log(e)
+      // console.log("toChecksumAddress failed");
       showMessage({
         message: intl.get('Alert.InvalidAddress'),
         type: "warning",
@@ -355,6 +359,7 @@ class Send extends Component {
       return;
     }
     if(!Web3.utils.isAddress(checksumAdderss)){
+      // console.log("not address");
       showMessage({
         message: intl.get('Alert.InvalidAddress'),
         type: "warning",

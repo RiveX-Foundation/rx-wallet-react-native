@@ -21,6 +21,7 @@ import Transactions from '../screen/Transactions'
 import TransactionDetail from '../screen/TransactionDetail'
 import QRScanner from '../screen/QRScanner'
 import ExportKey from '../screen/ExportKey'
+import ExportSeed from '../screen/ExportSeed'
 import Notification from '../screen/Notification'
 import WalletInvitation from '../screen/WalletInvitation'
 import PersonalProfile from '../screen/PersonalProfile'
@@ -141,6 +142,7 @@ export const AppNavigator = createStackNavigator({
     TransactionDetail:TransactionDetail,
     QRScanner:QRScanner,
     ExportKey:ExportKey,
+    ExportSeed:ExportSeed,
     Notification:Notification,
     SharedWallet:SharedWallet,
     WalletInvitation:WalletInvitation,
