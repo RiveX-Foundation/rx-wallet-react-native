@@ -76,9 +76,10 @@ class PersonalProfile extends Component {
   }
 
   _savePersonalProfile = () =>{
-    if(this.state.nameinput == "" || this.state.nameinput.length <= 5){
+    if(this.state.nameinput == ""){
+    // if(this.state.nameinput == "" || this.state.nameinput.length <= 5){
       showMessage({
-        message: intl.get('Alert.NameTooShort'),
+        message: intl.get('Alert.NameisEmpty'),
         type: "warning",
         icon:"warning"
       });
@@ -165,8 +166,9 @@ class PersonalProfile extends Component {
   _onProceedSuccess = () =>{
     this.screenloader.show();
     var formdata = new FormData();
-    // formdata.append('token', this.props.settingStore.acctoken);
-    formdata.append('token', this.props.securityStore.receivedOTPJwToken);
+    formdata.append('token', this.props.settingStore.acctoken);
+    console.log(this.props.securityStore.acctoken);
+    // formdata.append('token', this.props.securityStore.receivedOTPJwToken);
     formdata.append('loginid', this.state.usernameinput);
     formdata.append('name', this.state.nameinput);
     formdata.append('password', this.state.passwordinput);
@@ -189,7 +191,11 @@ class PersonalProfile extends Component {
           });
           this.props.settingStore.setAccinfo(response.user);
           this.props.securityStore.resetEverythings();
-          this.props.navigation.goBack();
+          if(this.state.passwordinput == ""){
+            this.props.navigation.goBack();
+          }else{
+            this._AccountLogout();
+          }
         });
       }else{
         showMessage({
@@ -230,6 +236,18 @@ class PersonalProfile extends Component {
     this.setState({
       showhidepassword:!this.state.showhidepassword
     })
+  }
+
+  _AccountLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('@accinfo').then(()=>{
+        this.props.navigation.navigate("Auth");
+      });
+    } catch(e) {
+      // remove error
+    }
+  
+    console.log('Done.')
   }
 
   render() {

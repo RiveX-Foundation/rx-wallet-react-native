@@ -237,6 +237,7 @@ const zh_CN = {
     "Alert.TermsConditions":"请同意条款和条件",
     "Alert.RegisterSuccessfully":"创建成功",
     "Alert.NameTooShort":"名字太过于简短",
+    "Alert.NameisEmpty":"名字不能为空",
     "Alert.PasswordTooShort":"密码太过于简短",
     "Alert.PasswordNotMatch":"密码不相符",
     "Alert.ResetSuccessfully":"重置成功",

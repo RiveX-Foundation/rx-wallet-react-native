@@ -296,9 +296,9 @@ class ResetPassword extends Component {
       return;
     }
     var formdata = new FormData();
-    formdata.append('countrycode', this.state.selectedCoutryCode);
-    formdata.append('mobile', this.state.phonenumberinput);
-    callApi("api/auth/RequestForgotPassword",formdata,(response)=>{
+    formdata.append('email', this.state.emailaddressinput);
+    formdata.append('emailnotification', true);
+    callApi("api/auth/RequestForgotPasswordByEmail",formdata,(response)=>{
       console.log(response);
       if(response.status == 200){
         this._removeCheckSubmit({

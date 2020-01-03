@@ -32,11 +32,7 @@ export default class WanDex extends Component {
 
         </LinearGradient> */}
         <View style={Config.linearGradient}>
-          {this.state.loadedURL.indexOf("/main") > -1 ?
-            <TopHeader {...this.props} isclosebtn={false} backfunc={() => this.dexview.goBack()} 
-            style={styles.webheader}/>
-            : null}
-          <WebView source={{ uri: this.state.loadURL }}
+          <WebView source={{ uri: "https://wrdex.io/main" }}
             ref={(r) => this.dexview = r}
             onLoad={syntheticEvent => {
               const { nativeEvent } = syntheticEvent;
@@ -52,10 +48,10 @@ export default class WanDex extends Component {
 }
 
 const styles = StyleSheet.create({
-  webheader:{
-    position:'absolute',
-    top:40,
-    zIndex:1
+  webheader: {
+    position: 'absolute',
+    top: 40,
+    zIndex: 1
   },
   container: {
     flex: 1,

@@ -485,9 +485,10 @@ class CreateAccount extends Component {
       });
       return false;
     }
-    if(this.state.nameinput.length <= 5){
+    // if(this.state.nameinput.length <= 5){
+    if(this.state.nameinput == ""){
       showMessage({
-        message: intl.get('Alert.NameTooShort'),
+        message: intl.get('Alert.NameisEmpty'),
         type: "danger",
         icon:"danger"
       });

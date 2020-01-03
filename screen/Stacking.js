@@ -36,7 +36,7 @@ export default class Stacking extends Component {
 
           </IndicatorViewPager> */}
                       <View style={[styles.indicatorChild,styles.aligncenter]}>
-              <Text style={styles.fakett}>Comming Soon</Text>
+              <Text style={styles.fakett}>Coming Soon</Text>
             </View>
         </LinearGradient>
       </SafeAreaView>

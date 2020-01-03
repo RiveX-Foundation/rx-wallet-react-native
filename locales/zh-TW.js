@@ -237,6 +237,7 @@ const zh_TW = {
      "Alert.TermsConditions":"請同意條款和條件",
      "Alert.RegisterSuccessfully":"創建成功",
      "Alert.NameTooShort":"名字太過於簡短",
+     "Alert.NameisEmpty":"名字不能為空",
      "Alert.PasswordTooShort":"密碼太過於簡短",
      "Alert.PasswordNotMatch":"密碼不相符",
      "Alert.ResetSuccessfully":"重置成功",

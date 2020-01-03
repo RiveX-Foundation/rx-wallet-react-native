@@ -237,6 +237,7 @@ const en_US = {
     "Alert.TermsConditions":"Please agree the Terms & Conditions",
     "Alert.RegisterSuccessfully":"Register Successfully",
     "Alert.NameTooShort":"Name too short",
+    "Alert.NameisEmpty":"Name is empty",
     "Alert.PasswordTooShort":"Password too short",
     "Alert.PasswordNotMatch":"Password Not Match",
     "Alert.ResetSuccessfully":"Reset Successfully",
