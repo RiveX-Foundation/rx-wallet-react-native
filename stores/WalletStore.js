@@ -496,6 +496,10 @@ class WalletStore {
           tokenitem.PublicAddress = defaultpublicaddress;
           tokenitem.PrivateAddress = defaultprivatekey;
         }
+        
+        if(tokenitem.TokenType == "wan" || tokenitem.TokenType == "wrc20"){ //IF WANCHAIN . CONVERT ALL ADDRESS TO LOWERCASE
+          tokenitem.PublicAddress = tokenitem.PublicAddress.toLowerCase();
+        }
         return tokenitem;
       });
 
