@@ -37,6 +37,7 @@ export const Config = {
     winheight:Dimensions.get('window').height,
     statusBarHeight:getStatusBarHeight(),
     availableHeight:Dimensions.get('window').height - getStatusBarHeight() - 50,
+    enabledPrivacy:false,
     linearGradient:{
         flex: 1,
         width:"100%",

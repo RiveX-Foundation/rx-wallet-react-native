@@ -11,7 +11,8 @@ import {
   KeyboardAvoidingView,
   BackHandler,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  Alert
 } from 'react-native';
 import { TransBar, CountryPicker, ProceedButton, IndicatorTopHeader } from '../extension/AppComponents';
 import LinearGradient from 'react-native-linear-gradient';
@@ -380,7 +381,8 @@ class ResetPassword extends Component {
     formdata.append('newpassword', this.state.passwordinput);
     formdata.append('token', this.state.jwtoken);
     callApi("api/auth/ChangePassword",formdata,(response)=>{
-      console.log(response)
+      // console.log(response)
+      Alert.alert(JSON.stringify(response));
       if(response.status == 200){
         this._removeCheckSubmit({
           loading:false
@@ -436,7 +438,7 @@ class ResetPassword extends Component {
             <View style={styles.indicatorChild}>
               <ScrollView contentContainerStyle={styles.indicatorscroll} keyboardShouldPersistTaps="always">
                 <Text style={styles.hedaerwhitett}>{intl.get('ResetPass.RESETPASSWORD')}</Text>
-                <Text style={styles.opacitytt}>{intl.get('Common.KeyInOTP')}</Text>
+                <Text style={styles.opacitytt}>{intl.get('Common.KeyInOTP_Email')}</Text>
                 <View style={styles.otpctn}>
                   <TextInput ref={(r) => this.otpinput_[1] = r} style={this._checkSubmition("otp1")} keyboardType="number-pad" onChangeText={(text)=> this.onFocusChangeText(text,1)} maxLength={1} />
                   <TextInput ref={(r) => this.otpinput_[2] = r} style={this._checkSubmition("otp2")} keyboardType="number-pad" onChangeText={(text)=> this.onFocusChangeText(text,2)} maxLength={1} />

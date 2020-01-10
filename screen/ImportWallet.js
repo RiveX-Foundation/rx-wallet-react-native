@@ -239,13 +239,13 @@ class ImportWallet extends Component {
                   </View>
                   <IoIcon name="ios-arrow-forward" color={"#fff"} size={20} />
                 </Ripple>
-                <Ripple style={styles.menulistitem} onPress={()=> this._onSelectImportType('key')}>
+                {/* <Ripple style={styles.menulistitem} onPress={()=> this._onSelectImportType('key')}>
                   <View style={styles.menulistiteminner}>
                     <RiveIcon name={"private-key"} color={"#fff"} size={37} />
                     <Text style={styles.menulistitemtt}>{intl.get('Common.PrivateKey')}</Text>
                   </View>
                   <IoIcon name="ios-arrow-forward" color={"#fff"} size={20} />
-                </Ripple>
+                </Ripple> */}
               </View>
               {/* step 2 */}
               <View style={styles.indicatorchild}>

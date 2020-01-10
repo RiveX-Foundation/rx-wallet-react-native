@@ -186,7 +186,7 @@ class CreateAccount extends Component {
       })
       return;
     }
-    if(!validateEmail(this.state.emailaddressinput)){
+    if(!validateEmail(this.state.registeremailinput)){
       this.setState({
         loading:false
       },()=>{

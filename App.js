@@ -99,7 +99,9 @@ export default class App extends Component {
   //remember to config in xcode
   componentWillMount() {
     this._changeLanguage("en_US");
-    Platform.OS === "android" ? Obscure.activateObscure() : PrivacySnapshot.enabled(true);
+    if(Config.enabledPrivacy){
+      Platform.OS === "android" ? Obscure.activateObscure() : PrivacySnapshot.enabled(true);
+    }
     // this.clearAll(); 
   }
 
