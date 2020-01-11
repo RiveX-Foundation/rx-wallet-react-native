@@ -317,7 +317,7 @@ class Home extends Component {
       mywalletlist = walletlist.filter(x => x.userid == this.props.settingStore.accinfo.Id);
       this.props.walletStore.GetCloudWalletByUserId(this.props.settingStore.acctoken, async(response)=>{
         const mycloudwallet = response.wallet;
-        // console.log("mycloudwallet", mycloudwallet)
+        console.log("mycloudwallet", mycloudwallet)
         if(mycloudwallet.length > 0){
           mycloudwallet.map((cloud,index)=>{
             if(cloud.Enable){
@@ -347,6 +347,22 @@ class Home extends Component {
             }
           });
           try {
+            let currentCloudWalletList = walletlist.filter(x => x.isCloud);
+            let deletedCloudWalletList = [];
+            if(currentCloudWalletList.length > 0){
+              currentCloudWalletList.map((old,index)=>{
+                if(!mycloudwallet.some(x => x.PublicAddress == old.publicaddress)){
+                  // console.log("no more", old.walletname);
+                  deletedCloudWalletList.push(old);
+                }
+              });
+            }
+            // console.log("haventaddedcloudlist", haventaddedcloudlist);
+            // console.log("currentCloudWalletList", currentCloudWalletList);
+            // console.log("deletedCloudWalletList", deletedCloudWalletList);
+            // console.log("walletlist", walletlist);
+            // console.log("finalwalletlist", walletlist.filter(x => !deletedCloudWalletList.includes(x)));
+            walletlist.filter(x => !deletedCloudWalletList.includes(x))
             walletlist = walletlist.concat(haventaddedcloudlist);
             // console.log("haventaddedcloudlist", walletlist)
             await AsyncStorage.setItem('@wallet', JSON.stringify(walletlist)).then(()=>{

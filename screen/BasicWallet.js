@@ -297,9 +297,12 @@ class BasicWallet extends Component {
     )
   }
 
+  //414379
   renderSelectedSeed({item,index}){
     return(
-      <TouchableOpacity activeOpacity={0.9} style={[styles.seeditem,{backgroundColor:"#414379"}]} onPress={()=> this._deselectPhraseSeed(item)}>
+      <TouchableOpacity activeOpacity={0.9} 
+      style={[styles.seeditem,index >=9 ? {marginBottom:0}:null,{backgroundColor:"#414379",width:((Config.winwidth - 40 - 40)/3),paddingHorizontal:0}]} 
+      onPress={()=> this._deselectPhraseSeed(item)}>
         {/* <Text style={styles.seeditemtt}>{`${index + 1}. ${item}`}</Text> */}
         <Text style={[styles.seeditemtt,{textAlign:'center'}]}>{`${item}`}</Text>
       </TouchableOpacity>
@@ -357,6 +360,7 @@ class BasicWallet extends Component {
       });
     }else{
       if(this.state.basicwallettype == "device"){
+        this.screenloader.show();
         this.props.walletStore.setSkipStore(false);
         this.props.walletStore.createETHAddress(this.props.settingStore.accinfo.Id,this.state.newwalletname,this.state.seedval,0,0,"Basic", false);
       }else{
@@ -597,14 +601,15 @@ const styles = StyleSheet.create({
   },
   selectseedinner:{
     alignItems:'center',
-    minHeight:175
+    minHeight:165
   },
   selectseedctn:{
     backgroundColor:"#2B2C61",
-    padding:20,
+    // padding:20,
+    paddingVertical:10,
     width:Config.winwidth - 40,
     borderRadius:15,
-    paddingBottom:10,
+    // paddingBottom:10,
     alignSelf:'center',
     marginTop:20,
     // marginBottom:40

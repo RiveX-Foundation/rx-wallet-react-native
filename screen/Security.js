@@ -498,7 +498,7 @@ class Security extends Component {
           {/* {this._renderSecurityDetail()} */}
           <View style={styles.bottomnoticectn}>
             <RiveIcon name="gan-tan-hao" color={Color.lightbluegreen} size={17} />
-            <Text style={[styles.greytt,{marginTop:3}]}>{intl.get('Scurity.TransactionVerification.Notice',{total:this.props.settingStore.settings.security.selectedlist.length})}</Text>
+            <Text style={[styles.greytt]}>{intl.get('Scurity.TransactionVerification.Notice',{total:this.props.settingStore.settings.security.selectedlist.length})}</Text>
           </View>
         </LinearGradient>
       </SafeAreaView>

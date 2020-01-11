@@ -29,7 +29,8 @@ import axios from 'axios';
 import { observer, inject } from 'mobx-react';
 import intl from 'react-intl-universal';
 import locales from '../locales';
-
+import iWanUtils from '../utils/iwanUtils';
+import { toJS } from 'mobx';
 import { ethnetwork,wannetwork } from '../libs/network'
 
 @inject('settingStore')
@@ -116,10 +117,16 @@ class Login extends Component {
           if(mysetting.ethnetwork == undefined) mysetting.network = ethnetwork[0].shortcode;
           if(mysetting.wannetwork == undefined) mysetting.network = wannetwork[0].shortcode;
           if(mysetting.language == undefined) mysetting.language = this.state.defaultlang;
+          // console.log(mysetting);
           this._changeLanguage(mysetting.language);
           this.props.settingStore.setSettings(mysetting);
           this.props.settingStore.setBlockchainNetwork(mysetting.ethnetwork,"ethnetwork");
           this.props.settingStore.setBlockchainNetwork(mysetting.wannetwork,"wannetwork");
+          try{
+            iWanUtils._checkswitchnetwork(toJS(this.props.settingStore.selectedWANNetwork));
+          }catch(e){
+            // console.log(e);
+          }
           this.props.navigation.navigate("App");
         }else{
           // console.log("come here 2", accId)
