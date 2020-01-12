@@ -65,7 +65,7 @@ class Home extends Component {
 
   componentDidMount(){
     // console.log(JSON.stringify(this.props.settingStore.oldnetwork));
-    this._getTokenSparkLineByAssetCode();
+    // this._getTokenSparkLineByAssetCode();
     this.props.settingStore.setOffline(this._openOffline);
     this.props.walletStore.setHomeBeforeLoadWallet(this._resetHomeBeforeLoadWallet);
     this.props.walletStore.setReloadWallet(this._loadCloudWallet);
@@ -152,29 +152,64 @@ class Home extends Component {
   //   this.setState({appState: nextAppState});
   // };
 
+  // _getTokenSparkLineByAssetCode = () =>{
+  //   this.props.walletStore.getTokenSparkLineByAssetCode(this.props.settingStore.acctoken,"rvx",(response)=>{
+  //     console.log(response)
+  //     if(response.status == 200){
+  //       let sparklinelist = response.sparkline.sparkline;
+  //       if(sparklinelist.length > 0){
+  //         // console.log("come come come come");
+  //         let newsparkline = [];
+  //         sparklinelist.map((item,index)=>{
+  //           newsparkline.push(item.value);
+  //         })
+  //         this.setState({
+  //           sparkline:newsparkline
+  //         },()=>{
+  //           // console.log("sparkline", this.state.sparkline)
+  //         })
+  //       }else{
+  //         // console.log("come come come come 2");
+  //       }
+  //     }
+  //   },(response)=>{
+  //     console.log(response);
+  //   });
+  // }
+
   _getTokenSparkLineByAssetCode = () =>{
-    this.props.walletStore.getTokenSparkLineByAssetCode(this.props.settingStore.acctoken,"rvx",(response)=>{
-      // console.log(response)
-      if(response.status == 200){
-        let sparklinelist = response.sparkline.sparkline;
-        if(sparklinelist.length > 0){
-          // console.log("come come come come");
-          let newsparkline = [];
-          sparklinelist.map((item,index)=>{
-            newsparkline.push(item.value);
-          })
-          this.setState({
-            sparkline:newsparkline
-          },()=>{
-            // console.log("sparkline", this.state.sparkline)
-          })
-        }else{
-          // console.log("come come come come 2");
+    let tokencodelist = this.state.selectedWallet.tokenassetlist;
+    if(tokencodelist.length > 0){
+      tokencodelist =  tokencodelist.map(a => a.AssetCode.toLowerCase());
+      console.log(tokencodelist.toString());
+      this.props.walletStore.getTokenSparkLineByAssetCode(this.props.settingStore.acctoken,tokencodelist.toString(),(response)=>{
+        if(response.status == 200){
+          // console.log(response.sparkline);
+          this.props.walletStore.setCurrentWalletSparklineList(response.sparkline);
+          // console.log(toJS(this.props.walletStore.currentWalletSparklineList));
+          // let selectedTokenSparkline = response.sparkline.find(x => x.AssetCode.toLowerCase() == this.state.selectedToken.AssetCode.toLowerCase());
+          // if(selectedTokenSparkline != undefined){
+          //   let sparklinelist = selectedTokenSparkline.sparkline;
+          //   // console.log("selectedTokenSparkline",sparklinelist);
+          //   if(sparklinelist.length > 0){
+          //     let newsparkline = [];
+          //     sparklinelist.map((item,index)=>{
+          //       newsparkline.push(item.value);
+          //     })
+          //     this.setState({
+          //       sparkline:newsparkline
+          //     },()=>{
+          //       // console.log("sparkline", JSON.stringify(this.state.sparkline))
+          //     })
+          //   }else{
+          //     // console.log("come come come come 2");
+          //   }
+          // }
         }
-      }
-    },(response)=>{
-      console.log(response);
-    });
+      },(response)=>{
+        console.log(response);
+      });
+    }
   }
 
   _resetHomeBeforeLoadWallet = () =>{
@@ -424,6 +459,7 @@ class Home extends Component {
                 mywalletlist:walletlist
               },()=>{
                 this.props.walletStore.setWallets(walletlist);
+                this._getTokenSparkLineByAssetCode();
               });
               // walletlist.map(async(wallet,index) =>{
               //   // console.log(wallet);

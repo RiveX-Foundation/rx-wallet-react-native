@@ -79,7 +79,6 @@ class Transactions extends Component {
   }
 
   componentDidMount(){
-    this._getTokenSparkLineByAssetCode();
     const {params} = this.props.navigation.state;
     // var TokenInfo = params.selectedToken.TokenInfoList.find(x => x.Network == this.props.settingStore.oldnetwork.shortcode);
     var TokenInfo = params.selectedToken.TokenInfoList[0];
@@ -89,6 +88,7 @@ class Transactions extends Component {
       selectedToken:params.selectedToken,
       isPrimary:TokenInfo.IsPrimary
     },()=>{
+      this._getTokenSparkLineByAssetCode();
       // console.log(this.state.selectedWallet)
       this.walletdetails.setPageWithoutAnimation(this.state.selectedWallet.tokenassetlist.findIndex(x => x.AssetCode == this.state.selectedToken.AssetCode));
       this.LoadTransactionByAddress();
@@ -96,14 +96,13 @@ class Transactions extends Component {
   }
 
   _getTokenSparkLineByAssetCode = () =>{
-    this.props.walletStore.getTokenSparkLineByAssetCode(this.props.settingStore.acctoken,"rvx",(response)=>{
-      // console.log(response)
-      if(response.status == 200){
-        let sparklinelist = response.sparkline.sparkline;
-        if(sparklinelist.length > 0){
-          // console.log("come come come come");
+    let currentWalletSparklineList = toJS(this.props.walletStore.currentWalletSparklineList);
+    if(currentWalletSparklineList.length > 0){
+      let tokensparkline = currentWalletSparklineList.find(x => x.AssetCode.toLowerCase() == this.state.selectedToken.AssetCode.toLowerCase());
+      if(tokensparkline != undefined){
+        if(tokensparkline.sparkline.length > 0){
           let newsparkline = [];
-          sparklinelist.map((item,index)=>{
+          tokensparkline.sparkline.map((item,index)=>{
             newsparkline.push(item.value);
           })
           this.setState({
@@ -113,11 +112,35 @@ class Transactions extends Component {
           })
         }else{
           // console.log("come come come come 2");
-        }
-      }
-    },(response)=>{
-      console.log(response);
-    });
+        }  
+      }  
+    }
+    // console.log(this.state.selectedToken.AssetCode.toLowerCase());
+    // this.props.walletStore.getTokenSparkLineByAssetCode(this.props.settingStore.acctoken,"rvx,eth,btc,wan",(response)=>{
+    //   if(response.status == 200){
+    //     console.log(response.sparkline);
+    //     let selectedTokenSparkline = response.sparkline.find(x => x.AssetCode.toLowerCase() == this.state.selectedToken.AssetCode.toLowerCase());
+    //     if(selectedTokenSparkline != undefined){
+    //       let sparklinelist = selectedTokenSparkline.sparkline;
+    //       // console.log("selectedTokenSparkline",sparklinelist);
+    //       if(sparklinelist.length > 0){
+    //         let newsparkline = [];
+    //         sparklinelist.map((item,index)=>{
+    //           newsparkline.push(item.value);
+    //         })
+    //         this.setState({
+    //           sparkline:newsparkline
+    //         },()=>{
+    //           // console.log("sparkline", JSON.stringify(this.state.sparkline))
+    //         })
+    //       }else{
+    //         // console.log("come come come come 2");
+    //       }
+    //     }
+    //   }
+    // },(response)=>{
+    //   console.log(response);
+    // });
   }
 
   renderItem({item,index}){
@@ -444,6 +467,7 @@ class Transactions extends Component {
                   </Ripple>
                 </View>
                 {/* This is end top */}
+                {this.state.sparkline.length > 0 ?
                 <AreaChart
                   style={{ height: 150}}
                   data={this.state.sparkline}
@@ -455,6 +479,7 @@ class Transactions extends Component {
                   <Gradient />
                   <Tips />
                 </AreaChart>
+                : null }
                 {this.state.transactionlist.length == 0 ?
                 <View style={styles.notrxctn}>
                   {this.state.fetchdone ?

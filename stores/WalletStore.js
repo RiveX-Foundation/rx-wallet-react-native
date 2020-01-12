@@ -32,6 +32,7 @@ class WalletStore {
   @observable primaryTokenAsset = [];
   @observable allTokenAsset = [];
   @observable currentHomeWallet = {};
+  @observable currentWalletSparklineList = [];
 
   @action setSkipStore = (status) =>{
     this.skipStore = status;
@@ -67,6 +68,10 @@ class WalletStore {
 
   @action setCurrentHomeWallet = (wallet) =>{
     this.currentHomeWallet = wallet;
+  }
+
+  @action setCurrentWalletSparklineList = (list) =>{
+    this.currentWalletSparklineList = list;
   }
 
   @action generate12SeedPhase = async(cb) => {
