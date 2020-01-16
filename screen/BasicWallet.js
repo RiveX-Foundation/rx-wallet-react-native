@@ -95,6 +95,7 @@ class BasicWallet extends Component {
     const {params} = this.props.navigation.state;
       this.props.walletStore.basicCompleteSave = (wallet) =>{
         if(this.state.basicwallettype == "device"){
+          this.screenloader.hide();
           console.log("OK GOOD 1")
           this.newwallettab.setPage(6  - (params.isFirstTime ? 0 : 1));
         }else{
@@ -348,6 +349,7 @@ class BasicWallet extends Component {
   }
 
   _VerifyPhraseArrangement = () =>{
+    this.screenloader.show();
     let seedphrase = this.state.seedphase.join(",");
     let selectedarrangeseed = this.state.selectedarrangeseed.join(",");
     // console.log(seedphrase);
@@ -360,11 +362,9 @@ class BasicWallet extends Component {
       });
     }else{
       if(this.state.basicwallettype == "device"){
-        this.screenloader.show();
         this.props.walletStore.setSkipStore(false);
         this.props.walletStore.createETHAddress(this.props.settingStore.accinfo.Id,this.state.newwalletname,this.state.seedval,0,0,"Basic", false);
       }else{
-        this.screenloader.show();
         this.props.walletStore.setSkipStore(true);
         this.props.walletStore.createETHAddress(this.props.settingStore.accinfo.Id,this.state.newwalletname,this.state.seedval,0,0,"Basic", true);
       }
@@ -431,8 +431,8 @@ class BasicWallet extends Component {
                     </View>
                   </View>
                   <IoIcon name="ios-arrow-forward" color={"#fff"} size={20} />
-                </Ripple>
-                <Ripple style={styles.menulistitem} onPress={()=> this._onSelectCreateType('cloud')}>
+                </Ripple> 
+                {/* <Ripple style={styles.menulistitem} onPress={()=> this._onSelectCreateType('cloud')}>
                   <View style={styles.menulistiteminner}>
                     <RiveIcon name={"cloud"} color={"#fff"} size={37} />
                     <View style={styles.menulistiteminner2}>
@@ -441,7 +441,7 @@ class BasicWallet extends Component {
                     </View>
                   </View>
                   <IoIcon name="ios-arrow-forward" color={"#fff"} size={20} />
-                </Ripple>
+                </Ripple> */}
               </View>
               {/* step 2 */}
               <View style={styles.indicatorchild}>

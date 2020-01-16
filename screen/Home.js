@@ -68,8 +68,8 @@ class Home extends Component {
     // this._getTokenSparkLineByAssetCode();
     this.props.settingStore.setOffline(this._openOffline);
     this.props.walletStore.setHomeBeforeLoadWallet(this._resetHomeBeforeLoadWallet);
-    this.props.walletStore.setReloadWallet(this._loadCloudWallet);
-    // this.props.walletStore.setReloadWallet(this._loadWallet);
+    // this.props.walletStore.setReloadWallet(this._loadCloudWallet);
+    this.props.walletStore.setReloadWallet(this._loadWallet);
     this.props.walletStore.setReloadSparkLine(this._getTokenSparkLineByAssetCode);
     this.props.walletStore.setHomeSelectedWallet(this._setHomeSelectedWallet);
     // this._loadCloudWallet();
@@ -332,7 +332,8 @@ class Home extends Component {
   }
 
   _loadCloudWallet = async() =>{
-    // console.log("_loadCloudWallet")
+    // console.log("_loadCloudWallet");
+    return;
     try {
       let walletlist = [];
       let mywalletlist = [];

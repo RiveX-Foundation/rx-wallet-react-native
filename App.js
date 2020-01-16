@@ -41,16 +41,16 @@ const errorHandler = (e, isFatal) => {
     //     text: 'Close'
     //   }]
     // );
-    Alert.alert(
-      'Unexpected error occurred',
-      `
-      We have reported this to our team ! Please close the app and start again!
-      `,
-    [{
-      text: 'Close'
-    }]
-  );
-  console.log(`Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}`)
+  //   Alert.alert(
+  //     'Unexpected error occurred',
+  //     `
+  //     We have reported this to our team ! Please close the app and start again!
+  //     `,
+  //   [{
+  //     text: 'Close'
+  //   }]
+  // );
+  // console.log(`Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}`)
   } else {
     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
   }
