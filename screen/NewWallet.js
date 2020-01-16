@@ -56,7 +56,7 @@ class NewWallet extends Component {
                 <IoIcon name="ios-arrow-forward" color={Color.basicColor} size={20} />
               </Ripple>
             </Animatable.View> 
-            <Animatable.View animation={"slideInUp"} duration={400} useNativeDriver>
+            {/* <Animatable.View animation={"slideInUp"} duration={400} useNativeDriver>
               <Ripple style={styles.newwalletitem} onPress={()=> this._navigateTo("SharedWallet",{})}>
                 <View style={styles.newwalletiteminner}>
                   <RiveIcon name={"shared-wallet"} color={Color.shareColor} size={37} />
@@ -64,7 +64,7 @@ class NewWallet extends Component {
                 </View>
                 <IoIcon name="ios-arrow-forward" color={Color.shareColor} size={20} />
               </Ripple>
-            </Animatable.View>
+            </Animatable.View> */}
             {/* <Animatable.View animation={"slideInUp"} duration={600} useNativeDriver>
               <Ripple style={[styles.newwalletitem]}>
                 <View style={styles.newwalletiteminner}>

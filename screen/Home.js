@@ -72,7 +72,7 @@ class Home extends Component {
     // this.props.walletStore.setReloadWallet(this._loadWallet);
     this.props.walletStore.setReloadSparkLine(this._getTokenSparkLineByAssetCode);
     this.props.walletStore.setHomeSelectedWallet(this._setHomeSelectedWallet);
-    this._loadCloudWallet();
+    // this._loadCloudWallet();
     this._loadWallet();
     // this._pullCoinBalance();
     this._GetAllTokenAssetByNetwork();
