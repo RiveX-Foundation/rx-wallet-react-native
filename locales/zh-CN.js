@@ -301,6 +301,10 @@ const zh_CN = {
     'Error.Privatekeyisempty': '私钥不能为空',
     'Error.InvalidPrivateKey': '私钥不存在',
     'Error.TokenAssetNotFound': '代币资产不存在',
+    'Error.Emailisregistered': '电邮地址已注册',
+    "Error.LoginIDEmailnotexist":"用户名/电邮地址不存在",
+    "Error.LoginIDExisted":"此用户名已存在",    
+    "Error.AccountExisted":"账户已存在",  
 
     //Picker
     "Picker.CountryCallingCode":"国家/地区电话代码",

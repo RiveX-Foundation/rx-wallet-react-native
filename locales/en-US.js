@@ -261,6 +261,7 @@ const en_US = {
     "Alert.RemovedAssetToken":"Successfully Removed - {code}",
     "Alert.PasswordTips":"Password must have a minimum of 6 characters; must contain at least one uppercase letter, one lowercase letter, and one numeric digit",
     "Alert.LoginIDTooShort":"Login ID Too Short",
+    "Alert.LoginIDTooShort":"Login ID Too Short",
 
     //Error
     'Error.Unknow':"Something went wrong, Try again later.",
@@ -269,12 +270,12 @@ const en_US = {
     'Error.Mobileisregistered': 'Mobile is registered',
     'Error.Mobilenotfound': 'Mobile not found',
     'Error.InvalidToken': "Invalid Token",
-    'Error.Usernotexist': "User not exist",
-    'Error.Userdeleted': 'User deleted',
-    'Error.Usernotactive': 'User not active',
-    'Error.Usernotregistered': 'User not registered',
-    'Error.Userlocked': 'User locked',
-    'Error.Userwrongpassword': 'User wrong password',
+    'Error.Usernotexist': "Account not exist",
+    'Error.Userdeleted': 'Account deleted',
+    'Error.Usernotactive': 'Account not active',
+    'Error.Usernotregistered': 'Account not registered',
+    'Error.Userlocked': 'Account locked',
+    'Error.Userwrongpassword': 'Incorrect Password',
     'Error.Wrongcredential': 'Wrong credential',
     'Error.Accountnotfound': 'Account not found',
     'Error.Mobileisempty': 'Mobile is empty',
@@ -301,6 +302,10 @@ const en_US = {
     'Error.Privatekeyisempty': 'Private Key is empty',
     'Error.InvalidPrivateKey': 'Invalid Private Key',
     'Error.TokenAssetNotFound': 'Token asset not found',
+    'Error.Emailisregistered': 'Email is registered',
+    "Error.LoginIDEmailnotexist":"Login ID/E-mail does not exist",    
+    "Error.LoginIDExisted":"Login ID Existed",    
+    "Error.AccountExisted":"Account Existed",    
 
     //Picker
     "Picker.CountryCallingCode":"Country Calling Code",

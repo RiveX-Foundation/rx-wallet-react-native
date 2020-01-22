@@ -71,13 +71,20 @@ class ExportSeed extends Component {
         <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
           <TopHeader {...this.props} isclosebtn={true} title={intl.get('BasicWallet.YourMnemonicPhrase')} />
           {!isObjEmpty(this.state.selectedWallet) ?
-            <FlatList
-              data={this.state.selectedWallet.seedphase.split(" ")}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={this.renderItems.bind(this)}
-              contentContainerStyle={styles.recoveryseedbeforectn}
-              numColumns={3}
-            />
+            <View>
+              <FlatList
+                data={this.state.selectedWallet.seedphase.split(" ")}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={this.renderItems.bind(this)}
+                contentContainerStyle={styles.recoveryseedbeforectn}
+                numColumns={3}
+              />
+            </View>
+            : null}
+          {!isObjEmpty(this.state.selectedWallet) ?
+            <View style={styles.bottomseed}>
+              <Text style={styles.actionbtntt} onPress={() => this.props.settingStore.copytoclipboard(this.state.selectedWallet.seedphase)}>{intl.get('Common.COPY')}</Text>
+            </View>
             : null}
         </LinearGradient>
       </SafeAreaView>
@@ -88,32 +95,45 @@ class ExportSeed extends Component {
 export default ExportSeed;
 
 const styles = StyleSheet.create({
-  recoveryseedbeforectn:{
-    alignItems:'center',
-    minHeight:150
+  bottomseed: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 180,
+    alignSelf: 'center',
+    // justifyContent:'space-between'
+    justifyContent: 'center',
+    marginTop:50
   },
-  seeditemtt:{
-    color:"#fff",
-    fontFamily:Config.regulartt,
+  actionbtntt: {
+    color: Color.lightbluegreen,
+    fontFamily: Config.regulartt
+  },
+  recoveryseedbeforectn: {
+    alignItems: 'center',
+    minHeight: 150
+  },
+  seeditemtt: {
+    color: "#fff",
+    fontFamily: Config.regulartt,
     // fontSize:12
     // textAlign:'center'
   },
-  seeditem:{
-    backgroundColor:"#343860",
-    borderRadius:100,
-    paddingVertical:7,
-    paddingHorizontal:10,
-    marginBottom:12,
-    minWidth:100,
-    maxWidth:110,
-    marginLeft:5,
-    marginRight:5,
-    alignItems:'center'
+  seeditem: {
+    backgroundColor: "#343860",
+    borderRadius: 100,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
+    marginBottom: 12,
+    minWidth: 100,
+    maxWidth: 110,
+    marginLeft: 5,
+    marginRight: 5,
+    alignItems: 'center'
   },
-  recoveryseedbeforectnmain:{
-    width:Config.winwidth - 40,
-    alignSelf:'center',
-    marginTop:40,
+  recoveryseedbeforectnmain: {
+    width: Config.winwidth - 40,
+    alignSelf: 'center',
+    marginTop: 40,
   },
   container: {
     flex: 1,

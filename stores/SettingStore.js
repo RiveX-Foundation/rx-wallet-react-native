@@ -133,6 +133,7 @@ class SettingStore {
   }
 
   @action copytoclipboard = (content) =>{
+    console.log(content);
     Clipboard.setString(content);
     sendToast(intl.get('Common.AddressCopied'));
   }

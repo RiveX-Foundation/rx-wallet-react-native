@@ -220,7 +220,7 @@ class Login extends Component {
           loading:false
         },()=>{
           showMessage({
-            message: intl.get('Error.' + response.msg),//this._checkLoginReturn(response.msg),
+            message: response.msg == "Usernotexist" ? intl.get('Error.LoginIDEmailnotexist') : intl.get('Error.' + response.msg),//this._checkLoginReturn(response.msg),
             type: "danger",
             icon:"danger",
             // autoHide:false

@@ -33,6 +33,7 @@ class WalletStore {
   @observable allTokenAsset = [];
   @observable currentHomeWallet = {};
   @observable currentWalletSparklineList = [];
+  @observable currentGasPrice = 100;
 
   @action setSkipStore = (status) =>{
     this.skipStore = status;
@@ -74,6 +75,11 @@ class WalletStore {
     this.currentWalletSparklineList = list;
   }
 
+  @action setTrxGasPrice = (price) =>{
+    // console.log("setTrxGasPrice", price);
+    this.currentGasPrice = price;
+  }
+
   @action generate12SeedPhase = async(cb) => {
     let selectedwordlist = bip39.wordlists.DEFAULT_WORDLIST;
     if(languageStore.language == "zh_CN") selectedwordlist = bip39.wordlists.Chinese_Simplified;
@@ -94,13 +100,25 @@ class WalletStore {
     return prices;
   }
 
+  @action getCurrentGasPricesRange = async () => {
+    let response = await axios.get("https://ethgasstation.info/json/ethgasAPI.json");
+
+    let prices = {
+      safeLow : response.data.safeLow,
+      average : response.data.average,
+      fast : response.data.fast,
+      fastest : response.data.fastest,
+    }
+    return prices;
+  }
+
   @action TransferETH = async(selectedWallet,selectedToken,recipientaddress,setamount,cb,cberror) =>{
     console.log(selectedToken)
     if(selectedToken.TokenType == "eth"){
       const web3 = new Web3(settingStore.selectedETHNetwork.infuraendpoint);
       var from = selectedToken.PublicAddress;
       var targetaddr = recipientaddress;
-      let gasPrices = await this.getCurrentGasPrices();
+      // let gasPrices = await this.getCurrentGasPrices();
       var nonce = 0;
 
       web3.eth.getTransactionCount(from).then(txCount => {
@@ -110,7 +128,8 @@ class WalletStore {
           "to": targetaddr,
           "value": web3.utils.toHex( web3.utils.toWei(setamount, 'ether') ),
           "gas": 21000,
-          "gasPrice": gasPrices.high * 1000000000, 
+          "gasPrice": this.currentGasPrice * 1000000000, 
+          // "gasPrice": gasPrices.high * 1000000000, 
           "nonce": nonce,
           "chainId": settingStore.selectedETHNetwork.chainid
         }
@@ -146,7 +165,8 @@ class WalletStore {
               var rawTransaction = {
                 "from": from,
                 "nonce": nonce,
-                "gasPrice": 180000000000,//gasprice,// * 1000,//"0x737be7600",//gasPrices.high * 100000000,//"0x04e3b29200",
+                // "gasPrice": 180000000000,//gasprice,// * 1000,//"0x737be7600",//gasPrices.high * 100000000,//"0x04e3b29200",
+                "gasPrice": this.currentGasPrice * 1000000000,
                 "gas": '0x35B60',//"0x5208",//"0x7458",
                 "gasLimit": '0x35B60',//web3.utils.toHex("519990"),//"0x7458",
                 "Txtype": "0x01",
@@ -203,11 +223,12 @@ class WalletStore {
                   type: "uint256"
                 }]
               }, [receiver, web3.utils.toWei(setamount, 'ether')]);
-
+              console.log("iWanUtils", this.currentGasPrice);
               var rawTransaction = {
                 "from": selectedToken.PublicAddress,
                 "nonce": nonce,
-                "gasPrice": 180000000000,//gasprice,// * 1000,//"0x737be7600",//gasPrices.high * 100000000,//"0x04e3b29200",
+                // "gasPrice": 180000000000,//gasprice,// * 1000,//"0x737be7600",//gasPrices.high * 100000000,//"0x04e3b29200",
+                "gasPrice": this.currentGasPrice * 1000000000,
                 "gas": '0x35B60',//"0x5208",//"0x7458",
                 "gasLimit": '0x35B60',//web3.utils.toHex("519990"),//"0x7458",
                 "Txtype": "0x01",
@@ -241,14 +262,15 @@ class WalletStore {
       const web3 = new Web3(settingStore.selectedETHNetwork.infuraendpoint);
       var TokenInfo = selectedToken.TokenInfoList[0];
       var count = await web3.eth.getTransactionCount(selectedToken.PublicAddress ,'pending');
-      var gasPrices = await this.getCurrentGasPrices();
+      // var gasPrices = await this.getCurrentGasPrices();
       var tokenAbiArray = JSON.parse(TokenInfo.AbiArray);
       var contractdata = new web3.eth.Contract(tokenAbiArray, TokenInfo.ContractAddress);
       // var contractdata = new web3.eth.Contract(abiArray, settingStore.oldnetwork.contractaddr);
       var rawTransaction = {
           "from": selectedToken.PublicAddress,
           "nonce": count,
-          "gasPrice": gasPrices.high * 100000000,
+          "gasPrice": this.currentGasPrice * 1000000000,
+          // "gasPrice": gasPrices.high * 100000000,
           "gas": web3.utils.toHex("519990"),
           "gasLimit":web3.utils.toHex("519990"),
           "to": TokenInfo.ContractAddress,
