@@ -622,6 +622,7 @@
 		CA6BDDE44F2D4AD2AE38BBFD /* Lottie.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = Lottie.framework; path = System/Library/Frameworks/Lottie.framework; sourceTree = SDKROOT; };
 		CAB2DFF9AFE24E08BDA387C3 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		CDF824B8D07C4848911500D3 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		CE59B01723C1F9EC00B2CA67 /* RiveX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RiveX.entitlements; sourceTree = "<group>"; };
 		CE66D56323B7692200CF7463 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icomoon.ttf; path = RiveX/icomoon.ttf; sourceTree = "<group>"; };
 		CE84777323B9D47D001DBFBF /* app_store.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = app_store.jpg; sourceTree = SOURCE_ROOT; };
 		D8841C6CC3144707B415DD41 /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCWebView.xcodeproj; path = "../node_modules/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; };
@@ -1040,6 +1041,7 @@
 		727CB3DE2340C151007237A6 /* RiveX */ = {
 			isa = PBXGroup;
 			children = (
+				CE59B01723C1F9EC00B2CA67 /* RiveX.entitlements */,
 				7285292C2342FDFA006BF916 /* ios_app_icon.png */,
 				727CB3E02340C151007237A6 /* NotoSans-Regular.ttf */,
 				727CB3E12340C151007237A6 /* AppDelegate.h */,
@@ -2112,6 +2114,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = RiveX/RiveX.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2195,6 +2198,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = RiveX/RiveX.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
