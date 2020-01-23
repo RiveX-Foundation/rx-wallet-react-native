@@ -349,7 +349,6 @@ class BasicWallet extends Component {
   }
 
   _VerifyPhraseArrangement = () =>{
-    this.screenloader.show();
     let seedphrase = this.state.seedphase.join(",");
     let selectedarrangeseed = this.state.selectedarrangeseed.join(",");
     // console.log(seedphrase);
@@ -361,6 +360,7 @@ class BasicWallet extends Component {
         icon:"warning"
       });
     }else{
+      this.screenloader.show();
       if(this.state.basicwallettype == "device"){
         this.props.walletStore.setSkipStore(false);
         this.props.walletStore.createETHAddress(this.props.settingStore.accinfo.Id,this.state.newwalletname,this.state.seedval,0,0,"Basic", false);

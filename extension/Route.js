@@ -76,7 +76,7 @@ export const MainTab = createMaterialTopTabNavigator(
     {
         Home:Home, 
         WanDex:WanDex,
-        Stacking:Stacking,
+        // Stacking:Stacking,
         Settings:Settings,
     },{
         defaultNavigationOptions: ({ navigation }) => ({

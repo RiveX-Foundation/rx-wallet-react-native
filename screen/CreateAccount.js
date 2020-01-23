@@ -419,11 +419,12 @@ class CreateAccount extends Component {
       });
       return;
     }
-    this._checkSubmitionField();
+    if(!this._checkSubmitionField()) return;
     this.setState({checksubmit:true,loading:true});
     var formdata = new FormData();
     formdata.append('name', this.state.nameinput);
-    formdata.append('email', this.state.emailinput);
+    formdata.append('email', this.state.registeremailinput);
+    // formdata.append('email', this.state.emailinput);
     formdata.append('loginid', this.state.usernameinput);
     formdata.append('password', this.state.passwordinput);
     formdata.append('token', this.state.jwtoken);
@@ -494,14 +495,14 @@ class CreateAccount extends Component {
       });
       return false;
     }
-    if(!validateEmail(this.state.emailinput)){
-      showMessage({
-        message: intl.get('Alert.InvalidEmailAddress'),
-        type: "warning",
-        icon:"warning"
-      });
-      return false;
-    }
+    // if(!validateEmail(this.state.emailinput)){
+    //   showMessage({
+    //     message: intl.get('Alert.InvalidEmailAddress'),
+    //     type: "warning",
+    //     icon:"warning"
+    //   });
+    //   return false;
+    // }
     // if(this.state.emailinput <= 6){
     //   showMessage({
     //     message: "Password too short",
@@ -518,7 +519,7 @@ class CreateAccount extends Component {
     //   });
     //   return false;
     // }
-    // return true;
+    return true;
   }
 
   _removeCheckSubmit = (extra,cb) =>{
@@ -540,7 +541,7 @@ class CreateAccount extends Component {
         <TransBar />
         <ImageBackground source={require('../resources/loginbg.jpg')} style={Config.imgbackground} resizeMode="cover">
           <IndicatorTopHeader index={this.state.currentindex} noback={this.state.currentindex == 0 ? true : false} {...this.props} backfunc={()=> this._stepGoBackAcc()} />
-          <IndicatorViewPager ref={(r) => this.createacctab = r} style={styles.container} horizontalScroll={false} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
+          <IndicatorViewPager ref={(r) => this.createacctab = r} style={styles.container} horizontalScroll={true} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
             <View style={styles.indicatorChild}>
               <ScrollView contentContainerStyle={styles.indicatorscroll} keyboardShouldPersistTaps="always">
                 <Text style={styles.hedaerwhitett}>{intl.get('CreateAccount.CREATEACCOUNT')}</Text>
@@ -601,7 +602,7 @@ class CreateAccount extends Component {
                   </View>
                   <TextInput placeholder={intl.get('Common.ConfirmPassword')} style={this._checkSubmition("pass")} placeholderTextColor="#fff" secureTextEntry={this.state.showhidepassword } onChangeText={(text)=> this.setState({retypepasswordinput:text})}/>
                   <TextInput placeholder={intl.get('Common.FullName')} style={this._checkSubmition("name")} placeholderTextColor="#fff" onChangeText={(text)=> this.setState({nameinput:text})} />
-                  <TextInput placeholder={intl.get('Common.EmailAddress')} style={this._checkSubmition("email")} placeholderTextColor="#fff" keyboardType="email-address"  onChangeText={(text)=> this.setState({emailinput:text})} />
+                  {/* <TextInput placeholder={intl.get('Common.EmailAddress')} style={this._checkSubmition("email")} placeholderTextColor="#fff" keyboardType="email-address"  onChangeText={(text)=> this.setState({emailinput:text})} /> */}
                 </KeyboardAvoidingView>
                 <View style={styles.acceptctn}>
                   <TouchableOpacity style={styles.stepitem} activeOpacity={0.9} onPress={()=> this.acceptTNC()}>

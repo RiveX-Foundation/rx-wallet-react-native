@@ -301,6 +301,10 @@ const zh_TW = {
      'Error.Privatekeyisempty': '私鑰不能為空',
      'Error.InvalidPrivateKey': '私鑰不存在',
      'Error.TokenAssetNotFound': '代幣資產不存在',
+     'Error.Emailisregistered': '電子郵件地址已註冊',
+     'Error.LoginIDEmailnotexist': '用戶名/電子郵件地址不存在',
+     "Error.LoginIDExisted":"此用戶名已存在",    
+     "Error.AccountExisted":"賬戶已存在", 
 
      //Picker
      "Picker.CountryCallingCode":"國家/地區電話代碼",

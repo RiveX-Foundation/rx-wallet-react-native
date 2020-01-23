@@ -238,7 +238,7 @@ class ManageWallet extends Component {
           }
         });
       }
-    },1000)
+    },1000);
   }
 
   _checkJumpToWallet = () =>{

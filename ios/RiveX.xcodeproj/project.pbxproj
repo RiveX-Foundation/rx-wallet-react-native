@@ -57,6 +57,7 @@
 		7516AFED6ECE43DE9BF2D651 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC5F9F624BB49E5B395E299 /* libRNSVG.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8540E991FD904E82822E071E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B4C6D575EFD441898666444 /* Foundation.ttf */; };
+		8C91ED33EABD4A4C801DE220 /* libRNCSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC50102F0A8A4663A24FBF3B /* libRNCSlider.a */; };
 		8D2969FAA9A246DCBA372ACE /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D914CC6B7CA94214AE67DE54 /* FontAwesome5_Regular.ttf */; };
 		A6E221DAC49C4129B23AD7B5 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 892BBEBC00A24CDF8F0B6D27 /* FontAwesome5_Solid.ttf */; };
 		A77FE1AD62D04A2D8867D682 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B96295D2871B4012B5813EEC /* libRNCamera.a */; };
@@ -534,6 +535,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNCWebView;
 		};
+		CEE18FBA23D9722200ABBD02 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F6824DD4F972447ABED8896F /* RNCSlider.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 28C79A09220DC4CC0061DE82;
+			remoteInfo = RNCSlider;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -635,7 +643,9 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F4D196E4D1D04487A581EF1C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		F6824DD4F972447ABED8896F /* RNCSlider.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCSlider.xcodeproj; path = "../node_modules/@react-native-community/slider/ios/RNCSlider.xcodeproj"; sourceTree = "<group>"; };
 		F719BCE3D5544A10A011CC79 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		FC50102F0A8A4663A24FBF3B /* libRNCSlider.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCSlider.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -682,6 +692,7 @@
 				114FAB5CBDA34CDEBD3F9E59 /* libFastImage.a in Frameworks */,
 				B7D3B970C7664EB780A2C217 /* libReactNativeExceptionHandler.a in Frameworks */,
 				062BEC8D3BB343FDA88B3F02 /* libRNCWebView.a in Frameworks */,
+				8C91ED33EABD4A4C801DE220 /* libRNCSlider.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -900,6 +911,7 @@
 				B66286B7D9964328837DECCA /* libRNCNetInfo-tvOS.a */,
 				53CBBA1754CF4F428E05548E /* libReactNativeExceptionHandler.a */,
 				43CCF7A3278B4EDEB19F7E76 /* libRNCWebView.a */,
+				FC50102F0A8A4663A24FBF3B /* libRNCSlider.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1100,6 +1112,7 @@
 				B970997851CF401DB7C1BFB4 /* FastImage.xcodeproj */,
 				18EE05BCF27642F0A934E43E /* ReactNativeExceptionHandler.xcodeproj */,
 				D8841C6CC3144707B415DD41 /* RNCWebView.xcodeproj */,
+				F6824DD4F972447ABED8896F /* RNCSlider.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1164,6 +1177,14 @@
 			isa = PBXGroup;
 			children = (
 				CE6DA41F23B74EAB00E06916 /* libRNCWebView.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CEE18FB723D9722200ABBD02 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CEE18FBB23D9722200ABBD02 /* libRNCSlider.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1372,6 +1393,10 @@
 				{
 					ProductGroup = 727CB289233FCC62007237A6 /* Products */;
 					ProjectRef = 7B3D9A1E6E6340E99420A44E /* RNCNetInfo.xcodeproj */;
+				},
+				{
+					ProductGroup = CEE18FB723D9722200ABBD02 /* Products */;
+					ProjectRef = F6824DD4F972447ABED8896F /* RNCSlider.xcodeproj */;
 				},
 				{
 					ProductGroup = 727CB22F233FCC5F007237A6 /* Products */;
@@ -1855,6 +1880,13 @@
 			remoteRef = CE6DA41E23B74EAB00E06916 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CEE18FBB23D9722200ABBD02 /* libRNCSlider.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCSlider.a;
+			remoteRef = CEE18FBA23D9722200ABBD02 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -2042,6 +2074,7 @@
 					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 					"$(SRCROOT)..\node_modules\neact-native-exception-handlerios",
 					"$(SRCROOT)..\node_modules\neact-native-webviewios",
+					"$(SRCROOT)..\node_modules@react-native-communitysliderios",
 				);
 				INFOPLIST_FILE = RiveXTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2049,6 +2082,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2089,6 +2123,7 @@
 					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 					"$(SRCROOT)..\node_modules\neact-native-exception-handlerios",
 					"$(SRCROOT)..\node_modules\neact-native-webviewios",
+					"$(SRCROOT)..\node_modules@react-native-communitysliderios",
 				);
 				INFOPLIST_FILE = RiveXTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2096,6 +2131,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2174,6 +2210,7 @@
 					"$(SRCROOT)/../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen/**",
 					"$(SRCROOT)..\node_modules\neact-native-exception-handlerios",
 					"$(SRCROOT)..\node_modules\neact-native-webviewios",
+					"$(SRCROOT)..\node_modules@react-native-communitysliderios",
 				);
 				INFOPLIST_FILE = RiveX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2257,6 +2294,7 @@
 					"$(SRCROOT)/../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen/**",
 					"$(SRCROOT)..\node_modules\neact-native-exception-handlerios",
 					"$(SRCROOT)..\node_modules\neact-native-webviewios",
+					"$(SRCROOT)..\node_modules@react-native-communitysliderios",
 				);
 				INFOPLIST_FILE = RiveX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2308,12 +2346,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 					"$(SRCROOT)..\node_modules\neact-native-exception-handlerios",
 					"$(SRCROOT)..\node_modules\neact-native-webviewios",
+					"$(SRCROOT)..\node_modules@react-native-communitysliderios",
 				);
 				INFOPLIST_FILE = "RiveX-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2362,12 +2402,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 					"$(SRCROOT)..\node_modules\neact-native-exception-handlerios",
 					"$(SRCROOT)..\node_modules\neact-native-webviewios",
+					"$(SRCROOT)..\node_modules@react-native-communitysliderios",
 				);
 				INFOPLIST_FILE = "RiveX-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2415,12 +2457,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 					"$(SRCROOT)..\node_modules\neact-native-exception-handlerios",
 					"$(SRCROOT)..\node_modules\neact-native-webviewios",
+					"$(SRCROOT)..\node_modules@react-native-communitysliderios",
 				);
 				INFOPLIST_FILE = "RiveX-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2468,12 +2512,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 					"$(SRCROOT)..\node_modules\neact-native-exception-handlerios",
 					"$(SRCROOT)..\node_modules\neact-native-webviewios",
+					"$(SRCROOT)..\node_modules@react-native-communitysliderios",
 				);
 				INFOPLIST_FILE = "RiveX-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
