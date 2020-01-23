@@ -27,6 +27,6 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>
     <resources>
-        <image name="splash.png" width="1080" height="1920"/>
+        <image name="splash.png" width="1242" height="2208"/>
     </resources>
 </document>
