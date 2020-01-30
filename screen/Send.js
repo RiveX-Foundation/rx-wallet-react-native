@@ -68,7 +68,7 @@ class Send extends Component {
       },
       pricesrange: {},
       gaspricevalue: 100,
-      mingaspricevalue: 50,
+      mingaspricevalue: 5,
       maxgaspricevalue: 150
       // requested2fa:false,
       // startresend2fa:false,
@@ -437,7 +437,7 @@ class Send extends Component {
         <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
           <TopHeader {...this.props} title={this._getHeaderTitle()} backfunc={() => this._stepgoBackSend()}
             isclosebtn={this.state.currentindex == 0 ? true : false} noback={this.state.currentindex == 3 ? true : false} />
-          <IndicatorViewPager ref={(r) => this.sendtab = r} style={styles.container} horizontalScroll={true} onPageSelected={(response) => this._onchangeSelectedIndex(response)}>
+          <IndicatorViewPager ref={(r) => this.sendtab = r} style={styles.container} horizontalScroll={false} onPageSelected={(response) => this._onchangeSelectedIndex(response)}>
             <View style={styles.indicatorchild}>
               {/* <View style={styles.leftright}>
                 

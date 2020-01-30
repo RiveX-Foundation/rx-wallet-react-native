@@ -121,7 +121,7 @@ class ExportKey extends Component {
           <TopHeader {...this.props} isclosebtn={this.state.currentindex == 0 ? true : false} 
           title={this.state.currentindex == 0 ? intl.get('ManageWallet.ExportPrivateKey.Picker') : ""} 
           backfunc={this.state.currentindex == 0 ? ()=> this.props.navigation.goBack() : ()=> this.exportkeytab.setPage(0)}/>
-          <IndicatorViewPager ref={(r) => this.exportkeytab = r} style={styles.container} horizontalScroll={true} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
+          <IndicatorViewPager ref={(r) => this.exportkeytab = r} style={styles.container} horizontalScroll={false} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
             <View style={styles.indicatorchild}>
               {!isObjEmpty(this.state.selectedWallet) ?
               <FlatList 

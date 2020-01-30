@@ -541,7 +541,7 @@ class CreateAccount extends Component {
         <TransBar />
         <ImageBackground source={require('../resources/loginbg.jpg')} style={Config.imgbackground} resizeMode="cover">
           <IndicatorTopHeader index={this.state.currentindex} noback={this.state.currentindex == 0 ? true : false} {...this.props} backfunc={()=> this._stepGoBackAcc()} />
-          <IndicatorViewPager ref={(r) => this.createacctab = r} style={styles.container} horizontalScroll={true} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
+          <IndicatorViewPager ref={(r) => this.createacctab = r} style={styles.container} horizontalScroll={false} onPageSelected={(response)=> this._onchangeSelectedIndex(response)}>
             <View style={styles.indicatorChild}>
               <ScrollView contentContainerStyle={styles.indicatorscroll} keyboardShouldPersistTaps="always">
                 <Text style={styles.hedaerwhitett}>{intl.get('CreateAccount.CREATEACCOUNT')}</Text>
