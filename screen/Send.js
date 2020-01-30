@@ -68,7 +68,7 @@ class Send extends Component {
       pricesrange: {},
       gaspricevalue: 100,
       mingaspricevalue: 50,
-      maxgaspricevalue:150
+      maxgaspricevalue: 150
       // requested2fa:false,
       // startresend2fa:false,
       // verifyOTP:"",
@@ -87,12 +87,12 @@ class Send extends Component {
     });
     this.props.securityStore.setSecurityInit(this._onProceedSuccess, null);
     this.props.securityStore.setOTPType("Send");
-    if(params.selectedToken.TokenType == "wan" || params.selectedToken.TokenType == "wrc20"){
+    if (params.selectedToken.TokenType == "wan" || params.selectedToken.TokenType == "wrc20") {
       this.setState({
-        gaspricevalue:180,
-        mingaspricevalue:180,
-        maxgaspricevalue:300
-      },()=>{
+        gaspricevalue: 180,
+        mingaspricevalue: 180,
+        maxgaspricevalue: 300
+      }, () => {
         this.props.walletStore.setTrxGasPrice(this.state.gaspricevalue);
       })
     }
@@ -100,7 +100,7 @@ class Send extends Component {
     // iWanUtils.getGasPrice("WAN").then(async (gas) =>  {
     //   var wangasprice = gas / 1000000000;
     //   console.log(params.selectedToken)
-      
+
     // });
   }
 
@@ -412,18 +412,18 @@ class Send extends Component {
     }
   }
 
-  _setCurrentGasPrice = (price) =>{
+  _setCurrentGasPrice = (price) => {
     this.setState({
       gaspricevalue: price
-    },()=>{
+    }, () => {
       this.props.walletStore.setTrxGasPrice(price);
     })
   }
 
-  _formatWeiWin = (tokentype) =>{
-    if(tokentype == "eth" || tokentype == "erc20"){
+  _formatWeiWin = (tokentype) => {
+    if (tokentype == "eth" || tokentype == "erc20") {
       return "gwei";
-    }else if(tokentype == "wan" || tokentype == "wrc20"){
+    } else if (tokentype == "wan" || tokentype == "wrc20") {
       return "gwin";
     }
   }
@@ -509,13 +509,13 @@ class Send extends Component {
                     <Text style={styles.authott}>{intl.get('Common.TotalAmount')}</Text>
                     <Text style={[styles.authovalue, { textAlign: 'right' }]}>{`${this.state.setamount} ${this.state.selectedToken.AssetCode}`}</Text>
                   </View>
-                  <View style={[styles.authoctn, { flexDirection: 'column', alignItems: 'flex-start' , justifyContent:'flex-start'}]}>
+                  <View style={[styles.authoctn, { flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }]}>
                     <View style={styles.leftright}>
                       <Text style={styles.authott}>{intl.get('TrxDetail.GasPrice')}</Text>
-                <Text style={[styles.authovalue, { textAlign: 'right' }]}>{this.state.gaspricevalue} {this._formatWeiWin(this.state.selectedToken.TokenType)}</Text>
+                      <Text style={[styles.authovalue, { textAlign: 'right' }]}>{this.state.gaspricevalue} {this._formatWeiWin(this.state.selectedToken.TokenType)}</Text>
                     </View>
                     <Slider
-                      style={{ width: (Config.winwidth - 50), marginTop: 10 , marginLeft:-15}}
+                      style={{ width: (Config.winwidth - 50), marginTop: 10, marginLeft: -15 }}
                       minimumValue={this.state.mingaspricevalue}
                       maximumValue={this.state.maxgaspricevalue}
                       minimumTrackTintColor={Color.rippleblueColor}
