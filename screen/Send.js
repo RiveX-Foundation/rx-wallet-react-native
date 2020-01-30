@@ -46,6 +46,7 @@ const options = {
   },
 };
 import Slider from '@react-native-community/slider';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import iWanUtils from '../utils/iwanUtils';
 
 @inject('walletStore')
@@ -436,7 +437,7 @@ class Send extends Component {
         <LinearGradient colors={Color.gradientColor} style={Config.linearGradient}>
           <TopHeader {...this.props} title={this._getHeaderTitle()} backfunc={() => this._stepgoBackSend()}
             isclosebtn={this.state.currentindex == 0 ? true : false} noback={this.state.currentindex == 3 ? true : false} />
-          <IndicatorViewPager ref={(r) => this.sendtab = r} style={styles.container} horizontalScroll={false} onPageSelected={(response) => this._onchangeSelectedIndex(response)}>
+          <IndicatorViewPager ref={(r) => this.sendtab = r} style={styles.container} horizontalScroll={true} onPageSelected={(response) => this._onchangeSelectedIndex(response)}>
             <View style={styles.indicatorchild}>
               {/* <View style={styles.leftright}>
                 
@@ -514,7 +515,9 @@ class Send extends Component {
                       <Text style={styles.authott}>{intl.get('TrxDetail.GasPrice')}</Text>
                       <Text style={[styles.authovalue, { textAlign: 'right' }]}>{this.state.gaspricevalue} {this._formatWeiWin(this.state.selectedToken.TokenType)}</Text>
                     </View>
-                    <Slider
+                    {
+                      Platform.OS === 'android' ?
+                      <Slider
                       style={{ width: (Config.winwidth - 50), marginTop: 10, marginLeft: -15 }}
                       minimumValue={this.state.mingaspricevalue}
                       maximumValue={this.state.maxgaspricevalue}
@@ -522,11 +525,29 @@ class Send extends Component {
                       maximumTrackTintColor="#000000"
                       thumbTintColor={Color.lightbluegreen}
                       value={this.state.gaspricevalue}
-                      onValueChange={value =>
+                      onSlidingComplete={value =>
                         this._setCurrentGasPrice(value)
                       }
                       step={10}
                     />
+                    :
+                    <MultiSlider
+                      sliderLength={(Config.winwidth - 80)}
+                      touchDimensions={{height:20,width:20}}
+                      trackStyle={{backgroundColor:"#000",height:3}}
+                      selectedStyle={{backgroundColor:Color.rippleblueColor,height:3}}
+                      markerStyle={{backgroundColor:Color.lightbluegreen,height:20,width:20}}
+                      containerStyle={{marginBottom:-15}}
+                      min={this.state.mingaspricevalue}
+                      max={this.state.maxgaspricevalue}
+                      step={10}
+                      values={[this.state.gaspricevalue]}
+                      onValuesChange={ value =>
+                        // console.log(value[0])
+                        this._setCurrentGasPrice(value[0])
+                      }
+                    />
+                    }
                   </View>
                 </KeyboardAvoidingView>
               </ScrollView>

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/netinfo": "^3.2.1",
     "@react-native-community/slider": "^1.1.4",
