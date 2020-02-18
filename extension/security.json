@@ -1,0 +1,13 @@
+[{
+    "name":"OneTimePassword",
+    "type":"arrow"
+},{
+    "name":"TwoFactorAuthentication",
+    "type":"arrow"
+},{
+    "name":"Pincode",
+    "type":"arrow"
+},{
+    "name":"BiometricAuthentication",
+    "type":"arrow"
+}]

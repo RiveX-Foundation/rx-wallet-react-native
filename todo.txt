@@ -1,0 +1,22 @@
+Profile
+________________________________
+register - ok
+register - resend otp - ok
+forgot password - ok
+forgot password - resend otp - ok
+
+Setting
+________________________________
+set new pincode - ok
+enable / disable pincode - ok
+reset pincode - ok
+enable / disable notification - ok
+enable / disable touch id - ok
+logout - ok
+
+Wallet
+________________________________
+import wallet - phrase - ok
+import wallet - private key - ok
+create share wallet - ok
+join share wallet - ok
