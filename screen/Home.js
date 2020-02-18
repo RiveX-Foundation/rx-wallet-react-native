@@ -38,7 +38,7 @@ import * as shape from 'd3-shape'
 import { Defs, LinearGradient, Stop, Path } from 'react-native-svg'
 // import LottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image'
-import iWanUtils from '../utils/iwanUtils';
+
 
 @inject('walletStore')
 @inject('settingStore')
@@ -78,12 +78,6 @@ class Home extends Component {
     // this._loadWallet();
     // this._pullCoinBalance();
 
-    // iWanUtils.getWrc20Balance("WAN","0xb0c026701b392e97194ca9c61b001303df2a9a48","0xcb7efdb7c0cfc5fc9b3fa648abb9e0bd638dc516").then(res => {
-    //   if (res && Object.keys(res).length) {
-    //     var balance = res;
-    //     console.log("wrc20 - home", balance);
-    //   }
-    // });
   }
 
   componentWillUnmount(){
@@ -93,19 +87,19 @@ class Home extends Component {
   _GetAllTokenAssetByNetwork = () =>{
     if(this.props.walletStore.allTokenAsset.length == 0){
       this.props.walletStore.GetAllTokenAssetByNetwork(this.props.settingStore.acctoken,(response)=>{
-        console.log(response);
+        // console.log(response)
         this._loadWallet();
       },(response)=>{
-        console.log(response)
+        // console.log(response)
       });
     }
   }
 
   _GetPrimaryTokenAssetByNetwork = () =>{
     this.props.walletStore.GetPrimaryTokenAssetByNetwork(this.props.settingStore.acctoken,(response)=>{
-      console.log("_GetPrimaryTokenAssetByNetwork", toJS(this.props.walletStore.primaryTokenAsset))
+      // console.log("_GetPrimaryTokenAssetByNetwork", toJS(this.props.walletStore.primaryTokenAsset))
     },(response)=>{
-      console.log(response)
+      // console.log(response)
     })
   }
 
@@ -227,7 +221,7 @@ class Home extends Component {
   }
 
   _setHomeSelectedWallet = (wallet) =>{
-    // console.log("_setHomeSelectedWallet", wallet)
+    // console.log("_setHomeSelectedWallet", JSON.stringify(wallet))
     this.setState({
       selectedWallet:wallet
     },()=> {
@@ -589,8 +583,6 @@ class Home extends Component {
             // console.log("home _loadTokenAssetList", this.state.selectedWallet)
             this.props.walletStore.setCurrentHomeWallet(this.state.selectedWallet);
           })
-        }).catch((error)=>{
-          console.log(error);
         })
       }
     }

@@ -225,12 +225,12 @@ class Settings extends Component {
         allsettings[indexsetting].wannetwork = this.state.selectedWANNetwork.shortcode;
         allsettings[indexsetting].language = this.props.languageStore.language;
         await AsyncStorage.setItem('@settings', JSON.stringify(allsettings)).then(()=>{
-          // this.props.walletStore.GetAllTokenAssetByNetwork(this.props.settingStore.acctoken,() => null,() => null);
           // console.log(JSON.stringify(allsettings));
           this.props.settingStore.setSettings(allsettings[indexsetting]);
           // this.props.settingStore.setBlockchainNetwork(this.state.oldnetwork);
           this.props.settingStore.setBlockchainNetwork(this.state.selectedETHNetwork.shortcode,"ethnetwork");
           this.props.settingStore.setBlockchainNetwork(this.state.selectedWANNetwork.shortcode,"wannetwork");
+          // this.props.walletStore.GetAllTokenAssetByNetwork(this.props.settingStore.acctoken,() => null,() => null);
           if(needreload){
             // this.props.walletStore.resetHomeBeforeLoadWallet();
             try{
@@ -242,8 +242,6 @@ class Settings extends Component {
               this.props.walletStore.reloadWallet();
             },() => null);
             this._GetPrimaryTokenAssetByNetwork();
-
-           // this._GetAllTokenAssetByNetwork();
           }
         });
       }

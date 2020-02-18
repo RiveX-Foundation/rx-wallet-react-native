@@ -118,8 +118,7 @@ class NewTokenAsset extends Component {
                 this.props.walletStore.setWallets(walletlist);
                 this.props.walletStore.homeSelectedWallet(wallet);
                 this.props.navigation.goBack();
-              });
-
+              })
             }
           })
         }
