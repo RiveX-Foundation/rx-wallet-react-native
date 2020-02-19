@@ -186,15 +186,15 @@ class Transactions extends Component {
   _navigateAction = (name) =>{
     if(name == "Send"){
       //remember
-      // if(this.state.selectedToken.TokenBalance == 0){
-      //   showMessage({
-      //     message: intl.get('Transaction.NotEnoughBalance'),
-      //     type: "warning",
-      //     icon:"warning",
-      //     // autoHide:false
-      //   });
-      //   return;
-      // }
+      if(this.state.selectedToken.TokenBalance == 0){
+        showMessage({
+          message: intl.get('Transaction.NotEnoughBalance'),
+          type: "warning",
+          icon:"warning",
+          // autoHide:false
+        });
+        return;
+      }
       this.props.navigation.navigate("Send",{selectedWallet:this.state.selectedWallet,selectedToken:this.state.selectedToken,onRefresh:this._onRefresh})
     }else{
       this.props.navigation.navigate("Receive",{selectedWallet:this.state.selectedWallet,selectedToken:this.state.selectedToken})

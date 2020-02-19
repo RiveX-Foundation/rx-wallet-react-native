@@ -106,6 +106,9 @@ class NewTokenAsset extends Component {
           walletlist.map(async(wallet,index)=>{
             if(wallet.publicaddress == this.state.selectedWallet.publicaddress){
               wallet.tokenassetlist.push(tokenasset);
+              await AsyncStorage.setItem('@lastwallet', JSON.stringify(wallet)).then(()=>{
+
+              });
               await AsyncStorage.setItem('@wallet', JSON.stringify(walletlist)).then(()=>{
                 showMessage({
                   message: intl.get('Alert.AddedNewAssetToken',{code:tokenasset.AssetCode.toUpperCase()}),

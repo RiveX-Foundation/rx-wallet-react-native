@@ -127,15 +127,15 @@ class SecurityComponent extends Component{
   _callRequestAPI = () =>{
     let apiURL = "";
     if(this.props.securityStore.OTPType == "PersonalProfile"){
-      apiURL = "api/auth/RequestUpdateProfileTokenOTP";
+      apiURL = "api/auth/RequestUpdateProfileTokenOTPByEmail";
     }
     if(this.props.securityStore.OTPType == "Send"){
-      apiURL = "api/auth/RequestTransferTokenOTP";
+      apiURL = "api/auth/RequestTransferTokenOTPByEmail";
     }
     // console.log("this.props.securityStore.smsnotification", this.props.securityStore.smsnotification)
     var formdata = new FormData();
     formdata.append('token', this.props.settingStore.acctoken);
-    formdata.append('smsnotification', this.props.securityStore.smsnotification);
+    formdata.append('emailnotification', this.props.securityStore.smsnotification);
     callApi(apiURL,formdata,(response)=>{
       // console.log(response);
       if(response.status == 200){

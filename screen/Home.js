@@ -64,6 +64,8 @@ class Home extends Component {
   }
 
   componentDidMount(){
+    this._GetAllTokenAssetByNetwork();
+    this._GetPrimaryTokenAssetByNetwork();
     // console.log(JSON.stringify(this.props.settingStore.oldnetwork));
     // this._getTokenSparkLineByAssetCode();
     this.props.settingStore.setOffline(this._openOffline);
@@ -73,10 +75,9 @@ class Home extends Component {
     this.props.walletStore.setReloadSparkLine(this._getTokenSparkLineByAssetCode);
     this.props.walletStore.setHomeSelectedWallet(this._setHomeSelectedWallet);
     // this._loadCloudWallet();
-    this._loadWallet();
+    // this._loadWallet();
     // this._pullCoinBalance();
-    this._GetAllTokenAssetByNetwork();
-    this._GetPrimaryTokenAssetByNetwork();
+
   }
 
   componentWillUnmount(){
@@ -87,6 +88,7 @@ class Home extends Component {
     if(this.props.walletStore.allTokenAsset.length == 0){
       this.props.walletStore.GetAllTokenAssetByNetwork(this.props.settingStore.acctoken,(response)=>{
         // console.log(response)
+        this._loadWallet();
       },(response)=>{
         // console.log(response)
       });

@@ -230,7 +230,7 @@ class Settings extends Component {
           // this.props.settingStore.setBlockchainNetwork(this.state.oldnetwork);
           this.props.settingStore.setBlockchainNetwork(this.state.selectedETHNetwork.shortcode,"ethnetwork");
           this.props.settingStore.setBlockchainNetwork(this.state.selectedWANNetwork.shortcode,"wannetwork");
-          this.props.walletStore.GetAllTokenAssetByNetwork(this.props.settingStore.acctoken,() => null,() => null);
+          // this.props.walletStore.GetAllTokenAssetByNetwork(this.props.settingStore.acctoken,() => null,() => null);
           if(needreload){
             // this.props.walletStore.resetHomeBeforeLoadWallet();
             try{
@@ -238,8 +238,9 @@ class Settings extends Component {
             }catch(e){
               
             }
-            this.props.walletStore.reloadWallet();
-            this._GetAllTokenAssetByNetwork();
+            this.props.walletStore.GetAllTokenAssetByNetwork(this.props.settingStore.acctoken,() => {
+              this.props.walletStore.reloadWallet();
+            },() => null);
             this._GetPrimaryTokenAssetByNetwork();
           }
         });

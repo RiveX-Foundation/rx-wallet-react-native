@@ -165,7 +165,7 @@ class ManageWallet extends Component {
     },()=>{
       if(filterwalletList.length > 0){
         try{
-          this._queqeLoadTokenAsset(filterwalletList);
+          // this._queqeLoadTokenAsset(filterwalletList);
           // iWanUtils._checkswitchnetwork(toJS(this.props.settingStore.selectedWANNetwork));
           // filterwalletList.map((wallet,index)=>{
           //   if(wallet.tokenassetlist.length == 0){
@@ -273,12 +273,12 @@ class ManageWallet extends Component {
         <Ripple style={[styles.mywalletitem,index === this.state.walletList.length -1 ? {borderBottomWidth:0} : null]}
         onPress={!this.state.isfromHome ? ()=> this._onSelectWallet(item) : ()=> this._onSelectHomeWallet(item)}>
           <Text style={styles.mywalletname}>{item.walletname}</Text>
-          {!isSelectedWallet ?
+          {/* {!isSelectedWallet ?
           <Text style={styles.mywalletvalue}>{this.state.updatedresult ? `${this._getTotalWorth(item)} ${this.props.settingStore.settings.currency}` : `...`}</Text>
           :
           <Text style={styles.mywalletvalue}>{this._getTotalWorth(item)} {this.props.settingStore.settings.currency}</Text>
-          }
-          {/* <Text style={styles.mywalletvalue}>{intl.get('ManageWallet.TotalTokenAsset',{total:item.tokenassetlist.length})}</Text> */}
+          } */}
+          <Text style={styles.mywalletvalue}>{intl.get('ManageWallet.TotalTokenAsset',{total:item.tokenassetlist.length})}</Text>
         </Ripple>
         {!this.state.isfromHome ?
         <TouchableOpacity style={styles.removebtn} activeOpacity={0.9} onPress={()=> this._selectWalletToRemove(item)}>
