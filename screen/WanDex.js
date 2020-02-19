@@ -32,7 +32,7 @@ export default class WanDex extends Component {
 
         </LinearGradient> */}
         <View style={Config.linearGradient}>
-          <WebView source={{ uri: "https://wrdex.io/main" }}
+          <WebView source={{ uri: "https://exchange.wrdex.io/" }}
             ref={(r) => this.dexview = r}
             onLoad={syntheticEvent => {
               const { nativeEvent } = syntheticEvent;
