@@ -17,7 +17,7 @@
     "@remobile/react-native-qrcode-local-image": "git+https://github.com/callmejm/react-native-qrcode-local-image.git",
     "@tradle/react-native-http": "^2.0.0",
     "assert": "^2.0.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "base-64": "^0.1.0",
     "browserify-zlib": "^0.1.4",
     "console-browserify": "^1.1.0",
